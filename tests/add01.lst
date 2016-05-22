@@ -1,0 +1,24 @@
+   1            / Program : Add01.pal
+   2            / Date : March 3, 2002
+   3            /
+   4            / Desc : This program computes c = a + b
+   5            /
+   6            /-------------------------------------------
+   7            /
+   8            / Code Section
+   9            /
+  10            *0200			/ start at address 0200
+  11 00200 7300 Main, 	cla cll 	/ clear AC and Link
+  12 00201 1250 	tad A 		/ add A to Accumulator
+  13 00202 1251 	tad B 		/ add B
+  14 00203 3252 	dca C 		/ store sum at C
+  15 00204 7402 	hlt 		/ Halt program
+  16 00205 5200 	jmp Main	/ To continue - goto Main
+  17            /
+  18            / Data Section
+  19            /
+  20            *0250 			/ place data at address 0250
+  21 00250 0002 A, 	2 		/ A equals 2
+  22 00251 0003 B, 	3 		/ B equals 3
+  23 00252 0000 C, 	0
+  24            $Main 			/ End of Program; Main is entry point
