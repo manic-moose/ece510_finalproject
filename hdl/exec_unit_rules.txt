@@ -9,3 +9,7 @@
 9 JMS Command writes correct data to memory (next PC value)
 10 JMS Instruction takes 3 cycles to de-assert stall
 11 JMS PC_value updated to requested memory address + 1
+12 All opcodes supplied to instruction unit are legal
+13 ADD Command Read Address Correct
+14 ADD Command properly updates accumulator
+15 ADD Command consumed correct number of clock cycles

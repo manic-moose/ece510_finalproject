@@ -101,8 +101,9 @@ always @(posedge clk) begin
         prevStall <= stall;
         if (hasNewInstruction(current_instr) & justStalled) begin
             runRule(3, stall);
-            if (instrIsLegal(current_instr)) begin
-            handleInstruction(current_instr);
+            
+            if (runRule(12,instrIsLegal(current_instr))) begin
+                handleInstruction(current_instr);
             end else begin
                 $display("Illegal Instruction Detected: %p", current_instr);
             end
@@ -366,6 +367,39 @@ endtask
 task memTADInstr (
     input pdp_mem_opcode_s instr
 );
+logic [`DATA_WIDTH:0] temp_intAcc;
+logic [`DATA_WIDTH-1:0] temp_rdData;
+automatic integer clkCount = 0;
+automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+begin
+    // Save the current value of the accumulator
+    temp_intAcc = wb_intAcc;
+    runRule(3, stall);
+    // Wait for the read request to come through
+    wait(exec_rd_req) begin
+        waitNClocks(1);
+        clkCount = clkCount + 1;
+        runRule(3, stall);
+    end
+    if (!runRule(13, exec_rd_addr === instr.mem_inst_addr)) begin
+        $display ("Expected Read Address: %d    Actual Read Address: %d", instr.mem_inst_addr, exec_rd_addr);
+    end
+    runRule(3, stall);
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    runRule(3, stall);
+    temp_rdData = exec_rd_data;
+    temp_intAcc = temp_intAcc + temp_rdData;
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    runRule(3, stall);
+    runRule(14, temp_intAcc === wb_intAcc);
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    if (!runRule(15, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for ADD");
+    if (!runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for ADD");
+    if (!runRule(7, PC_value === local_PC_value + 1)) $display("PC_value not updated correctly after ADD command. Expected: %p  Actual: %p", local_PC_value+1,PC_value);
+end
 endtask
     
 task memDCAInstr (
@@ -408,7 +442,6 @@ begin
     waitNClocks(1);
     if (!runRule(6, PC_value === instr.mem_inst_addr)) $display("PC Value Expected: %d  Actual: %d", instr.mem_inst_addr, PC_value);
     if (!runRule(4, ~stall)) $display("Stall not de-asserted after 2 clock cycles for JMP");
-    
 end
 endtask
 
