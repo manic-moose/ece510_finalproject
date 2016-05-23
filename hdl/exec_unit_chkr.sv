@@ -145,6 +145,7 @@ integer ruleNumber;
 string  ruleNumStr;
 string line;
 integer numLength;
+integer lineLength;
 begin
     fileHandle = $fopen(fileName, "r");
     if (!fileHandle) begin
@@ -153,30 +154,45 @@ begin
     end
     while(!$feof(fileHandle)) begin
         $fgets(line,fileHandle);
-        ruleNumStr = "";
-        $sscanf(line,"%s ", ruleNumStr);
-        numLength = ruleNumStr.len();
-        if (numLength > 0) begin
-            ruleNumber = ruleNumStr.atoi();
-            line = line.substr(numLength,line.len()-1);
-            // Trim off leading and trailing whitespace
-            while (line.substr(0,0) == " " || line.substr(0,0) == "\t") begin
-                line = line.substr(1, line.len()-1);
+        lineLength = line.len();
+        if (lineLength > 0) begin
+            line = stringTrim(line);
+            ruleNumStr = "";
+            $sscanf(line,"%s ", ruleNumStr);
+            numLength = ruleNumStr.len();
+            if (numLength > 0 && line.substr(0,0) != "#") begin
+                ruleNumber = ruleNumStr.atoi();
+                line = line.substr(numLength,line.len()-1);
+                line = stringTrim(line);
+                // Update rule hash
+                ruleHash[ruleNumber] = line;
+            end else if (line.len() == 0 || line.substr(0,0) == "#") begin
+                    // Ignore
+            end else begin
+                $display("Illegal line in rules file: %s", line);
             end
-            while (line.substr(line.len()-1,line.len()-1) == " "  || 
-                   line.substr(line.len()-1,line.len()-1) == "\t" ||
-                   line.substr(line.len()-1,line.len()-1) == "\n" ) begin
-                line = line.substr(0,line.len()-2);
-            end
-            // Update rule hash
-            ruleHash[ruleNumber] = line;
-        end else begin
-            $display("Illegal line in rules file: line");
         end
     end
     $fclose(fileHandle);
 end
 endtask
+    
+// stringTrim - trim off extra whitespace characters around string
+function string stringTrim (
+    input string mystring
+);
+begin
+    while (mystring.substr(0,0) == " " || mystring.substr(0,0) == "\t") begin
+        mystring = mystring.substr(1, mystring.len()-1);
+    end
+    while (mystring.substr(mystring.len()-1,mystring.len()-1) == " "  || 
+           mystring.substr(mystring.len()-1,mystring.len()-1) == "\t" ||
+           mystring.substr(mystring.len()-1,mystring.len()-1) == "\n" ) begin
+        mystring = mystring.substr(0,mystring.len()-2);
+    end
+    return mystring;
+end
+endfunction
 
 // Blocks until n clocks are observed
 task waitNClocks (
@@ -324,13 +340,11 @@ endtask
 task memANDInstr (
     input pdp_mem_opcode_s instr
 );
-logic [`DATA_WIDTH:0] temp_intAcc;
+    automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
 logic [`DATA_WIDTH-1:0] temp_rdData;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 begin
-    // Save the current value of the accumulator
-    temp_intAcc = wb_intAcc;
     runRule(3, stall);
     // Wait for the read request to come through
     wait(exec_rd_req) begin
@@ -362,18 +376,55 @@ endtask
 task memISZInstr (
     input pdp_mem_opcode_s instr
 );
+automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
+logic [`DATA_WIDTH-1:0] temp_rdData;
+automatic integer clkCount = 0;
+automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+begin
+    runRule(3, stall);
+    // Wait for the read request to come through
+    wait(exec_rd_req) begin
+        waitNClocks(1);
+        clkCount = clkCount + 1;
+        runRule(3, stall);
+    end
+    if (!runRule(20, exec_rd_addr === instr.mem_inst_addr)) begin
+        $display ("Expected Read Address: %d    Actual Read Address: %d", instr.mem_inst_addr, exec_rd_addr);
+    end
+    runRule(3, stall);
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    runRule(3, stall);
+    temp_rdData = exec_rd_data;
+    wait(exec_wr_req) begin
+        waitNClocks(1);
+        clkCount = clkCount + 1;
+        runRule(3, stall);
+    end
+    if(!runRule(21, exec_wr_data === temp_rdData + 1)) $display("ISZ Command did not provide correct write data. Expected: %p  Actual: %p", temp_rdData+1,exec_wr_data);
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    runRule(3, stall);
+    if (temp_rdData === 0) begin
+        if(!runRule(7, PC_value === local_PC_value + 2)) $display("ISZ PC_value error. Expected: %p  Actual: %p", local_PC_value+2,PC_value);
+    end else begin
+        if(!runRule(7, PC_value === local_PC_value + 1)) $display("ISZ PC_value error. Expected: %p  Actual: %p", local_PC_value+1,PC_value);
+    end
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    if (!runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for AND");
+    if (!runRule(22, clkCount === 5)) $display("ISZ Clock Count Expected: %p  Actual: %p", 5, clkCount);
+end
 endtask
     
 task memTADInstr (
     input pdp_mem_opcode_s instr
 );
-logic [`DATA_WIDTH:0] temp_intAcc;
+automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
 logic [`DATA_WIDTH-1:0] temp_rdData;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 begin
-    // Save the current value of the accumulator
-    temp_intAcc = wb_intAcc;
     runRule(3, stall);
     // Wait for the read request to come through
     wait(exec_rd_req) begin
@@ -405,6 +456,27 @@ endtask
 task memDCAInstr (
     input pdp_mem_opcode_s instr
 );
+automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
+automatic integer clkCount = 0;
+automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+begin
+    runRule(3, stall);
+    wait(exec_wr_req) begin
+        waitNClocks(1);
+        clkCount = clkCount + 1;
+        runRule(3, stall);
+    end
+    if(!runRule(16, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect DCA address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
+    if(!runRule(17, exec_wr_data === temp_intAcc))  $display("Incorrect DCA data. Expected: %p  Actual: %p", temp_intAcc,exec_wr_data);
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    runRule(3, stall);
+    if(!runRule(18, wb_intAcc === 0));
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    if(!runRule(4, ~stall)) $display("Stall not de-asserted when expected for DCA command");
+    if(!runRule(19, clkCount === 3)) $display("DCA command number of clocks incorrect  Expected: %p  Actual: %p", 3, clkCount);
+end
 endtask
     
 task memJMSInstr (
