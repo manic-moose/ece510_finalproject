@@ -121,7 +121,7 @@ function runRule (
 );
 begin
     if (ruleHash.exists(ruleNumber)) begin
-        if (rulePass) begin
+        assert (rulePass) begin
             $display("PASS Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
             return 1;
         end else begin
@@ -326,6 +326,7 @@ task memANDInstr (
 logic [`DATA_WIDTH:0] temp_intAcc;
 logic [`DATA_WIDTH-1:0] temp_rdData;
 automatic integer clkCount = 0;
+automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 begin
     // Save the current value of the accumulator
     temp_intAcc = wb_intAcc;
@@ -353,6 +354,7 @@ begin
     clkCount = clkCount + 1;
     if (!runRule(5, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for AND");
     if (!runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for AND");
+    if (!runRule(7, PC_value === local_PC_value + 1)) $display("PC_value not updated correctly after AND command. Expected: %p  Actual: %p", local_PC_value+1,PC_value);
 end
 endtask
     
@@ -374,6 +376,26 @@ endtask
 task memJMSInstr (
     input pdp_mem_opcode_s instr
 );
+automatic integer clkCount = 0;
+automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+begin
+    runRule(3, stall);
+    wait(exec_wr_req) begin
+        waitNClocks(1);
+        clkCount = clkCount + 1;
+        runRule(3, stall);
+    end
+    if(!runRule(8, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect JMS address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
+    if(!runRule(9, exec_wr_data === local_PC_value + 1))  $display("Incorrect JMS data. Expected: %p  Actual: %p", local_PC_value+1,exec_wr_data);
+    runRule(3, stall);
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    waitNClocks(1);
+    if(!runRule(11, PC_value === instr.mem_inst_addr + 1)) $display("PC_value not properly updated during JMS. Expected: %p Actual: %p", instr.mem_inst_addr+1,PC_value);
+    clkCount = clkCount + 1;
+    if(!runRule(10, clkCount === 3)) $display("JMS Instruction did not take expected (3) number of clock cycles. Actual: %p", clkCount);
+    if(!runRule(4, ~stall)) $display("JMS Instruction did not de-assert stall when expected");
+end    
 endtask
     
 task memJMPInstr (
