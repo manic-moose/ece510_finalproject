@@ -48,7 +48,12 @@ always @(*) begin
     current_instr.memCode <= pdp_mem_opcode;
     current_instr.op7Code <= pdp_op7_opcode;
 end
-        
+    
+string ruleHash [integer];
+
+initial begin
+    readRuleFile("exec_unit_rules.txt");
+end
     
 // Label Decoded op7 opcodes
 localparam logic [21:0]
@@ -111,20 +116,75 @@ end
 // of all checked rules.
 function runRule (
     input integer ruleNumber,
-    input string  ruleText,
     input bit     rulePass
 );
 begin
-    if (rulePass) begin
-        $display("PASS Rule %d - %s", ruleNumber, ruleText);
-        return 1;
+    if (ruleHash.exists(ruleNumber)) begin
+        if (rulePass) begin
+            $display("PASS Rule %p - %p", ruleNumber, ruleHash[ruleNumber]);
+            return 1;
+        end else begin
+            $display("FAIL Rule %p - %p", ruleNumber, ruleHash[ruleNumber]);
+            return 0;
+        end
     end else begin
-        $display("FAIL Rule %d - %s", ruleNumber, ruleText);
-        return 0;
+        $display("Rule number %d not found in rule file", ruleNumber); 
     end
 end
 endfunction
 
+// readRuleFile - Reads in fileName text
+// and populates the rule array with 
+// correct data
+task readRuleFile(string fileName);
+integer fileHandle;
+string ruleText;
+integer ruleNumber;
+string  ruleNumStr;
+string line;
+integer numLength;
+begin
+    fileHandle = $fopen(fileName, "r");
+    if (!fileHandle) begin
+        $display("An error has occurred when attempting to read %s.", fileName);
+        $finish;
+    end
+    while(!$feof(fileHandle)) begin
+        $fgets(line,fileHandle);
+        ruleNumStr = "";
+        $sscanf(line,"%s ", ruleNumStr);
+        numLength = ruleNumStr.len();
+        if (numLength > 0) begin
+            ruleNumber = ruleNumStr.atoi();
+            line = line.substr(numLength,line.len()-1);
+            // Trim off leading and trailing whitespace
+            while (line.substr(0,0) == " " || line.substr(0,0) == "\t") begin
+                line = line.substr(1, line.len()-1);
+            end
+            while (line.substr(line.len()-1,line.len()-1) == " "  || 
+                   line.substr(line.len()-1,line.len()-1) == "\t" ||
+                   line.substr(line.len()-1,line.len()-1) == "\n" ) begin
+                line = line.substr(0,line.len()-2);
+            end
+            // Update rule hash
+            ruleHash[ruleNumber] = line;
+        end else begin
+            $display("Illegal line in rules file: line");
+        end
+    end
+    $fclose(fileHandle);
+end
+endtask
+
+// Blocks until n clocks are observed
+task waitNClocks (
+    input integer n
+);
+begin
+    repeat (n) @(posedge clk);
+end
+endtask
+    
 // handleInstruction - Encapsulates code necessary
 // to follow an injected instruction and run
 // necessary checks on it
@@ -257,26 +317,32 @@ begin
     else if (mCode.JMP) memJMPInstr(mCode);
 end
 endtask
-
+    
 // 5 Instructions from Branch to Stall
 // 
 task memANDInstr (
     input pdp_mem_opcode_s instr
 );
 logic [`DATA_WIDTH:0] temp_intAcc;
+logic [`DATA_WIDTH-1:0] temp_rdData;
 integer clkCount;
 begin
     // Save the current value of the accumulator
     temp_intAcc = wb_intAcc;
     // Wait for the read request to come through
-    $display("TIME 0: %d", $time);
     wait(exec_rd_req) begin
-        @(posedge clk);
+        waitNClocks(1);
         clkCount = clkCount + 1;
     end
-    if (!runRule(1, "AND Command Read Address Correct", exec_rd_addr === instr.mem_inst_addr)) begin
+    if (!runRule(1, exec_rd_addr === instr.mem_inst_addr)) begin
         $display ("Expected Read Address: %d    Actual Read Address: %d", instr.mem_inst_addr, exec_rd_addr);
     end
+    waitNClocks(1);
+    clkCount = clkCount + 1;
+    temp_rdData = exec_rd_data;
+    temp_intAcc = temp_intAcc & temp_rdData;
+    waitNClocks(1);
+    runRule(2, temp_intAcc === wb_intAcc);
 end
 endtask
     

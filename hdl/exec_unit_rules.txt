@@ -1,0 +1,2 @@
+1 AND Command Read Address Correct
+2	AND Command properly updates accumulator
