@@ -122,6 +122,7 @@ begin
         if (isMemoryCmd) begin
             runRandomMemoryCmd();
         end else begin
+            runRandomOp7Cmd();
         end
     end
 end
