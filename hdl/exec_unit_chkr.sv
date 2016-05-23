@@ -36,6 +36,8 @@ module exec_unit_chkr (
     input                 wb_intLink
 
 );
+    
+localparam VERBOSE = 0;
 
 bit dummy;
     
@@ -125,7 +127,7 @@ function bit runRule (
 begin
     if (ruleHash.exists(ruleNumber)) begin
         assert (rulePass) begin
-            $display("PASS Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
+            if (VERBOSE) $display("PASS Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
             return 1;
         end else begin
             $display("FAIL Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
@@ -156,12 +158,12 @@ begin
         $finish;
     end
     while(!$feof(fileHandle)) begin
-        $fgets(line,fileHandle);
+        dummy = $fgets(line,fileHandle);
         lineLength = line.len();
         if (lineLength > 0) begin
             line = stringTrim(line);
             ruleNumStr = "";
-            $sscanf(line,"%s ", ruleNumStr);
+            dummy = $sscanf(line,"%s ", ruleNumStr);
             numLength = ruleNumStr.len();
             if (numLength > 0 && line.substr(0,0) != "#") begin
                 ruleNumber = ruleNumStr.atoi();
