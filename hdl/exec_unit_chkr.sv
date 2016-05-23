@@ -6,6 +6,10 @@
  *
  * Author: Brandon Mousseau bam7@pdx.edu
  */
+
+`define EXE_RULE_FILE         "exec_unit_rules.txt"
+`define EXE_RULE_DISABLE_FILE "exec_rule.disable"
+
 module exec_unit_chkr (
     // From clkgen_driver module
     input clk,                              // Free running clock
@@ -62,7 +66,7 @@ integer unsigned rulePassCount [integer];
 integer unsigned ruleFailCount [integer];
 
 initial begin
-    readRuleFile("exec_unit_rules.txt", "exec_rule.disable");
+    readRuleFile(`EXE_RULE_FILE, `EXE_RULE_DISABLE_FILE);
 end
 
 final begin
