@@ -21,7 +21,8 @@ module ifd_bfd (
 localparam DEBUG = 0;
 
 logic [`ADDR_WIDTH-1:0] int_base_addr;
-
+assign int_base_addr = `START_ADDRESS;
+    
 integer clkCount = 0;
 always @(posedge clk) begin
     clkCount <= clkCount + 1;
