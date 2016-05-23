@@ -43,6 +43,9 @@ module exec_unit_chkr (
     
 localparam VERBOSE = 0;
 
+CheckerClass chkr;
+    
+    
 bit dummy;
     
 typedef struct packed {
@@ -66,11 +69,12 @@ integer unsigned rulePassCount [integer];
 integer unsigned ruleFailCount [integer];
 
 initial begin
-    readRuleFile(`EXE_RULE_FILE, `EXE_RULE_DISABLE_FILE);
+    chkr = new(`EXE_RULE_FILE, `EXE_RULE_DISABLE_FILE);
+    chkr.setVerbose(VERBOSE);
 end
 
 final begin
-    dummy = printLogSummary();
+    dummy = chkr.printLogSummary();
 end
     
 logic prevStall;
@@ -91,12 +95,12 @@ always @(posedge clk) begin
         prevStall <= stall;
         if (hasNewInstruction(current_instr) & justStalled) begin
             if (firstInstruction) begin
-                dummy = runRule(25, base_addr === `START_ADDRESS);
-                dummy = runRule(26, PC_value === base_addr);
+                dummy = chkr.runRule(25, base_addr === `START_ADDRESS);
+                dummy = chkr.runRule(26, PC_value === base_addr);
                 firstInstruction = 1'b0;
             end
-            dummy = runRule(3, stall);
-            if (runRule(12,instrIsLegal(current_instr))) begin
+            dummy = chkr.runRule(3, stall);
+            if (chkr.runRule(12,instrIsLegal(current_instr))) begin
                 handleInstruction(current_instr);
             end else begin
                 $display("Illegal Instruction Detected: %p", current_instr);
@@ -232,15 +236,15 @@ task handleNOP (
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
-    dummy = runRule(3, stall, "Rule 3 NOP Failure");
+    dummy = chkr.runRule(3, stall, "Rule 3 NOP Failure");
     waitNClocks(1);
-    dummy = runRule(3, stall, "Rule 3 NOP Failure");
+    dummy = chkr.runRule(3, stall, "Rule 3 NOP Failure");
     waitNClocks(1);
-    dummy = runRule(3, stall, "Rule 3 NOP Failure");
+    dummy = chkr.runRule(3, stall, "Rule 3 NOP Failure");
     waitNClocks(1);
-    dummy = runRule(4,~stall, "Rule 4 NOP Failure");
+    dummy = chkr.runRule(4,~stall, "Rule 4 NOP Failure");
     expected_PC = local_PC_value + 1;
-    if (!runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during NOP. Expected: %p Actual: %p", expected_PC,PC_value);
+    if (!chkr.runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during NOP. Expected: %p Actual: %p", expected_PC,PC_value);
 end
 endtask
     
@@ -250,17 +254,17 @@ task handleCLA_CLL (
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
-    dummy = runRule(3, stall, "Rule 3 CLA_CLL Failure");
+    dummy = chkr.runRule(3, stall, "Rule 3 CLA_CLL Failure");
     waitNClocks(1);
-    dummy = runRule(3, stall, "Rule 3 CLA_CLL Failure");
+    dummy = chkr.runRule(3, stall, "Rule 3 CLA_CLL Failure");
     waitNClocks(1);
-    dummy = runRule(3, stall, "Rule 3 CLA_CLL Failure");
-    dummy = runRule(23, wb_intAcc === 0);
-    dummy = runRule(24, ~wb_intLink);
+    dummy = chkr.runRule(3, stall, "Rule 3 CLA_CLL Failure");
+    dummy = chkr.runRule(23, wb_intAcc === 0);
+    dummy = chkr.runRule(24, ~wb_intLink);
     waitNClocks(1);
-    dummy = runRule(4,~stall, "Rule 4 CLA_CLL Failure");
+    dummy = chkr.runRule(4,~stall, "Rule 4 CLA_CLL Failure");
     expected_PC = local_PC_value + 1;
-    if (!runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during CLA_CLL. Expected: %p Actual: %p", expected_PC,PC_value);
+    if (!chkr.runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during CLA_CLL. Expected: %p Actual: %p", expected_PC,PC_value);
 end
 endtask
 
@@ -310,32 +314,32 @@ automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     // Wait for the read request to come through
     wait(exec_rd_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        dummy = runRule(3, stall);
+        dummy = chkr.runRule(3, stall);
     end
-    if (!runRule(1, exec_rd_addr === instr.mem_inst_addr)) begin
+    if (!chkr.runRule(1, exec_rd_addr === instr.mem_inst_addr)) begin
         $display ("Expected Read Address: %d    Actual Read Address: %d", instr.mem_inst_addr, exec_rd_addr);
     end
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     temp_rdData = exec_rd_data;
     temp_intAcc = temp_intAcc & temp_rdData;
     waitNClocks(1);
     clkCount = clkCount + 1;
-    dummy = runRule(3, stall);
-    dummy = runRule(2, temp_intAcc === wb_intAcc);
+    dummy = chkr.runRule(3, stall);
+    dummy = chkr.runRule(2, temp_intAcc === wb_intAcc);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    if (!runRule(5, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for AND");
-    if (!runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for AND");
+    if (!chkr.runRule(5, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for AND");
+    if (!chkr.runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for AND");
     expected_PC = local_PC_value + 1;
-    if (!runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during AND. Expected: %p Actual: %p", expected_PC,PC_value);
+    if (!chkr.runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during AND. Expected: %p Actual: %p", expected_PC,PC_value);
 end
 endtask
     
@@ -349,31 +353,31 @@ automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 logic [`ADDR_WIDTH-1:0] expected_PC;
 logic [`DATA_WIDTH-1:0] wrData_expected;
 begin
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     // Wait for the read request to come through
     wait(exec_rd_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        dummy = runRule(3, stall);
+        dummy = chkr.runRule(3, stall);
     end
-    if (!runRule(20, exec_rd_addr === instr.mem_inst_addr)) begin
+    if (!chkr.runRule(20, exec_rd_addr === instr.mem_inst_addr)) begin
         $display ("Expected Read Address: %d    Actual Read Address: %d", instr.mem_inst_addr, exec_rd_addr);
     end
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     temp_rdData = exec_rd_data;
     wait(exec_wr_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        dummy = runRule(3, stall);
+        dummy = chkr.runRule(3, stall);
     end
     wrData_expected = temp_rdData + 1;
-    if(!runRule(21, exec_wr_data === wrData_expected)) $display("ISZ Command did not provide correct write data. Expected: %p  Actual: %p", wrData_expected,exec_wr_data);
+    if(!chkr.runRule(21, exec_wr_data === wrData_expected)) $display("ISZ Command did not provide correct write data. Expected: %p  Actual: %p", wrData_expected,exec_wr_data);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
     if (temp_rdData === 0) begin
@@ -381,9 +385,9 @@ begin
     end else begin
         expected_PC = local_PC_value + 1;
     end
-    if(!runRule(7, PC_value === expected_PC)) $display("ISZ PC_value error. Expected: %p  Actual: %p", expected_PC,PC_value);
-    if (!runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for AND");
-    if (!runRule(22, clkCount === 5)) $display("ISZ Clock Count Expected: %p  Actual: %p", 5, clkCount);
+    if(!chkr.runRule(7, PC_value === expected_PC)) $display("ISZ PC_value error. Expected: %p  Actual: %p", expected_PC,PC_value);
+    if (!chkr.runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for AND");
+    if (!chkr.runRule(22, clkCount === 5)) $display("ISZ Clock Count Expected: %p  Actual: %p", 5, clkCount);
 end
 endtask
     
@@ -396,32 +400,32 @@ automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     // Wait for the read request to come through
     wait(exec_rd_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        dummy = runRule(3, stall);
+        dummy = chkr.runRule(3, stall);
     end
-    if (!runRule(13, exec_rd_addr === instr.mem_inst_addr)) begin
+    if (!chkr.runRule(13, exec_rd_addr === instr.mem_inst_addr)) begin
         $display ("Expected Read Address: %d    Actual Read Address: %d", instr.mem_inst_addr, exec_rd_addr);
     end
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     temp_rdData = exec_rd_data;
     temp_intAcc = temp_intAcc + temp_rdData;
     waitNClocks(1);
     clkCount = clkCount + 1;
-    dummy = runRule(3, stall);
-    dummy = runRule(14, temp_intAcc === wb_intAcc);
+    dummy = chkr.runRule(3, stall);
+    dummy = chkr.runRule(14, temp_intAcc === wb_intAcc);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    if (!runRule(15, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for ADD");
-    if (!runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for ADD");
+    if (!chkr.runRule(15, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for ADD");
+    if (!chkr.runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for ADD");
     expected_PC = local_PC_value + 1;
-    if (!runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during ADD. Expected: %p Actual: %p", expected_PC,PC_value);
+    if (!chkr.runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during ADD. Expected: %p Actual: %p", expected_PC,PC_value);
 end
 endtask
     
@@ -433,24 +437,24 @@ automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     wait(exec_wr_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        dummy = runRule(3, stall);
+        dummy = chkr.runRule(3, stall);
     end
-    if(!runRule(16, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect DCA address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
-    if(!runRule(17, exec_wr_data === temp_intAcc[`DATA_WIDTH-1:0]))  $display("Incorrect DCA data. Expected: %p  Actual: %p", temp_intAcc[`DATA_WIDTH-1:0],exec_wr_data);
+    if(!chkr.runRule(16, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect DCA address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
+    if(!chkr.runRule(17, exec_wr_data === temp_intAcc[`DATA_WIDTH-1:0]))  $display("Incorrect DCA data. Expected: %p  Actual: %p", temp_intAcc[`DATA_WIDTH-1:0],exec_wr_data);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    dummy = runRule(3, stall);
-    if(!runRule(18, wb_intAcc === 0));
+    dummy = chkr.runRule(3, stall);
+    if(!chkr.runRule(18, wb_intAcc === 0));
     waitNClocks(1);
     clkCount = clkCount + 1;
     expected_PC = local_PC_value + 1;
-    if(!runRule(11, PC_value === expected_PC)) $display("PC_value not properly updated during DCA. Expected: %p Actual: %p", expected_PC,PC_value);
-    if(!runRule(4, ~stall)) $display("Stall not de-asserted when expected for DCA command");
-    if(!runRule(19, clkCount === 3)) $display("DCA command number of clocks incorrect  Expected: %p  Actual: %p", 3, clkCount);
+    if(!chkr.runRule(11, PC_value === expected_PC)) $display("PC_value not properly updated during DCA. Expected: %p Actual: %p", expected_PC,PC_value);
+    if(!chkr.runRule(4, ~stall)) $display("Stall not de-asserted when expected for DCA command");
+    if(!chkr.runRule(19, clkCount === 3)) $display("DCA command number of clocks incorrect  Expected: %p  Actual: %p", 3, clkCount);
 end
 endtask
     
@@ -462,24 +466,24 @@ automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 logic [`ADDR_WIDTH-1:0] expected_PC;
 logic [`ADDR_WIDTH-1:0] wrData_expected;
 begin
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     wait(exec_wr_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        dummy = runRule(3, stall);
+        dummy = chkr.runRule(3, stall);
     end
-    if(!runRule(8, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect JMS address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
+    if(!chkr.runRule(8, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect JMS address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
     wrData_expected = local_PC_value + 1;
-    if(!runRule(9, exec_wr_data === wrData_expected))  $display("Incorrect JMS data. Expected: %p  Actual: %p", wrData_expected,exec_wr_data);
-    dummy = runRule(3, stall);
+    if(!chkr.runRule(9, exec_wr_data === wrData_expected))  $display("Incorrect JMS data. Expected: %p  Actual: %p", wrData_expected,exec_wr_data);
+    dummy = chkr.runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
     waitNClocks(1);
     expected_PC = instr.mem_inst_addr + 1;
-    if(!runRule(11, PC_value === expected_PC)) $display("PC_value not properly updated during JMS. Expected: %p Actual: %p", expected_PC,PC_value);
+    if(!chkr.runRule(11, PC_value === expected_PC)) $display("PC_value not properly updated during JMS. Expected: %p Actual: %p", expected_PC,PC_value);
     clkCount = clkCount + 1;
-    if(!runRule(10, clkCount === 3)) $display("JMS Instruction did not take expected (3) number of clock cycles. Actual: %p", clkCount);
-    if(!runRule(4, ~stall)) $display("JMS Instruction did not de-assert stall when expected");
+    if(!chkr.runRule(10, clkCount === 3)) $display("JMS Instruction did not take expected (3) number of clock cycles. Actual: %p", clkCount);
+    if(!chkr.runRule(4, ~stall)) $display("JMS Instruction did not de-assert stall when expected");
 end    
 endtask
     
@@ -487,158 +491,14 @@ task memJMPInstr (
     input pdp_mem_opcode_s instr
 );
 begin
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     waitNClocks(2);
-    dummy = runRule(3, stall);
+    dummy = chkr.runRule(3, stall);
     waitNClocks(1);
-    if (!runRule(6, PC_value === instr.mem_inst_addr)) $display("PC Value Expected: %d  Actual: %d", instr.mem_inst_addr, PC_value);
-    if (!runRule(4, ~stall)) $display("Stall not de-asserted after 2 clock cycles for JMP");
+    if (!chkr.runRule(6, PC_value === instr.mem_inst_addr)) $display("PC Value Expected: %d  Actual: %d", instr.mem_inst_addr, PC_value);
+    if (!chkr.runRule(4, ~stall)) $display("Stall not de-asserted after 2 clock cycles for JMP");
 end
 endtask
-    
-/***************** GENERAL HELPER TASKS/FUNCTIONS **********************/
-function printLogSummary ();
-begin
-    $display("RULE            TOTAL            PASS            FAIL            DESCRIPTION");
-    foreach (ruleHash[i]) begin
-        $display("%p            %p            %p            %p            %p",
-                 i, ruleRunCount[i], rulePassCount[i], ruleFailCount[i], ruleHash[i]);
-    end
-    return 0;
-end
-endfunction
-
-// runRule - Wrapper to check a rule 
-// condition and handle logging/tracking
-// of all checked rules.
-function bit runRule (
-    input integer ruleNumber,
-    input bit     rulePass,
-    input string failMsg = ""
-);
-begin
-    if (ruleHash.exists(ruleNumber)) begin
-        if (!ruleDisableHash[ruleNumber]) begin
-            ruleRunCount[ruleNumber] = ruleRunCount[ruleNumber] + 1;
-            assert (rulePass) begin
-                rulePassCount[ruleNumber] = rulePassCount[ruleNumber] + 1;
-                if (VERBOSE) $display("PASS Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
-                return 1;
-            end else begin
-                ruleFailCount[ruleNumber] = ruleFailCount[ruleNumber] + 1;
-                $display("FAIL Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
-                if (failMsg != "") $display("\t%p",failMsg);
-                return 0;
-            end
-        end
-    end else begin
-        $display("Rule number %d not found in rule file", ruleNumber); 
-    end
-end
-endfunction
-
-// readRuleFile - Reads in fileName text
-// and populates the rule array with 
-// correct data
-task readRuleFile(
-    string fileName,
-    string disableFileName = ""
-);
-integer fileHandle;
-string ruleText;
-integer ruleNumber;
-string  ruleNumStr;
-string line;
-integer numLength;
-integer lineLength;
-begin
-    fileHandle = $fopen(fileName, "r");
-    if (!fileHandle) begin
-        $display("An error has occurred when attempting to read %s.", fileName);
-        $finish;
-    end
-    while(!$feof(fileHandle)) begin
-        dummy = $fgets(line,fileHandle);
-        lineLength = line.len();
-        if (lineLength > 0) begin
-            line = stringTrim(line);
-            ruleNumStr = "";
-            dummy = $sscanf(line,"%s ", ruleNumStr);
-            numLength = ruleNumStr.len();
-            if (numLength > 0 && line.substr(0,0) != "#") begin
-                ruleNumber = ruleNumStr.atoi();
-                line = line.substr(numLength,line.len()-1);
-                line = stringTrim(line);
-                // Update rule hash
-                ruleHash[ruleNumber] = line;
-                ruleRunCount[ruleNumber]  = 0;
-                rulePassCount[ruleNumber] = 0;
-                ruleFailCount[ruleNumber] = 0;
-                ruleDisableHash[ruleNumber] = 0;
-            end else if (line.len() == 0 || line.substr(0,0) == "#") begin
-                    // Ignore
-            end else begin
-                $display("Illegal line in rules file: %s", line);
-            end
-        end
-    end
-    $fclose(fileHandle);
-    if (disableFileName != "") readDisableFile(disableFileName);
-end
-endtask
-
-task readDisableFile (
-    string fileName
-);
-integer fileHandle;
-integer ruleNumber;
-string ruleNumStr;
-integer lineLength;
-string line;
-integer numLength;
-begin
-    fileHandle = $fopen(fileName, "r");
-    if (!fileHandle) begin
-        $display("An error has occurred when attempting to read %s.", fileName);
-        $finish;
-    end
-    while(!$feof(fileHandle)) begin
-        dummy = $fgets(line,fileHandle);
-        lineLength = line.len();
-        if (lineLength > 0) begin
-            line = stringTrim(line);
-            ruleNumStr = "";
-            dummy = $sscanf(line,"%s", ruleNumStr);
-            numLength = ruleNumStr.len();
-            if (numLength > 0 && line.substr(0,0) != "#") begin
-                ruleNumber = ruleNumStr.atoi();
-                ruleDisableHash[ruleNumber] = 1;
-            end else if (line.len() == 0 || line.substr(0,0) == "#") begin
-                    // Ignore
-            end else begin
-                $display("Illegal line in rules file: %s", line);
-            end
-        end
-    end
-end
-endtask
-
-// stringTrim - trim off extra whitespace characters around string
-function string stringTrim (
-    input string mystring
-);
-begin
-    while (mystring.substr(0,0) == " " || mystring.substr(0,0) == "\t") begin
-        mystring = mystring.substr(1, mystring.len()-1);
-    end
-    while (mystring.substr(mystring.len()-1,mystring.len()-1) == " "  || 
-           mystring.substr(mystring.len()-1,mystring.len()-1) == "\t" ||
-           mystring.substr(mystring.len()-1,mystring.len()-1) == "\n" ) begin
-        mystring = mystring.substr(0,mystring.len()-2);
-    end
-    return mystring;
-end
-endfunction
 
 // Blocks until n clocks are observed
 task waitNClocks (
