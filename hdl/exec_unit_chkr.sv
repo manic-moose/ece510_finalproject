@@ -54,6 +54,7 @@ always @(*) begin
 end
     
 string ruleHash [integer];
+bit ruleDisableHash[integer];
 
 // Keep track of how many rules run/pass/fail
 integer unsigned ruleRunCount  [integer];
@@ -61,21 +62,23 @@ integer unsigned rulePassCount [integer];
 integer unsigned ruleFailCount [integer];
 
 initial begin
-    readRuleFile("exec_unit_rules.txt");
+    readRuleFile("exec_unit_rules.txt", "exec_rule.disable");
 end
 
 final begin
-    printLogSummary();
+    dummy = printLogSummary();
 end
 
-    task printLogSummary ();
-    begin
-        $display("RULE            TOTAL            PASS            FAIL            DESCRIPTION");
-        foreach (ruleHash[i]) begin
-            $display("%p            %p            %p            %p            %p", i, ruleRunCount[i], rulePassCount[i], ruleFailCount[i], ruleHash[i]);
-        end
+function printLogSummary ();
+begin
+    $display("RULE            TOTAL            PASS            FAIL            DESCRIPTION");
+    foreach (ruleHash[i]) begin
+        $display("%p            %p            %p            %p            %p",
+                 i, ruleRunCount[i], rulePassCount[i], ruleFailCount[i], ruleHash[i]);
     end
-    endtask
+    return 0;
+end
+endfunction
     
 // Label Decoded op7 opcodes
 localparam logic [21:0]
@@ -144,16 +147,18 @@ function bit runRule (
 );
 begin
     if (ruleHash.exists(ruleNumber)) begin
-        ruleRunCount[ruleNumber] = ruleRunCount[ruleNumber] + 1;
-        assert (rulePass) begin
-            rulePassCount[ruleNumber] = rulePassCount[ruleNumber] + 1;
-            if (VERBOSE) $display("PASS Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
-            return 1;
-        end else begin
-            ruleFailCount[ruleNumber] = ruleFailCount[ruleNumber] + 1;
-            $display("FAIL Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
-            if (failMsg != "") $display("\t%p",failMsg);
-            return 0;
+        if (!ruleDisableHash[ruleNumber]) begin
+            ruleRunCount[ruleNumber] = ruleRunCount[ruleNumber] + 1;
+            assert (rulePass) begin
+                rulePassCount[ruleNumber] = rulePassCount[ruleNumber] + 1;
+                if (VERBOSE) $display("PASS Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
+                return 1;
+            end else begin
+                ruleFailCount[ruleNumber] = ruleFailCount[ruleNumber] + 1;
+                $display("FAIL Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
+                if (failMsg != "") $display("\t%p",failMsg);
+                return 0;
+            end
         end
     end else begin
         $display("Rule number %d not found in rule file", ruleNumber); 
@@ -164,7 +169,10 @@ endfunction
 // readRuleFile - Reads in fileName text
 // and populates the rule array with 
 // correct data
-task readRuleFile(string fileName);
+task readRuleFile(
+    string fileName,
+    string disableFileName = ""
+);
 integer fileHandle;
 string ruleText;
 integer ruleNumber;
@@ -195,6 +203,7 @@ begin
                 ruleRunCount[ruleNumber]  = 0;
                 rulePassCount[ruleNumber] = 0;
                 ruleFailCount[ruleNumber] = 0;
+                ruleDisableHash[ruleNumber] = 0;
             end else if (line.len() == 0 || line.substr(0,0) == "#") begin
                     // Ignore
             end else begin
@@ -203,9 +212,46 @@ begin
         end
     end
     $fclose(fileHandle);
+    if (disableFileName != "") readDisableFile(disableFileName);
 end
 endtask
-    
+
+task readDisableFile (
+    string fileName
+);
+integer fileHandle;
+integer ruleNumber;
+string ruleNumStr;
+integer lineLength;
+string line;
+integer numLength;
+begin
+    fileHandle = $fopen(fileName, "r");
+    if (!fileHandle) begin
+        $display("An error has occurred when attempting to read %s.", fileName);
+        $finish;
+    end
+    while(!$feof(fileHandle)) begin
+        dummy = $fgets(line,fileHandle);
+        lineLength = line.len();
+        if (lineLength > 0) begin
+            line = stringTrim(line);
+            ruleNumStr = "";
+            dummy = $sscanf(line,"%s", ruleNumStr);
+            numLength = ruleNumStr.len();
+            if (numLength > 0 && line.substr(0,0) != "#") begin
+                ruleNumber = ruleNumStr.atoi();
+                ruleDisableHash[ruleNumber] = 1;
+            end else if (line.len() == 0 || line.substr(0,0) == "#") begin
+                    // Ignore
+            end else begin
+                $display("Illegal line in rules file: %s", line);
+            end
+        end
+    end
+end
+endtask
+
 // stringTrim - trim off extra whitespace characters around string
 function string stringTrim (
     input string mystring
