@@ -1,2 +1,6 @@
 1 AND Command Read Address Correct
-2	AND Command properly updates accumulator
+2 AND Command properly updates accumulator
+3 stall is asserted when required
+4 stall is de-asserted when required
+5 AND Command consumed correct number of clock cycles
+6 JMP Command updates program counter with supplied adx
