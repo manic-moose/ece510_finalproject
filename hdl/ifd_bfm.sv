@@ -17,6 +17,10 @@ module ifd_bfd (
    output pdp_mem_opcode_s pdp_mem_opcode,
    output pdp_op7_opcode_s pdp_op7_opcode
 );
+    
+// Max number of cycles that may randomly
+// occur between random instructions
+`define MAX_DELAY_CYCLES 20
 
 localparam DEBUG = 0;
 
@@ -124,6 +128,7 @@ begin
         end else begin
             runRandomOp7Cmd();
         end
+        waitNClocks($urandom_range(`MAX_DELAY_CYCLES));
     end
 end
 endtask
