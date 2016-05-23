@@ -75,7 +75,8 @@ assign base_addr      = int_base_addr;
 initial begin
     initialize();
     runDirectedVectors(); 
-    waitNClocks(2000);
+    runRandomVectors();
+    waitNClocks(100);
     $stop;
 end
 
@@ -111,6 +112,51 @@ begin
     sendOp7Cmd(CLA_CLL);
 end
 endtask
+
+// Run through a set of randomized vectors
+task runRandomVectors();
+logic isMemoryCmd;
+begin
+    while (1) begin
+        isMemoryCmd = $urandom_range(1);
+        if (isMemoryCmd) begin
+            runRandomMemoryCmd();
+        end else begin
+        end
+    end
+end
+endtask
+    
+// Injects a randomly selected
+// memory command and address
+task runRandomMemoryCmd ();
+    logic [2:0] shiftAmnt;
+    logic [5:0] cmd;
+begin
+    shiftAmnt = $urandom_range(5);
+    cmd = 1 << shiftAmnt;
+    sendMemoryCmd(cmd, getRandomAdx());
+end
+endtask
+    
+task runRandomOp7Cmd ();
+logic [4:0] shiftAmnt;
+logic [21:0] cmd;
+begin
+    shiftAmnt = $urandom_range(21);
+    cmd = 1 << shiftAmnt;
+    sendOp7Cmd(cmd);
+end
+endtask
+
+// Returns a pseudo-random ADDR_WIDTH bit value
+function logic[`ADDR_WIDTH-1:0] getRandomAdx ();
+logic [31:0] bits;
+begin
+    bits = $urandom();
+    return bits;
+end
+endfunction
 
 // Wait for stall to be de-asserted,
 // send the op code and adx, and wait
