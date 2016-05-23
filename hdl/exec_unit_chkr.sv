@@ -37,6 +37,8 @@ module exec_unit_chkr (
 
 );
 
+bit dummy;
+    
 typedef struct packed {
     pdp_mem_opcode_s memCode;
     pdp_op7_opcode_s op7Code;
@@ -100,8 +102,7 @@ always @(posedge clk) begin
     end else begin
         prevStall <= stall;
         if (hasNewInstruction(current_instr) & justStalled) begin
-            runRule(3, stall);
-            
+            dummy = runRule(3, stall);
             if (runRule(12,instrIsLegal(current_instr))) begin
                 handleInstruction(current_instr);
             end else begin
@@ -116,7 +117,7 @@ end
 // runRule - Wrapper to check a rule 
 // condition and handle logging/tracking
 // of all checked rules.
-function runRule (
+function bit runRule (
     input integer ruleNumber,
     input bit     rulePass
 );
@@ -211,7 +212,7 @@ begin
     if (isMemType(instr)) begin
         handleMemoryInstr(instr.memCode);
     end else if (isOp7Type(instr)) begin
-        $display("Found op7 type instr %p", instr);
+        handleOp7Instr(instr.op7Code);
     end
 end
 endtask
@@ -225,7 +226,7 @@ begin
     return (isMemType(instr) || isOp7Type(instr));
 end
 endfunction
-    
+
 // instrIsLegal - Ensure only one instruction is
 // being inserted into the execution unit at a time.
 // Returns true if 0 or 1 instructions are active,
@@ -272,7 +273,13 @@ begin
         return isLegal;
 end
 endfunction
-   
+    
+/***************** OP7 Instruction Tasks ********************
+ Tasks related to handling the rule checking of OP7 opcode
+ instructions being passed into the execution unit.
+ *
+ ***********************************************************/
+  
 // isOp7Type - Returns true if the instruction
 // contains at least one op7 operation active
 function isOp7Type (
@@ -303,8 +310,46 @@ begin
             instr.op7Code.CLA2);
 end
 endfunction
+
+// handleOp7Instr Encapsulates code necessary
+// to track and run checkers for op7 opcodes
+task handleOp7Instr (
+    pdp_op7_opcode_s opCode
+);
+begin
+    if      (opCode.NOP)     handleNOP(opCode);
+    else if (opCode.CLA_CLL) handleCLA_CLL(opCode);
+    else                     handleNOP(opCode);
+end
+endtask
+
+task handleNOP (
+    pdp_op7_opcode_s opCode
+);
+begin
+    dummy = runRule(3, stall);
+    waitNClocks(1);
+    dummy = runRule(4,~stall);
+end
+endtask
     
-// Memory Instruction Tasks
+task handleCLA_CLL (
+    pdp_op7_opcode_s opCode
+);
+begin
+    dummy = runRule(3, stall);
+    waitNClocks(1);
+    dummy = runRule(4,~stall);
+    dummy = runRule(23, wb_intAcc === 0);
+    dummy = runRule(24, ~wb_intLink);
+end
+endtask
+
+/***************** Memory Instruction Tasks ********************
+ Tasks related to handling the rule checking of memory opcode
+ instructions being passed into the execution unit.
+ *
+ **************************************************************/
 
 // isMemType - Returns true if at least
 // one memory opcode is active
@@ -345,26 +390,26 @@ logic [`DATA_WIDTH-1:0] temp_rdData;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 begin
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     // Wait for the read request to come through
     wait(exec_rd_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        runRule(3, stall);
+        dummy = runRule(3, stall);
     end
     if (!runRule(1, exec_rd_addr === instr.mem_inst_addr)) begin
         $display ("Expected Read Address: %d    Actual Read Address: %d", instr.mem_inst_addr, exec_rd_addr);
     end
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     temp_rdData = exec_rd_data;
     temp_intAcc = temp_intAcc & temp_rdData;
     waitNClocks(1);
     clkCount = clkCount + 1;
-    runRule(3, stall);
-    runRule(2, temp_intAcc === wb_intAcc);
+    dummy = runRule(3, stall);
+    dummy = runRule(2, temp_intAcc === wb_intAcc);
     waitNClocks(1);
     clkCount = clkCount + 1;
     if (!runRule(5, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for AND");
@@ -381,30 +426,30 @@ logic [`DATA_WIDTH-1:0] temp_rdData;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 begin
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     // Wait for the read request to come through
     wait(exec_rd_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        runRule(3, stall);
+        dummy = runRule(3, stall);
     end
     if (!runRule(20, exec_rd_addr === instr.mem_inst_addr)) begin
         $display ("Expected Read Address: %d    Actual Read Address: %d", instr.mem_inst_addr, exec_rd_addr);
     end
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     temp_rdData = exec_rd_data;
     wait(exec_wr_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        runRule(3, stall);
+        dummy = runRule(3, stall);
     end
     if(!runRule(21, exec_wr_data === temp_rdData + 1)) $display("ISZ Command did not provide correct write data. Expected: %p  Actual: %p", temp_rdData+1,exec_wr_data);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     if (temp_rdData === 0) begin
         if(!runRule(7, PC_value === local_PC_value + 2)) $display("ISZ PC_value error. Expected: %p  Actual: %p", local_PC_value+2,PC_value);
     end else begin
@@ -425,26 +470,26 @@ logic [`DATA_WIDTH-1:0] temp_rdData;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 begin
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     // Wait for the read request to come through
     wait(exec_rd_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        runRule(3, stall);
+        dummy = runRule(3, stall);
     end
     if (!runRule(13, exec_rd_addr === instr.mem_inst_addr)) begin
         $display ("Expected Read Address: %d    Actual Read Address: %d", instr.mem_inst_addr, exec_rd_addr);
     end
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     temp_rdData = exec_rd_data;
     temp_intAcc = temp_intAcc + temp_rdData;
     waitNClocks(1);
     clkCount = clkCount + 1;
-    runRule(3, stall);
-    runRule(14, temp_intAcc === wb_intAcc);
+    dummy = runRule(3, stall);
+    dummy = runRule(14, temp_intAcc === wb_intAcc);
     waitNClocks(1);
     clkCount = clkCount + 1;
     if (!runRule(15, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for ADD");
@@ -460,17 +505,17 @@ automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 begin
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     wait(exec_wr_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        runRule(3, stall);
+        dummy = runRule(3, stall);
     end
     if(!runRule(16, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect DCA address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
     if(!runRule(17, exec_wr_data === temp_intAcc))  $display("Incorrect DCA data. Expected: %p  Actual: %p", temp_intAcc,exec_wr_data);
     waitNClocks(1);
     clkCount = clkCount + 1;
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     if(!runRule(18, wb_intAcc === 0));
     waitNClocks(1);
     clkCount = clkCount + 1;
@@ -485,15 +530,15 @@ task memJMSInstr (
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
 begin
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     wait(exec_wr_req) begin
         waitNClocks(1);
         clkCount = clkCount + 1;
-        runRule(3, stall);
+        dummy = runRule(3, stall);
     end
     if(!runRule(8, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect JMS address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
     if(!runRule(9, exec_wr_data === local_PC_value + 1))  $display("Incorrect JMS data. Expected: %p  Actual: %p", local_PC_value+1,exec_wr_data);
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
     waitNClocks(1);
@@ -508,9 +553,9 @@ task memJMPInstr (
     input pdp_mem_opcode_s instr
 );
 begin
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     waitNClocks(2);
-    runRule(3, stall);
+    dummy = runRule(3, stall);
     waitNClocks(1);
     if (!runRule(6, PC_value === instr.mem_inst_addr)) $display("PC Value Expected: %d  Actual: %d", instr.mem_inst_addr, PC_value);
     if (!runRule(4, ~stall)) $display("Stall not de-asserted after 2 clock cycles for JMP");

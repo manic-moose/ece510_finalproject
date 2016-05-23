@@ -1,8 +1,8 @@
 # AND Instruction Rules
 1 AND Command Read Address Correct
 2 AND Command properly updates accumulator
-
 5 AND Command consumed correct number of clock cycles
+
 # JMP Instruction Rules 
 6 JMP Command updates program counter with supplied adx
 
@@ -27,6 +27,10 @@
 20 ISZ command uses correct read address
 21 ISZ command writes back correct data to memory (read data + 1)
 22 ISZ command de-asserts stall after 5 clock cycles
+
+# CLA_CLL Instruction Rules
+23 CLA_CLL Command Clears Internal Accumulator
+24 CLA_CLL Command Clears Internal Link Bit
 
 # General Checks
 3 stall is asserted when required
