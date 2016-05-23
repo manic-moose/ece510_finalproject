@@ -37,3 +37,5 @@
 4 stall is de-asserted when required
 7 Program Counter value updated correctly for all instructions
 12 All opcodes supplied to instruction unit are legal
+25 Base address is equal to proper value
+26 PC_value is equal to base address on first clock cycle

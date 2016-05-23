@@ -84,51 +84,24 @@ begin
 end
 endfunction
     
-// Label Decoded op7 opcodes
-localparam logic [21:0]
-    CLA2    = 1 << 0,
-    SPA     = 1 << 1,
-    SMA     = 1 << 2,
-    SNA     = 1 << 3,
-    SZA     = 1 << 4,
-    SZL     = 1 << 5,
-    SNL     = 1 << 6,
-    SKP     = 1 << 7,
-    OSR     = 1 << 8,
-    HLT     = 1 << 9,
-    CLA_CLL = 1 << 10,
-    CLA1    = 1 << 11,
-    CLL     = 1 << 12,
-    CIA     = 1 << 13,
-    CMA     = 1 << 14,
-    CML     = 1 << 15,
-    RTR     = 1 << 16,
-    RAR     = 1 << 17,
-    RTL     = 1 << 18,
-    RAL     = 1 << 19,
-    IAC     = 1 << 20,
-    NOP     = 1 << 21;
-
-
-// label Decoded memory opcodes
-localparam logic [5:0]
-    JMP = 1 << 0,
-    JMS = 1 << 1,
-    DCA = 1 << 2,
-    ISZ = 1 << 3,
-    TAD = 1 << 4,
-    AND = 1 << 5;
-
 logic prevStall;
 logic justStalled;
 assign justStalled = (~prevStall & stall);
-    
+
+bit firstInstruction;
+
 always @(posedge clk) begin
     if(~reset_n) begin
         prevStall <= 1'b0;
+        firstInstruction = 1'b1;
     end else begin
         prevStall <= stall;
         if (hasNewInstruction(current_instr) & justStalled) begin
+            if (firstInstruction) begin
+                dummy = runRule(25, base_addr === `START_ADDRESS);
+                dummy = runRule(26, PC_value === base_addr);
+                firstInstruction = 1'b0;
+            end
             dummy = runRule(3, stall);
             if (runRule(12,instrIsLegal(current_instr))) begin
                 handleInstruction(current_instr);
