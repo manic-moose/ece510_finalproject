@@ -330,6 +330,8 @@ endtask
 task handleNOP (
     pdp_op7_opcode_s opCode
 );
+automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
     dummy = runRule(3, stall, "Rule 3 NOP Failure");
     waitNClocks(1);
@@ -338,12 +340,16 @@ begin
     dummy = runRule(3, stall, "Rule 3 NOP Failure");
     waitNClocks(1);
     dummy = runRule(4,~stall, "Rule 4 NOP Failure");
+    expected_PC = local_PC_value + 1;
+    if (!runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during NOP. Expected: %p Actual: %p", expected_PC,PC_value);
 end
 endtask
     
 task handleCLA_CLL (
     pdp_op7_opcode_s opCode
 );
+automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
     dummy = runRule(3, stall, "Rule 3 CLA_CLL Failure");
     waitNClocks(1);
@@ -354,6 +360,8 @@ begin
     dummy = runRule(24, ~wb_intLink);
     waitNClocks(1);
     dummy = runRule(4,~stall, "Rule 4 CLA_CLL Failure");
+    expected_PC = local_PC_value + 1;
+    if (!runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during CLA_CLL. Expected: %p Actual: %p", expected_PC,PC_value);
 end
 endtask
 
@@ -397,10 +405,11 @@ endtask
 task memANDInstr (
     input pdp_mem_opcode_s instr
 );
-    automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
+automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
 logic [`DATA_WIDTH-1:0] temp_rdData;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
     dummy = runRule(3, stall);
     // Wait for the read request to come through
@@ -426,7 +435,8 @@ begin
     clkCount = clkCount + 1;
     if (!runRule(5, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for AND");
     if (!runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for AND");
-    if (!runRule(7, PC_value === local_PC_value + 1)) $display("PC_value not updated correctly after AND command. Expected: %p  Actual: %p", local_PC_value+1,PC_value);
+    expected_PC = local_PC_value + 1;
+    if (!runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during AND. Expected: %p Actual: %p", expected_PC,PC_value);
 end
 endtask
     
@@ -437,6 +447,8 @@ automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
 logic [`DATA_WIDTH-1:0] temp_rdData;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+logic [`ADDR_WIDTH-1:0] expected_PC;
+logic [`DATA_WIDTH-1:0] wrData_expected;
 begin
     dummy = runRule(3, stall);
     // Wait for the read request to come through
@@ -458,17 +470,19 @@ begin
         clkCount = clkCount + 1;
         dummy = runRule(3, stall);
     end
-    if(!runRule(21, exec_wr_data === temp_rdData + 1)) $display("ISZ Command did not provide correct write data. Expected: %p  Actual: %p", temp_rdData+1,exec_wr_data);
+    wrData_expected = temp_rdData + 1;
+    if(!runRule(21, exec_wr_data === wrData_expected)) $display("ISZ Command did not provide correct write data. Expected: %p  Actual: %p", wrData_expected,exec_wr_data);
     waitNClocks(1);
     clkCount = clkCount + 1;
     dummy = runRule(3, stall);
-    if (temp_rdData === 0) begin
-        if(!runRule(7, PC_value === local_PC_value + 2)) $display("ISZ PC_value error. Expected: %p  Actual: %p", local_PC_value+2,PC_value);
-    end else begin
-        if(!runRule(7, PC_value === local_PC_value + 1)) $display("ISZ PC_value error. Expected: %p  Actual: %p", local_PC_value+1,PC_value);
-    end
     waitNClocks(1);
     clkCount = clkCount + 1;
+    if (temp_rdData === 0) begin
+        expected_PC = local_PC_value + 2;
+    end else begin
+        expected_PC = local_PC_value + 1;
+    end
+    if(!runRule(7, PC_value === expected_PC)) $display("ISZ PC_value error. Expected: %p  Actual: %p", expected_PC,PC_value);
     if (!runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for AND");
     if (!runRule(22, clkCount === 5)) $display("ISZ Clock Count Expected: %p  Actual: %p", 5, clkCount);
 end
@@ -481,6 +495,7 @@ automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
 logic [`DATA_WIDTH-1:0] temp_rdData;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
     dummy = runRule(3, stall);
     // Wait for the read request to come through
@@ -506,7 +521,8 @@ begin
     clkCount = clkCount + 1;
     if (!runRule(15, clkCount === 4)) $display("Expected 4 clock cycles from branch to stall de-asserting for ADD");
     if (!runRule(4, ~stall)) $display("Stall not de-asserted after 4 clock cycles for ADD");
-    if (!runRule(7, PC_value === local_PC_value + 1)) $display("PC_value not updated correctly after ADD command. Expected: %p  Actual: %p", local_PC_value+1,PC_value);
+    expected_PC = local_PC_value + 1;
+    if (!runRule(7, PC_value === expected_PC)) $display("PC_value not properly updated during ADD. Expected: %p Actual: %p", expected_PC,PC_value);
 end
 endtask
     
@@ -516,6 +532,7 @@ task memDCAInstr (
 automatic logic [`DATA_WIDTH:0] temp_intAcc = wb_intAcc;
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+logic [`ADDR_WIDTH-1:0] expected_PC;
 begin
     dummy = runRule(3, stall);
     wait(exec_wr_req) begin
@@ -524,13 +541,15 @@ begin
         dummy = runRule(3, stall);
     end
     if(!runRule(16, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect DCA address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
-    if(!runRule(17, exec_wr_data === temp_intAcc))  $display("Incorrect DCA data. Expected: %p  Actual: %p", temp_intAcc,exec_wr_data);
+    if(!runRule(17, exec_wr_data === temp_intAcc[`DATA_WIDTH-1:0]))  $display("Incorrect DCA data. Expected: %p  Actual: %p", temp_intAcc[`DATA_WIDTH-1:0],exec_wr_data);
     waitNClocks(1);
     clkCount = clkCount + 1;
     dummy = runRule(3, stall);
     if(!runRule(18, wb_intAcc === 0));
     waitNClocks(1);
     clkCount = clkCount + 1;
+    expected_PC = local_PC_value + 1;
+    if(!runRule(11, PC_value === expected_PC)) $display("PC_value not properly updated during DCA. Expected: %p Actual: %p", expected_PC,PC_value);
     if(!runRule(4, ~stall)) $display("Stall not de-asserted when expected for DCA command");
     if(!runRule(19, clkCount === 3)) $display("DCA command number of clocks incorrect  Expected: %p  Actual: %p", 3, clkCount);
 end
@@ -541,6 +560,8 @@ task memJMSInstr (
 );
 automatic integer clkCount = 0;
 automatic logic [`ADDR_WIDTH-1:0] local_PC_value = PC_value;
+logic [`ADDR_WIDTH-1:0] expected_PC;
+logic [`ADDR_WIDTH-1:0] wrData_expected;
 begin
     dummy = runRule(3, stall);
     wait(exec_wr_req) begin
@@ -549,12 +570,14 @@ begin
         dummy = runRule(3, stall);
     end
     if(!runRule(8, exec_wr_addr === instr.mem_inst_addr)) $display("Incorrect JMS address. Expected: %p  Actual: %p", instr.mem_inst_addr, exec_wr_addr);
-    if(!runRule(9, exec_wr_data === local_PC_value + 1))  $display("Incorrect JMS data. Expected: %p  Actual: %p", local_PC_value+1,exec_wr_data);
+    wrData_expected = local_PC_value + 1;
+    if(!runRule(9, exec_wr_data === wrData_expected))  $display("Incorrect JMS data. Expected: %p  Actual: %p", wrData_expected,exec_wr_data);
     dummy = runRule(3, stall);
     waitNClocks(1);
     clkCount = clkCount + 1;
     waitNClocks(1);
-    if(!runRule(11, PC_value === instr.mem_inst_addr + 1)) $display("PC_value not properly updated during JMS. Expected: %p Actual: %p", instr.mem_inst_addr+1,PC_value);
+    expected_PC = instr.mem_inst_addr + 1;
+    if(!runRule(11, PC_value === expected_PC)) $display("PC_value not properly updated during JMS. Expected: %p Actual: %p", expected_PC,PC_value);
     clkCount = clkCount + 1;
     if(!runRule(10, clkCount === 3)) $display("JMS Instruction did not take expected (3) number of clock cycles. Actual: %p", clkCount);
     if(!runRule(4, ~stall)) $display("JMS Instruction did not de-assert stall when expected");
