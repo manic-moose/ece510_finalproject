@@ -74,7 +74,7 @@ assign base_addr      = int_base_addr;
 initial begin
     initialize();
     runDirectedVectors(); 
-    waitNClocks(20);
+    waitNClocks(2000);
     $stop;
 end
 
