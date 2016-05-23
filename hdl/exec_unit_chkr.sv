@@ -55,9 +55,27 @@ end
     
 string ruleHash [integer];
 
+// Keep track of how many rules run/pass/fail
+integer unsigned ruleRunCount  [integer];
+integer unsigned rulePassCount [integer];
+integer unsigned ruleFailCount [integer];
+
 initial begin
     readRuleFile("exec_unit_rules.txt");
 end
+
+final begin
+    printLogSummary();
+end
+
+    task printLogSummary ();
+    begin
+        $display("RULE            TOTAL            PASS            FAIL            DESCRIPTION");
+        foreach (ruleHash[i]) begin
+            $display("%p            %p            %p            %p            %p", i, ruleRunCount[i], rulePassCount[i], ruleFailCount[i], ruleHash[i]);
+        end
+    end
+    endtask
     
 // Label Decoded op7 opcodes
 localparam logic [21:0]
@@ -126,10 +144,13 @@ function bit runRule (
 );
 begin
     if (ruleHash.exists(ruleNumber)) begin
+        ruleRunCount[ruleNumber] = ruleRunCount[ruleNumber] + 1;
         assert (rulePass) begin
+            rulePassCount[ruleNumber] = rulePassCount[ruleNumber] + 1;
             if (VERBOSE) $display("PASS Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
             return 1;
         end else begin
+            ruleFailCount[ruleNumber] = ruleFailCount[ruleNumber] + 1;
             $display("FAIL Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
             if (failMsg != "") $display("\t%p",failMsg);
             return 0;
@@ -171,6 +192,9 @@ begin
                 line = stringTrim(line);
                 // Update rule hash
                 ruleHash[ruleNumber] = line;
+                ruleRunCount[ruleNumber]  = 0;
+                rulePassCount[ruleNumber] = 0;
+                ruleFailCount[ruleNumber] = 0;
             end else if (line.len() == 0 || line.substr(0,0) == "#") begin
                     // Ignore
             end else begin
