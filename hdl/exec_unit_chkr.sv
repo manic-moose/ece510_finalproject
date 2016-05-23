@@ -119,7 +119,8 @@ end
 // of all checked rules.
 function bit runRule (
     input integer ruleNumber,
-    input bit     rulePass
+    input bit     rulePass,
+    input string failMsg = ""
 );
 begin
     if (ruleHash.exists(ruleNumber)) begin
@@ -128,6 +129,7 @@ begin
             return 1;
         end else begin
             $display("FAIL Rule %p - %p   Simulation Time: %p", ruleNumber, ruleHash[ruleNumber], $time);
+            if (failMsg != "") $display("\t%p",failMsg);
             return 0;
         end
     end else begin
@@ -327,9 +329,13 @@ task handleNOP (
     pdp_op7_opcode_s opCode
 );
 begin
-    dummy = runRule(3, stall);
+    dummy = runRule(3, stall, "Rule 3 NOP Failure");
     waitNClocks(1);
-    dummy = runRule(4,~stall);
+    dummy = runRule(3, stall, "Rule 3 NOP Failure");
+    waitNClocks(1);
+    dummy = runRule(3, stall, "Rule 3 NOP Failure");
+    waitNClocks(1);
+    dummy = runRule(4,~stall, "Rule 4 NOP Failure");
 end
 endtask
     
@@ -337,11 +343,15 @@ task handleCLA_CLL (
     pdp_op7_opcode_s opCode
 );
 begin
-    dummy = runRule(3, stall);
+    dummy = runRule(3, stall, "Rule 3 CLA_CLL Failure");
     waitNClocks(1);
-    dummy = runRule(4,~stall);
+    dummy = runRule(3, stall, "Rule 3 CLA_CLL Failure");
+    waitNClocks(1);
+    dummy = runRule(3, stall, "Rule 3 CLA_CLL Failure");
     dummy = runRule(23, wb_intAcc === 0);
     dummy = runRule(24, ~wb_intLink);
+    waitNClocks(1);
+    dummy = runRule(4,~stall, "Rule 4 CLA_CLL Failure");
 end
 endtask
 

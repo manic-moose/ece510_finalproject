@@ -107,6 +107,8 @@ begin
     sendMemoryCmd(JMS, 10);
     sendMemoryCmd(JMP, 11);
     sendMemoryCmd(JMP, 12);
+    sendOp7Cmd(NOP);
+    sendOp7Cmd(CLA_CLL);
 end
 endtask
 
