@@ -1,11 +1,21 @@
-#!/bin/bash
+#!/bin/sh
+
+SOURCE="$0"
+while [ -h "$SOURCE" ]; do
+  DIR="$( cd -P "$( dirname "$SOURCE" )" > /dev/null && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" > /dev/null && pwd )"
+
+cd $SCRIPT_DIR
 
 TOP_HIER=pdp_top
-COV_DIR=$PWD/coverage
+COV_DIR=$SCRIPT_DIR/coverage
 COV_DB=$COV_DIR/coverage.ucdb
 
 # Compile
-vlog -sv -mfcu -f exec_unit.f
+vlog -sv -mfcu -f pdp_top.f
 
 # Simulate with coverage collection
 vsim -c -do "coverage save -onexit $COV_DB; run -all;exit" -coverage -voptargs="+cover=bcfst" $TOP_HIER
