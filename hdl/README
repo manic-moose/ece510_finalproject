@@ -1,0 +1,7 @@
+To run execution unit level testbench:
+./run_exec_unit_sim.sh
+
+To run instruction decode unit level testbench:
+
+To run system level testbench:
+./run_systemlevel_sim.sh
