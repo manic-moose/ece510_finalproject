@@ -1,0 +1,41 @@
+# AND Instruction Rules
+1 AND Command Read Address Correct
+2 AND Command properly updates accumulator
+5 AND Command consumed correct number of clock cycles
+
+# JMP Instruction Rules 
+6 JMP Command updates program counter with supplied adx
+
+# JMS Instruction Rules
+8 JMS Command writes to expected memory address
+9 JMS Command writes correct data to memory (next PC value)
+10 JMS Instruction takes 3 cycles to de-assert stall
+11 JMS PC_value updated to requested memory address + 1
+
+# ADD Instruction Rules
+13 ADD Command Read Address Correct
+14 ADD Command properly updates accumulator
+15 ADD Command consumed correct number of clock cycles
+
+# DCA Instruction Rules
+16 DCA Command writes to expected memory address
+17 DCA Command writes correct data to memory (the accumulator value)
+18 DCA command clears internal accumulator to 0
+19 DCA command takes 3 cycles for unstall
+
+# ISZ Instruction Rules
+20 ISZ command uses correct read address
+21 ISZ command writes back correct data to memory (read data + 1)
+22 ISZ command de-asserts stall after 5 clock cycles
+
+# CLA_CLL Instruction Rules
+23 CLA_CLL Command Clears Internal Accumulator
+24 CLA_CLL Command Clears Internal Link Bit
+
+# General Checks
+3 stall is asserted when required
+4 stall is de-asserted when required
+7 Program Counter value updated correctly for all instructions
+12 All opcodes supplied to instruction unit are legal
+25 Base address is equal to proper value
+26 PC_value is equal to base address on first clock cycle
