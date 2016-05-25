@@ -56,11 +56,8 @@ instr_exec mut (
 );
 
 // Responder - Re-use of memory BFM
-memory_pdp imemoryer (
+memory_rndgen imemoryer (
     .clk(clk),
-    .ifu_rd_req(1'b0),
-    .ifu_rd_addr(12'h000),
-    .ifu_rd_data(),
     .exec_rd_req(exec_rd_req),
     .exec_rd_addr(exec_rd_addr),
     .exec_rd_data(exec_rd_data),
