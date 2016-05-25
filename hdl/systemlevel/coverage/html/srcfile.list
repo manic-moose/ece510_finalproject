@@ -1,0 +1,7 @@
+../shared/CheckerClass.sv
+clkgen_driver.sv
+exec_unit_chkr.sv
+instr_decode.sv
+instr_exec.sv
+memory_pdp.sv
+pdp_top.sv
