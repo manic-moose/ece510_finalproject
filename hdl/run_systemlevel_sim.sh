@@ -7,11 +7,12 @@ while [ -h "$SOURCE" ]; do
   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" > /dev/null && pwd )"
+UNIT_DIR=$SCRIPT_DIR/systemlevel
 
-cd $SCRIPT_DIR
+cd $UNIT_DIR
 
 TOP_HIER=pdp_top
-COV_DIR=$SCRIPT_DIR/coverage
+COV_DIR=$UNIT_DIR/coverage
 COV_DB=$COV_DIR/coverage.ucdb
 
 # Compile
