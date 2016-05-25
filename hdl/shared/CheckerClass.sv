@@ -26,7 +26,7 @@ class CheckerClass;
         string ruleFileDisable = ""
     );
         begin
-            readRuleFile(ruleFile,ruleFileDisable);
+            dummy = readRuleFile(ruleFile,ruleFileDisable);
         end
     endfunction
     
@@ -70,7 +70,7 @@ class CheckerClass;
     // readRuleFile - Reads in fileName text
     // and populates the rule array with 
     // correct data
-    task readRuleFile(
+    function readRuleFile(
         string fileName,
         string disableFileName = ""
     );
@@ -113,13 +113,14 @@ class CheckerClass;
             end
         end
         $fclose(fileHandle);
-        if (disableFileName != "") readDisableFile(disableFileName);
+        if (disableFileName != "") dummy = readDisableFile(disableFileName);
+        return 0;
     end
-    endtask
+    endfunction
 
     // readDisableFile
     // Reads the disable file list
-    task readDisableFile (
+    function readDisableFile (
         string fileName
     );
     integer fileHandle;
@@ -152,8 +153,9 @@ class CheckerClass;
                 end
             end
         end
+        return 0;
     end
-    endtask
+    endfunction
     
     // Prints a summary of the rules that have been run and if they passed or failed
     function printLogSummary ();
