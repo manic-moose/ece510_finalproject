@@ -1,4 +1,5 @@
 ../shared/CheckerClass.sv
+../shared/CovTracker.sv
 clkgen_driver.sv
 exec_tb.sv
 exec_unit_chkr.sv
