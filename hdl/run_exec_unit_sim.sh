@@ -16,10 +16,10 @@ COV_DIR=$UNIT_DIR/coverage
 COV_DB=$COV_DIR/coverage.ucdb
 
 # Compile
-vlog -sv -mfcu -f exec_unit.f
+vlog -sv -mfcu -f exec_unit.f >& exec_unit_compile.log
 
 # Simulate with coverage collection
-vsim -c -do "coverage save -onexit $COV_DB; run -all;exit" -coverage -voptargs="+cover=bcfst" $TOP_HIER
+vsim -c -do "coverage save -onexit $COV_DB; run -all;exit" -coverage -voptargs="+cover=bcfst" $TOP_HIER >& exec_unit_simulation.log
 
 # Generate coverage report
 vcover report -html -details -htmldir $COV_DIR/html -verbose -threshL 50 -threshH 90 $COV_DB
