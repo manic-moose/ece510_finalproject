@@ -23,7 +23,7 @@
   <dl>
   <dt><b>Instance Path:</b></dt><dd>/work.exec_unit_chkr/handleInstruction</dd>
   <dt><b>Language:</b></dt><dd>SystemVerilog</dd>
-  <dt><b>Source File:</b></dt><dd>exec_unit_chkr.sv</dd>
+  <dt><b>Source File:</b></dt><dd>../execution_unit/exec_unit_chkr.sv</dd>
   </dl>
   
   <br /><br /><br /><br />
@@ -34,10 +34,10 @@
   </td></tr></table>
   <br />
     <hr/><table id="loc_rec_tables" cellspacing="5"><tr><td valign="top"><h3>Local Instance Coverage Details:</h3>
-  <table cellspacing="2" cellpadding="2"><tr><td class="odd" colspan="6">Total Coverage:</td><td class="odd_r">80.00%</td><td class="bgYellow">83.33%</td></tr>
+  <table cellspacing="2" cellpadding="2"><tr><td class="odd" colspan="6">Total Coverage:</td><td class="odd_r">77.77%</td><td class="bgYellow">80.00%</td></tr>
   <tr><th colspan="2" align="left">Coverage Type</th><th>Bins</th><th>Hits</th><th>Misses</th><th>Weight</th><th>% Hit</th><th>Coverage</th></tr>
-  <tr><td colspan="2" class="odd"><a href="#s3961978687_1235900089_0_a">Statements</a></td><td class="odd_r">2</td><td class="odd_r">2</td><td class="odd_r">0</td><td class="odd_r">1</td><td class="odd_r">100.00%</td><td class="bgGreen">100.00%</td></tr>
-<tr><td colspan="2" class="even"><a href="#b3961978687_1235900089_0_a">Branches</a></td><td class="even_r">3</td><td class="even_r">2</td><td class="even_r">1</td><td class="even_r">1</td><td class="even_r">66.66%</td><td class="bgYellow">66.66%</td></tr>
+  <tr><td colspan="2" class="odd"><a href="#s3961978687_1235900089_0_a">Statements</a></td><td class="odd_r">4</td><td class="odd_r">4</td><td class="odd_r">0</td><td class="odd_r">1</td><td class="odd_r">100.00%</td><td class="bgGreen">100.00%</td></tr>
+<tr><td colspan="2" class="even"><a href="#b3961978687_1235900089_0_a">Branches</a></td><td class="even_r">5</td><td class="even_r">3</td><td class="even_r">2</td><td class="even_r">1</td><td class="even_r">60.00%</td><td class="bgYellow">60.00%</td></tr>
 </table></td></tr></table>
   <br /><br /><br /><br />
   <a id="s3961978687_1235900089_0_a"></a>
@@ -65,8 +65,10 @@
   </script>
 <hr/><table>
 <tr/>
-<tr cr="c" z="exec_unit_chkr.sv:120" h="4" c="g"/>
-<tr cr="c" z="exec_unit_chkr.sv:122" h="2" c="g"/>
+<tr cr="c" z="../execution_unit/exec_unit_chkr.sv:158" h="6" c="g"/>
+<tr cr="c" z="../execution_unit/exec_unit_chkr.sv:160" h="4" c="g"/>
+<tr cr="c" z="../execution_unit/exec_unit_chkr.sv:162" h="2" c="g"/>
+<tr cr="c" z="../execution_unit/exec_unit_chkr.sv:169" h="6" c="g"/>
 </table>
   </div>
 <script>buildStmtTableNoSource("s3961978687_1235900089_0_srcFileIdx_0");</script>
@@ -95,11 +97,16 @@
     '</tr></table>');
   //-->
   </script>
-<div><a name="cvg919"></a><hr/><table>
-<tr z="    if (isMemType(instr)) begin" f="exec_unit_chkr.sv" l="119" c="Y" p="66.66"/><tr/>
-<tr cr="c" t="I" z="    if (isMemType(instr)) begin" f="exec_unit_chkr.sv" l="119" h="4" c="g"/>
-<tr cr="c" t="T" z="    end else if (isOp7Type(instr)) begin" f="exec_unit_chkr.sv" l="121" h="2" c="g"/>
-<tr cr="m" t="A" z="    if (isMemType(instr)) begin" f="exec_unit_chkr.sv" l="119" h="0" c="r"/>
+<div><a name="cvg938"></a><hr/><table>
+<tr z="    if (isMemType(instr)) begin" f="../execution_unit/exec_unit_chkr.sv" l="159" c="Y" p="66.66"/><tr/>
+<tr cr="c" t="I" z="    if (isMemType(instr)) begin" f="../execution_unit/exec_unit_chkr.sv" l="159" h="4" c="g"/>
+<tr cr="c" t="T" z="    end else if (isOp7Type(instr)) begin" f="../execution_unit/exec_unit_chkr.sv" l="161" h="2" c="g"/>
+<tr cr="m" t="A" z="    if (isMemType(instr)) begin" f="../execution_unit/exec_unit_chkr.sv" l="159" h="0" c="r"/>
+</table>
+</div><div><a name="cvg939"></a><hr/><table>
+<tr z="    if (ruleBit) begin" f="../execution_unit/exec_unit_chkr.sv" l="164" c="Y" p="50.00"/><tr/>
+<tr cr="c" t="I" z="    if (ruleBit) begin" f="../execution_unit/exec_unit_chkr.sv" l="164" h="6" c="g"/>
+<tr cr="m" t="A" z="    if (ruleBit) begin" f="../execution_unit/exec_unit_chkr.sv" l="164" h="0" c="r"/>
 </table>
 </div>  </div>
 <script>buildBranchTables("b3961978687_1235900089_0");</script>
