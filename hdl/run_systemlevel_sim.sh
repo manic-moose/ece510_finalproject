@@ -15,8 +15,11 @@ TOP_HIER=pdp_top
 COV_DIR=$UNIT_DIR/coverage
 COV_DB=$COV_DIR/coverage.ucdb
 
+EXE_RULE_FILE=\"$SCRIPT_DIR/execution_unit/exec_unit_rules.txt\"
+EXE_RULE_DISABLE=\"$SCRIPT_DIR/execution_unit/exec_rule.disable\"
+
 # Compile
-vlog -sv -mfcu -f pdp_top.f
+vlog -sv -mfcu +define+EXE_RULE_FILE=$EXE_RULE_FILE+EXE_RULE_DISABLE_FILE=$EXE_RULE_DISABLE -f pdp_top.f
 
 # Simulate with coverage collection
 vsim -c -do "coverage save -onexit $COV_DB; run -all;exit" -coverage -voptargs="+cover=bcfst" $TOP_HIER
