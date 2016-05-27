@@ -650,9 +650,11 @@ begin
     ruleBit &= chkr.runRule(3, stall);
     waitNClocks(1);
     if (!chkr.runRule(6, PC_value === instr.mem_inst_addr)) begin
+        ruleBit = 0;
         $display("PC Value Expected: %d  Actual: %d", instr.mem_inst_addr, PC_value);
     end
     if (!chkr.runRule(4, ~stall)) begin
+        ruleBit = 0;
         $display("Stall not de-asserted after 2 clock cycles for JMP");
     end
 end
