@@ -1,8 +1,8 @@
+../pdp_hdl/clkgen_driver.sv
+../pdp_hdl/instr_exec.sv
 ../shared/CheckerClass.sv
 ../shared/CovTracker.sv
-clkgen_driver.sv
 exec_tb.sv
 exec_unit_chkr.sv
 ifd_bfm.sv
-instr_exec.sv
 memory_rndgen.sv
