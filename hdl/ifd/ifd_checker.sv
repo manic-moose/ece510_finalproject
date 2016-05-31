@@ -17,8 +17,8 @@
  */
  
 
-`define IFD_RULE_FILE         "ifd_unit_rules.txt"
-`define IFD_RULE_DISABLE_FILE "ifd_rule.disable"
+`define IFD_RULE_FILE         "ifd_rules.txt"
+`define IFD_RULE_DISABLE_FILE "ifd_rules_disable.txt"
 
 module ifd_checker(
     input clk,                              // Free running clock
@@ -85,8 +85,8 @@ bit firstInstruction;
 // detecting instruction transitions
 logic prevInstruction, currentInstruction, newInstruction;
 always @(posedge clk) begin
-    prevInstruction = isMemType($past(current_instr)) || isop7Type($past(current_instr));
-    currentInstruction =    isMemType(current_instr) || isop7Type(current_instr);
+    prevInstruction = isMemType($past(current_instr)) || isOp7Type($past(current_instr));
+    currentInstruction =    isMemType(current_instr) || isOp7Type(current_instr);
 end
 assign newInstruction = (~prevInstruction & currentInstruction);
 
@@ -106,7 +106,7 @@ always @(posedge clk) begin
         prevStall <= stall;
         // check opcode was cleared properly
         if (newRdReq) begin
-            chkr.runRule(3, pdp_mem_opcode == 'd0 && pdp_op7_opcode == 'd0);
+            dummy = chkr.runRule(3, pdp_mem_opcode == 'd0 && pdp_op7_opcode == 'd0);
         end
         
         // check current instruction output

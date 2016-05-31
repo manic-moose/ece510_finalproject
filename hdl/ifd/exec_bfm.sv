@@ -7,17 +7,17 @@
  *
  */
 
-module exec_bfd (
+module exec_bfm (
    // Global inputs
    input clk,
    input reset_n,
    // To IFD (stall, new PC)
    output stall,
-   output [`ADDR_WIDTH-1:0] PC_value
+   output [`ADDR_WIDTH-1:0] PC_value,
    // From IFD (decoded instructions)
    input [`ADDR_WIDTH-1:0] base_addr,
    input pdp_mem_opcode_s pdp_mem_opcode,
-   input pdp_op7_opcode_s pdp_op7_opcode,
+   input pdp_op7_opcode_s pdp_op7_opcode
 );
 
 // Max number of cycles stall asserted
@@ -54,9 +54,11 @@ end
 
 
 // respond to new opcode from IFD indefinitely
-forever begin
-    waitForOpcode();
-    randomize();
+initial begin
+    forever begin
+        waitForOpcode();
+        randomizePCStall();
+    end
 end
 
 
@@ -74,7 +76,7 @@ endtask
 
 // generate a random program counter
 // and stall for a random amount of time
-task randomize();
+task randomizePCStall();
 reg [5:0] start_clocks, stop_clocks;
 begin
     intStall = 1'b1;
@@ -82,7 +84,7 @@ begin
     start_clocks = clkCount;
     waitNClocks($urandom_range(`MAX_DELAY_CYCLES));
     stop_clocks = clkCount;
-    if (debug) $display("exec_bfm: Sending PC %p after %p stalled cycles. CLOCKS:  %d", intPC, start_clocks-stop_clocks, clkCount);
+    if (DEBUG) $display("exec_bfm: Sending PC %p after %p stalled cycles. CLOCKS:  %d", intPC, start_clocks-stop_clocks, clkCount);
     intStall = 1'b0;
 end
 endtask

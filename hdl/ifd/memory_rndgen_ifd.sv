@@ -25,12 +25,12 @@ memWrd int_rd_data;
 assign ifu_rd_data = int_rd_data;
 
 always_ff @(posedge clk) begin
-    if (exec_rd_req) begin
-        if (memArry.exists(exec_rd_addr)) begin
-            int_rd_data = memArry[exec_rd_addr];
+    if (ifu_rd_req) begin
+        if (memArry.exists(ifu_rd_addr)) begin
+            int_rd_data = memArry[ifu_rd_addr];
         end else begin
-            memArry[exec_rd_addr] = $urandom();
-            int_rd_data =  memArry[exec_rd_addr];
+            memArry[ifu_rd_addr] = $urandom();
+            int_rd_data =  memArry[ifu_rd_addr];
         end
     end
 end
