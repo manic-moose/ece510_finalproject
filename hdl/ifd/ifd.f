@@ -1,0 +1,9 @@
+../pdp_hdl/pdp8_pkg.sv
+../pdp_hdl/clkgen_driver.sv
+../pdp_hdl/instr_decode.sv
+../shared/CheckerClass.sv
+../shared/CovTracker.sv
+memory_rndgen_ifd.sv
+exec_bfm.sv
+ifd_checker.sv
+ifd_tb.sv
