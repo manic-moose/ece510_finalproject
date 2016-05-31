@@ -17,6 +17,7 @@ wire pdp_mem_opcode_s   pdp_mem_opcode;
 wire pdp_op7_opcode_s   pdp_op7_opcode;
     
 // Clock Generator
+//clkgen_driver #(.RUN_TIME(50000000)) iclocker (clk, reset_n);
 clkgen_driver iclocker (clk, reset_n);
 
 // Stimulus Generator

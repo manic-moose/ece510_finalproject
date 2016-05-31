@@ -22,6 +22,8 @@ module exec_bfm (
 
 // Max number of cycles stall asserted
 `define MAX_DELAY_CYCLES 20
+`define MIN_DELAY_CYCLES 1
+`define MAX_TRANS_BEFORE_DONE 30000
 
 localparam DEBUG = 0;
 
@@ -37,6 +39,7 @@ always @(posedge clk) begin
     clkCount <= clkCount + 1;
 end
 
+integer transactions;
 
 typedef struct packed {
     pdp_mem_opcode_s memCode;
@@ -51,13 +54,13 @@ always @(*) begin
 end
 
 
-
-
 // respond to new opcode from IFD indefinitely
 initial begin
+    transactions = 'd0;
     forever begin
         waitForOpcode();
         randomizePCStall();
+        transactions = transactions + 'd1;
     end
 end
 
@@ -78,13 +81,27 @@ endtask
 // and stall for a random amount of time
 task randomizePCStall();
 reg [5:0] start_clocks, stop_clocks;
+reg [`ADDR_WIDTH-1:0] tempPC;
 begin
     intStall = 1'b1;
-    intPC = $urandom_range({`ADDR_WIDTH{1'b1}});
+    // generate new random program counter.
+    tempPC = $urandom_range({`ADDR_WIDTH{1'b1}});
+    // prevent PC from being set to program counter
+    // this prevents the simulation from stopping early
+    if (transactions < `MAX_TRANS_BEFORE_DONE) begin
+        while (tempPC == base_addr) begin
+            tempPC = $urandom_range({`ADDR_WIDTH{1'b1}});
+        end
+    end
+    else begin
+        // set program counter to base address after maximun number of transactions
+        tempPC = base_addr;
+    end
+    intPC = tempPC;
     start_clocks = clkCount;
-    waitNClocks($urandom_range(`MAX_DELAY_CYCLES));
+    waitNClocks($urandom_range(`MAX_DELAY_CYCLES, `MIN_DELAY_CYCLES));
     stop_clocks = clkCount;
-    if (DEBUG) $display("exec_bfm: Sending PC %p after %p stalled cycles. CLOCKS:  %d", intPC, start_clocks-stop_clocks, clkCount);
+    if (DEBUG) $display("exec_bfm: Sending PC %o after %p stalled cycles. CLOCKS:  %d", intPC, stop_clocks-start_clocks, clkCount);
     intStall = 1'b0;
 end
 endtask
@@ -133,7 +150,7 @@ begin
             instr.memCode.JMS ||
             instr.memCode.JMP);
 end
-endfunction               
+endfunction
 
 // Blocks until n clocks are observed
 task waitNClocks (

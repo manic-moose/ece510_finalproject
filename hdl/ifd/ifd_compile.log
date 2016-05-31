@@ -1,0 +1,17 @@
+QuestaSim vlog 10.3 Compiler 2014.01 Jan  6 2014
+Start time: 23:37:22 on May 30,2016
+vlog -sv -mfcu -f ifd.f 
+-- Compiling package pdp8_pkg
+-- Compiling package pdp8_pkg_sv_unit
+-- Importing package pdp8_pkg
+-- Compiling module clkgen_driver
+-- Compiling module instr_decode
+-- Compiling module memory_rndgen
+-- Compiling module exec_bfm
+-- Compiling module ifd_checker
+-- Compiling module ifd_tb
+
+Top level modules:
+	ifd_tb
+End time: 23:37:22 on May 30,2016
+Errors: 0, Warnings: 0

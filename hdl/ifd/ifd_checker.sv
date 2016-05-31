@@ -42,6 +42,7 @@ module ifd_checker(
 );
 
 localparam VERBOSE = 0;
+localparam DEBUG = 1;
 
 CheckerClass chkr;
 CovTracker tracker;
@@ -75,6 +76,7 @@ initial begin
     defineCovLabels(tracker);
     chkr = new(`IFD_RULE_FILE, `IFD_RULE_DISABLE_FILE);
     chkr.setVerbose(VERBOSE);
+    //$monitor("current instr: %p", current_instr);
 end
 
 // detecting stall transitions
@@ -85,14 +87,14 @@ bit firstInstruction;
 // detecting instruction transitions
 logic prevInstruction, currentInstruction, newInstruction;
 always @(posedge clk) begin
-    prevInstruction = isMemType($past(current_instr)) || isOp7Type($past(current_instr));
-    currentInstruction =    isMemType(current_instr) || isOp7Type(current_instr);
+    prevInstruction <= currentInstruction;
+    currentInstruction <= isMemType(current_instr) || isOp7Type(current_instr);
 end
 assign newInstruction = (~prevInstruction & currentInstruction);
 
 // tracking new read requests to base opcode-zeroing off of
 logic prevRdReq, newRdReq;
-assign newRdReq = (~prevRdReq & newRdReq);
+assign newRdReq = (~prevRdReq & ifu_rd_req);
 
 // Clock driven logic.
 // When not resetting, monitors the instruction
@@ -104,17 +106,18 @@ always @(posedge clk) begin
         firstInstruction = 1'b1;
     end else begin
         prevStall <= stall;
+        prevRdReq <= ifu_rd_req;
         // check opcode was cleared properly
         if (newRdReq) begin
-            dummy = chkr.runRule(3, pdp_mem_opcode == 'd0 && pdp_op7_opcode == 'd0);
+            dummy <= chkr.runRule(3, opcodesZeroed(current_instr));
         end
         
         // check current instruction output
         if (hasNewInstruction(current_instr) & justStalled) begin
         //if (newInstruction) begin
             if (firstInstruction) begin
-                dummy = chkr.runRule(25, base_addr === `START_ADDRESS);
-                firstInstruction = 1'b0;
+                dummy <= chkr.runRule(25, base_addr === `START_ADDRESS);
+                firstInstruction <= 1'b0;
             end
             if (chkr.runRule(1, instrIsLegal(current_instr))) begin
                 // check if instruction was decoded properly
@@ -250,40 +253,66 @@ function instrIsCorrect (
     input instruction_pack instr
 );
 begin
-    if (isMemType(instr)) begin
-        if      (pdp_mem_opcode.AND) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `AND;
-        else if (pdp_mem_opcode.TAD) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `TAD;
-        else if (pdp_mem_opcode.ISZ) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `ISZ;
-        else if (pdp_mem_opcode.DCA) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `DCA;
-        else if (pdp_mem_opcode.JMS) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `JMS;
-        else if (pdp_mem_opcode.JMP) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `JMP;
-        return pdp_mem_opcode.mem_inst_addr == ifu_rd_data[`DATA_WIDTH-4:0];
+    if (isMemType(instr) && isOp7Type(instr)) begin
+        $display("uh oh shaggy, not good");
     end
     else if (isOp7Type(instr)) begin
-        if      (pdp_op7_opcode.NOP)        return ifu_rd_data == `NOP;
-        else if (pdp_op7_opcode.IAC)        return ifu_rd_data == `IAC;
-        else if (pdp_op7_opcode.RAL)        return ifu_rd_data == `RAL;
-        else if (pdp_op7_opcode.RTL)        return ifu_rd_data == `RTL;
-        else if (pdp_op7_opcode.RAR)        return ifu_rd_data == `RAR;
-        else if (pdp_op7_opcode.RTR)        return ifu_rd_data == `RTR;
-        else if (pdp_op7_opcode.CML)        return ifu_rd_data == `CML;
-        else if (pdp_op7_opcode.CMA)        return ifu_rd_data == `CMA;
-        else if (pdp_op7_opcode.CIA)        return ifu_rd_data == `CIA;
-        else if (pdp_op7_opcode.CLL)        return ifu_rd_data == `CLL;
-        else if (pdp_op7_opcode.CLA1)       return ifu_rd_data == `CLA1;
-        else if (pdp_op7_opcode.CLA_CLL)    return ifu_rd_data == `CLA_CLL;
-        else if (pdp_op7_opcode.HLT)        return ifu_rd_data == `HLT;
-        else if (pdp_op7_opcode.OSR)        return ifu_rd_data == `OSR;
-        else if (pdp_op7_opcode.SKP)        return ifu_rd_data == `SKP;
-        else if (pdp_op7_opcode.SNL)        return ifu_rd_data == `SNL;
-        else if (pdp_op7_opcode.SZL)        return ifu_rd_data == `SZL;
-        else if (pdp_op7_opcode.SZA)        return ifu_rd_data == `SZA;
-        else if (pdp_op7_opcode.SNA)        return ifu_rd_data == `SNA;
-        else if (pdp_op7_opcode.SMA)        return ifu_rd_data == `SMA;
-        else if (pdp_op7_opcode.SPA)        return ifu_rd_data == `SPA;
-        else if (pdp_op7_opcode.CLA2)       return ifu_rd_data == `CLA2;
+             if (instr.op7Code.IAC)        return ifu_rd_data == `IAC;
+        else if (instr.op7Code.RAL)        return ifu_rd_data == `RAL;
+        else if (instr.op7Code.RTL)        return ifu_rd_data == `RTL;
+        else if (instr.op7Code.RAR)        return ifu_rd_data == `RAR;
+        else if (instr.op7Code.RTR)        return ifu_rd_data == `RTR;
+        else if (instr.op7Code.CML)        return ifu_rd_data == `CML;
+        else if (instr.op7Code.CMA)        return ifu_rd_data == `CMA;
+        else if (instr.op7Code.CIA)        return ifu_rd_data == `CIA;
+        else if (instr.op7Code.CLL)        return ifu_rd_data == `CLL;
+        else if (instr.op7Code.CLA1)       return ifu_rd_data == `CLA1;
+        else if (instr.op7Code.CLA_CLL)    return ifu_rd_data == `CLA_CLL;
+        else if (instr.op7Code.HLT)        return ifu_rd_data == `HLT;
+        else if (instr.op7Code.OSR)        return ifu_rd_data == `OSR;
+        else if (instr.op7Code.SKP)        return ifu_rd_data == `SKP;
+        else if (instr.op7Code.SNL)        return ifu_rd_data == `SNL;
+        else if (instr.op7Code.SZL)        return ifu_rd_data == `SZL;
+        else if (instr.op7Code.SZA)        return ifu_rd_data == `SZA;
+        else if (instr.op7Code.SNA)        return ifu_rd_data == `SNA;
+        else if (instr.op7Code.SMA)        return ifu_rd_data == `SMA;
+        else if (instr.op7Code.SPA)        return ifu_rd_data == `SPA;
+        else if (instr.op7Code.CLA2)       return ifu_rd_data == `CLA2;
+        // all others are NOPs, aka not decoded. Return happy go lucky fun times.
+        else if (instr.op7Code.NOP)        return 1;
     end
+    else if (isMemType(instr)) begin
+        if      (instr.memCode.AND) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `AND;
+        else if (instr.memCode.TAD) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `TAD;
+        else if (instr.memCode.ISZ) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `ISZ;
+        else if (instr.memCode.DCA) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `DCA;
+        else if (instr.memCode.JMS) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `JMS;
+        else if (instr.memCode.JMP) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `JMP;
+        return instr.memCode.mem_inst_addr === ifu_rd_data[`DATA_WIDTH-4:0];
+    end
+    $display("also not good, shaggy");
     return 0;
+end
+endfunction
+
+function opcodesZeroed(
+    input instruction_pack instr
+);
+logic op7Zeroed, memZeroed, memAddrZeroed, memOpZeroed;
+begin
+    //
+    op7Zeroed = instr.op7Code == 'd0;
+    //memAddrZeroed = instr.memCode.mem_inst_addr === 'bZ; // uhhh this doesn't work for some reason. Neat.
+    memAddrZeroed = 1'b1;
+    memOpZeroed = (!instr.memCode.AND &
+                   !instr.memCode.TAD &
+                   !instr.memCode.ISZ &
+                   !instr.memCode.DCA &
+                   !instr.memCode.JMS &
+                   !instr.memCode.JMP);
+    memZeroed = memAddrZeroed & memOpZeroed;
+    //$display("op7Zeroed=%p, memZeroed=%p, mem_instr_addr=%p, memAddrZeroed=%p, memOpZeroed=%p", op7Zeroed, memZeroed, instr.memCode.mem_inst_addr, memAddrZeroed, memOpZeroed);
+    return op7Zeroed & memZeroed;
 end
 endfunction
 
@@ -324,6 +353,7 @@ task defineCovLabels (input CovTracker t);
         t.defineNewCov("ISZ");
         t.defineNewCov("TAD");
         t.defineNewCov("AND");
+        t.defineNewCov("NOP");
     end
 endtask
 
@@ -361,6 +391,7 @@ begin
     else if (instr.op7Code.SMA)     t.observe("SMA");
     else if (instr.op7Code.SPA)     t.observe("SPA");
     else if (instr.op7Code.CLA2)    t.observe("CLA2");
+    else if (instr.op7Code.NOP)     t.observe("NOP");
     else if (instr.memCode.AND)     t.observe("AND");
     else if (instr.memCode.TAD)     t.observe("TAD");
     else if (instr.memCode.ISZ)     t.observe("ISZ");

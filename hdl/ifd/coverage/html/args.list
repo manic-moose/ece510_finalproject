@@ -1,0 +1,9 @@
+-html
+-htmldir
+/u/chawood/Documents/ece510_presi/final/git/hdl/ifd/coverage/html
+-verbose
+-threshL
+50
+-threshH
+90
+/u/chawood/Documents/ece510_presi/final/git/hdl/ifd/coverage/coverage.ucdb
