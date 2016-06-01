@@ -1,4 +1,6 @@
 
+//`define CLKGEN 1
+
 module ifd_tb();
 
 // global signals
@@ -18,7 +20,9 @@ wire pdp_op7_opcode_s   pdp_op7_opcode;
     
 // Clock Generator
 //clkgen_driver #(.RUN_TIME(50000000)) iclocker (clk, reset_n);
+`ifdef CLKGEN
 clkgen_driver iclocker (clk, reset_n);
+`endif
 
 // Stimulus Generator
 exec_bfm stimulator (clk, reset_n,

@@ -8,9 +8,14 @@
  */
 
 module exec_bfm (
+`ifdef CLKGEN
    // Global inputs
    input clk,
    input reset_n,
+`else
+   output clk,
+   output reset_n,
+`endif
    // To IFD (stall, new PC)
    output stall,
    output [`ADDR_WIDTH-1:0] PC_value,
@@ -19,13 +24,19 @@ module exec_bfm (
    input pdp_mem_opcode_s pdp_mem_opcode,
    input pdp_op7_opcode_s pdp_op7_opcode
 );
+`ifndef CLKGEN
+parameter CLOCK_PERIOD = 10;
+parameter RESET_DURATION = 50;
+parameter RUN_TIME = 5000000;
+parameter NUM_RESETS = 100;
+`endif
 
 // Max number of cycles stall asserted
 `define MAX_DELAY_CYCLES 20
 `define MIN_DELAY_CYCLES 1
-`define MAX_TRANS_BEFORE_DONE 30000
+`define MAX_TRANS_BEFORE_DONE 100000
 
-localparam DEBUG = 0;
+localparam DEBUG = 1;
 
 // external interface back to IFD
 reg [`ADDR_WIDTH-1:0] intPC;
@@ -54,7 +65,15 @@ always @(*) begin
 end
 
 
+
+
+
+
+
+
+
 // respond to new opcode from IFD indefinitely
+`ifdef CLKGEN
 initial begin
     transactions = 'd0;
     forever begin
@@ -63,6 +82,40 @@ initial begin
         transactions = transactions + 'd1;
     end
 end
+`else
+// directed tests + random tests + base addr test
+initial begin
+    transactions = 'd0;
+    repeat (NUM_RESETS) begin
+        // reset the DUT
+        reset_system();
+        // delay random cycles
+        waitNClocks($urandom_range(`MAX_DELAY_CYCLES, `MIN_DELAY_CYCLES));
+    end
+    repeat (`MAX_TRANS_BEFORE_DONE) begin
+        if (DEBUG) $display("exec_bfm: next transaction: %d", transactions);
+        waitForOpcode();
+        randomizePCStall();
+        transactions = transactions + 'd1;
+    end
+    // send the IFD the base addr to signal operation is complete
+    if (DEBUG) $display("exec_bfm: waiting for final opcode before sending base addr");
+    waitForOpcode();
+    waitNClocks(5);
+    sendBaseAddr();
+    waitNClocks(5);
+    reset_system();
+    waitNClocks(5);
+    $display("sim finishing");
+    $finish;
+end
+`endif
+
+
+
+
+
+
 
 
 
@@ -77,31 +130,50 @@ begin
 end
 endtask
 
-// generate a random program counter
-// and stall for a random amount of time
+// respond to an opcode with a random PC
+// and drive the 'stall' signal high
+// for a random amount of time
 task randomizePCStall();
-reg [5:0] start_clocks, stop_clocks;
+begin
+   randomizePC();
+   randomizeStall();
+end
+endtask
+
+// generate a random program counter
+// that isn't the base addr
+task randomizePC();
 reg [`ADDR_WIDTH-1:0] tempPC;
 begin
-    intStall = 1'b1;
-    // generate new random program counter.
     tempPC = $urandom_range({`ADDR_WIDTH{1'b1}});
-    // prevent PC from being set to program counter
-    // this prevents the simulation from stopping early
-    if (transactions < `MAX_TRANS_BEFORE_DONE) begin
-        while (tempPC == base_addr) begin
-            tempPC = $urandom_range({`ADDR_WIDTH{1'b1}});
-        end
-    end
-    else begin
-        // set program counter to base address after maximun number of transactions
-        tempPC = base_addr;
+    while (tempPC == base_addr) begin
+        tempPC = $urandom_range({`ADDR_WIDTH{1'b1}});
     end
     intPC = tempPC;
+end
+endtask
+
+// stall for a random amount of time
+task randomizeStall();
+reg [5:0] start_clocks, stop_clocks;
+begin
+    intStall = 1'b1;
     start_clocks = clkCount;
     waitNClocks($urandom_range(`MAX_DELAY_CYCLES, `MIN_DELAY_CYCLES));
     stop_clocks = clkCount;
+    intStall = 1'b0;
     if (DEBUG) $display("exec_bfm: Sending PC %o after %p stalled cycles. CLOCKS:  %d", intPC, stop_clocks-start_clocks, clkCount);
+end
+endtask
+
+// send base addr as PC
+// and toggle stall
+task sendBaseAddr();
+begin
+    if (DEBUG) $display("exec_bfm: sending base addr");
+    intPC = base_addr;
+    intStall = 1'b1;
+    waitNClocks(1);
     intStall = 1'b0;
 end
 endtask
@@ -160,5 +232,34 @@ begin
     repeat (n) @(posedge clk);
 end
 endtask
+
+
+
+
+
+// generate a clock
+// don't generate reset, will muck with that
+// throughout the test
+`ifndef CLKGEN
+reg int_clk;
+reg int_reset_n;
+
+assign clk     = int_clk;
+assign reset_n = int_reset_n;
+
+initial begin
+    int_clk = 1'b1;
+    forever #(CLOCK_PERIOD/2) int_clk = ~int_clk;
+end
+
+task reset_system();
+begin
+    int_reset_n = 1'b0;
+    waitNClocks(RESET_DURATION);
+    int_reset_n = 1'b1;
+end
+endtask
+`endif
+
 
 endmodule // exec_bfd

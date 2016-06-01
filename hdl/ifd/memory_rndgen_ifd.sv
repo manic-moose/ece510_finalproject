@@ -16,7 +16,7 @@ module memory_rndgen (
    output [`DATA_WIDTH-1:0] ifu_rd_data
 );
 
-localparam DEBUG = 0;
+localparam DEBUG = 1;
     
 typedef logic [`ADDR_WIDTH-1:0] memAdx;
 typedef logic [`DATA_WIDTH-1:0] memWrd;
@@ -38,14 +38,14 @@ always_ff @(posedge clk) begin
             isMemoryCmd = $urandom_range(10);
             
             if (isMemoryCmd == 1) begin // mem
-                if (DEBUG) $display("mem mem code");
-                memArry[ifu_rd_addr] = $urandom();
-                memArry[ifu_rd_addr][`DATA_WIDTH-1:`DATA_WIDTH-3] = $urandom_range(5);
+                memArry[ifu_rd_addr] = $urandom_range({`DATA_WIDTH{1'b1}});
+                memArry[ifu_rd_addr][`DATA_WIDTH-1:`DATA_WIDTH-3] = $urandom_range(5, 0);
+                if (DEBUG) $display("mem mem code %p", memArry[ifu_rd_addr]);
             end
             else begin
-                if (DEBUG) $display("mem op7 code");
-                memArry[ifu_rd_addr] = $urandom();
+                memArry[ifu_rd_addr] = $urandom_range({`DATA_WIDTH{1'b1}});
                 memArry[ifu_rd_addr][`DATA_WIDTH-1:`DATA_WIDTH-3] = 'o7;
+                if (DEBUG) $display("mem op7 code %p", memArry[ifu_rd_addr]);
             end
             int_rd_data =  memArry[ifu_rd_addr];
         end
