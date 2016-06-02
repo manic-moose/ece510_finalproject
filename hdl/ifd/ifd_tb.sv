@@ -30,7 +30,7 @@ exec_bfm stimulator (clk, reset_n,
                 base_addr, pdp_mem_opcode, pdp_op7_opcode);
 
 // Responder (memory simulator)
-memory_rndgen mem (clk,
+memory_rndgen_ifd mem (clk,
                 ifu_rd_req, ifu_rd_addr, ifu_rd_data);
 
 // DUT - design under test

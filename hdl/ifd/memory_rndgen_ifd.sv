@@ -7,7 +7,7 @@
  * Author: Chip Wood chawood@pdx.edu
  *
  */
-module memory_rndgen (
+module memory_rndgen_ifd (
     // Global input
    input clk,
 
