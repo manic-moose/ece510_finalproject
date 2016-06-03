@@ -16,7 +16,7 @@ module memory_rndgen_ifd (
    output [`DATA_WIDTH-1:0] ifu_rd_data
 );
 
-localparam DEBUG = 1;
+localparam DEBUG = 0;
     
 typedef logic [`ADDR_WIDTH-1:0] memAdx;
 typedef logic [`DATA_WIDTH-1:0] memWrd;
@@ -26,7 +26,7 @@ memWrd memArry[memAdx];
 memWrd int_rd_data;
 assign ifu_rd_data = int_rd_data;
 
-integer isMemoryCmd;
+reg [3:0] isMemoryCmd;
 
 always_ff @(posedge clk) begin
     if (ifu_rd_req) begin
@@ -34,8 +34,8 @@ always_ff @(posedge clk) begin
             int_rd_data = memArry[ifu_rd_addr];
         end else begin
             // mem or op7 opcode?
-            // 10% chance for a memory command - way more op7 codes, focus on those
-            isMemoryCmd = $urandom_range(10);
+            // lower chance for a memory command - there are way more op7 codes
+            isMemoryCmd = $urandom_range(4'hF);
             
             if (isMemoryCmd == 1) begin // mem
                 memArry[ifu_rd_addr] = $urandom_range({`DATA_WIDTH{1'b1}});

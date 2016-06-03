@@ -6,16 +6,7 @@
  * taking place and correct.
  *
  * Author: Chip Wood chawood@pdx.edu
- */
-
-
-/* things to check for
- * 1. single instruction at a time - DONE
- * 2. memory turned into instruction correctly - DONE
- * 3. opcode cleared before new one is output
- * 4. base address output correctly after reset - DONE
- */
- 
+ */ 
 
 `define IFD_RULE_FILE         "ifd_rules.txt"
 `define IFD_RULE_DISABLE_FILE "ifd_rules_disable.txt"
@@ -42,33 +33,15 @@ module ifd_checker(
 );
 
 localparam VERBOSE = 0;
-localparam DEBUG = 1;
+localparam DEBUG = 0;
+
+////////////////////////////////////////////////////////////
+// Coverage and Checker classes
 
 CheckerClass chkr;
 CovTracker tracker;
-
+// dummy bit for use with checker calls
 bit dummy;
-bit ruleBit;
-    
-typedef struct packed {
-    pdp_mem_opcode_s memCode;
-    pdp_op7_opcode_s op7Code;
-} instruction_pack;
-
-// Always pack this for convenience
-instruction_pack current_instr;
-always @(*) begin
-    current_instr.memCode <= pdp_mem_opcode;
-    current_instr.op7Code <= pdp_op7_opcode;
-end
-    
-string ruleHash [integer];
-bit ruleDisableHash[integer];
-
-// Keep track of how many rules run/pass/fail
-integer unsigned ruleRunCount  [integer];
-integer unsigned rulePassCount [integer];
-integer unsigned ruleFailCount [integer];
 
 // initial setup of checker/tracker classes
 initial begin
@@ -76,12 +49,32 @@ initial begin
     defineCovLabels(tracker);
     chkr = new(`IFD_RULE_FILE, `IFD_RULE_DISABLE_FILE);
     chkr.setVerbose(VERBOSE);
-    //$monitor("current instr: %p", current_instr);
 end
 
-// detecting stall transitions
-logic prevStall, justStalled;
-assign justStalled = (~prevStall & stall);
+// dump summaries to log at the end
+final begin
+    dummy = chkr.printLogSummary();
+    dummy = tracker.printCoverageReport();
+end
+
+
+
+////////////////////////////////////////////////////////////
+// Clock driven logic.
+
+// Pack instructions for convenience
+typedef struct packed {
+    pdp_mem_opcode_s memCode;
+    pdp_op7_opcode_s op7Code;
+} instruction_pack;
+
+instruction_pack current_instr;
+always @(*) begin
+    current_instr.memCode <= pdp_mem_opcode;
+    current_instr.op7Code <= pdp_op7_opcode;
+end
+
+// flag for coming out of reset
 bit firstInstruction;
 
 // detecting instruction transitions
@@ -94,27 +87,22 @@ assign newInstruction = (~prevInstruction & currentInstruction);
 
 // tracking new read requests to base opcode-zeroing off of
 logic prevRdReq, newRdReq;
+always @(posedge clk) prevRdReq <= ifu_rd_req;
 assign newRdReq = (~prevRdReq & ifu_rd_req);
 
-// Clock driven logic.
-// When not resetting, monitors the instruction
+// When not resetting, monitor the instruction
 // busses for new instructions and memory reads
 always @(posedge clk) begin
     if(~reset_n) begin
-        prevStall <= 1'b0;
-        prevRdReq <= 1'b0;
         firstInstruction = 1'b1;
     end else begin
-        prevStall <= stall;
-        prevRdReq <= ifu_rd_req;
         // check opcode was cleared properly
         if (newRdReq) begin
             dummy <= chkr.runRule(3, opcodesZeroed(current_instr));
         end
         
         // check current instruction output
-        if (hasNewInstruction(current_instr) & justStalled) begin
-        //if (newInstruction) begin
+        if (newInstruction) begin
             if (firstInstruction) begin
                 dummy <= chkr.runRule(25, base_addr === `START_ADDRESS);
                 firstInstruction <= 1'b0;
@@ -134,6 +122,8 @@ always @(posedge clk) begin
 end
 
 
+
+
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -143,16 +133,6 @@ end
  * Tasks related to handling the rule checking of opcode
  * instructions being driven from the IFD
  *********************************************************/
-
-// Returns true if there is a new memory or op7
-// opcode contained in the passed instruction
-function hasNewInstruction (
-    input instruction_pack instr
-);
-begin
-    return (isMemType(instr) || isOp7Type(instr));
-end
-endfunction
 
 // instrIsLegal - Ensure only one instruction is
 // being inserted into the execution unit at a time.
@@ -252,9 +232,10 @@ endfunction
 function instrIsCorrect (
     input instruction_pack instr
 );
+bit memOpCheck;
 begin
-    if (isMemType(instr) && isOp7Type(instr)) begin
-        $display("uh oh shaggy, not good");
+    if (isMemType(instr) && isOp7Type(instr)) begin // got BOTH opcodes - ERROR
+        return 0;
     end
     else if (isOp7Type(instr)) begin
              if (instr.op7Code.IAC)        return ifu_rd_data == `IAC;
@@ -278,29 +259,29 @@ begin
         else if (instr.op7Code.SMA)        return ifu_rd_data == `SMA;
         else if (instr.op7Code.SPA)        return ifu_rd_data == `SPA;
         else if (instr.op7Code.CLA2)       return ifu_rd_data == `CLA2;
-        // all others are NOPs, aka not decoded. Return happy go lucky fun times.
+        // all others are not decoded, AKA NOPs, so they pass no matter what
         else if (instr.op7Code.NOP)        return 1;
     end
     else if (isMemType(instr)) begin
-        if      (instr.memCode.AND) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `AND;
-        else if (instr.memCode.TAD) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `TAD;
-        else if (instr.memCode.ISZ) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `ISZ;
-        else if (instr.memCode.DCA) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `DCA;
-        else if (instr.memCode.JMS) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `JMS;
-        else if (instr.memCode.JMP) return ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `JMP;
-        return instr.memCode.mem_inst_addr === ifu_rd_data[`DATA_WIDTH-4:0];
+        if      (instr.memCode.AND) memOpCheck = ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `AND;
+        else if (instr.memCode.TAD) memOpCheck = ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `TAD;
+        else if (instr.memCode.ISZ) memOpCheck = ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `ISZ;
+        else if (instr.memCode.DCA) memOpCheck = ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `DCA;
+        else if (instr.memCode.JMS) memOpCheck = ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `JMS;
+        else if (instr.memCode.JMP) memOpCheck = ifu_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] == `JMP;
+        return memOpCheck && (instr.memCode.mem_inst_addr === ifu_rd_data[`DATA_WIDTH-4:0]);
     end
-    $display("also not good, shaggy");
     return 0;
 end
 endfunction
 
+// Check if opcodes are zeroed out
+// ignores address bits for memory opcodes
 function opcodesZeroed(
     input instruction_pack instr
 );
 logic op7Zeroed, memZeroed, memAddrZeroed, memOpZeroed;
 begin
-    //
     op7Zeroed = instr.op7Code == 'd0;
     //memAddrZeroed = instr.memCode.mem_inst_addr === 'bZ; // uhhh this doesn't work for some reason. Neat.
     memAddrZeroed = 1'b1;
@@ -311,7 +292,6 @@ begin
                    !instr.memCode.JMS &
                    !instr.memCode.JMP);
     memZeroed = memAddrZeroed & memOpZeroed;
-    //$display("op7Zeroed=%p, memZeroed=%p, mem_instr_addr=%p, memAddrZeroed=%p, memOpZeroed=%p", op7Zeroed, memZeroed, instr.memCode.mem_inst_addr, memAddrZeroed, memOpZeroed);
     return op7Zeroed & memZeroed;
 end
 endfunction
@@ -357,11 +337,6 @@ task defineCovLabels (input CovTracker t);
     end
 endtask
 
-final begin
-    dummy = chkr.printLogSummary();
-    dummy = tracker.printCoverageReport();
-end
-
 // This will call observe for the instruction
 // contained in "instr"
 task observeInstruction (
@@ -369,7 +344,7 @@ input CovTracker t,
 input instruction_pack instr
 );
 begin
-    if      (instr.op7Code.NOP)     t.observe("NOP");
+         if (instr.op7Code.NOP)     t.observe("NOP");
     else if (instr.op7Code.IAC)     t.observe("IAC");
     else if (instr.op7Code.RAL)     t.observe("RAL");
     else if (instr.op7Code.RTL)     t.observe("RTL");

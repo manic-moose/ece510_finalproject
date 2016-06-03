@@ -34,23 +34,15 @@ parameter NUM_RESETS = 100;
 // Max number of cycles stall asserted
 `define MAX_DELAY_CYCLES 20
 `define MIN_DELAY_CYCLES 1
-`define MAX_TRANS_BEFORE_DONE 100000
+`define MAX_TRANS_BEFORE_DONE 50000
 
-localparam DEBUG = 1;
+localparam DEBUG = 0;
 
 // external interface back to IFD
 reg [`ADDR_WIDTH-1:0] intPC;
 assign PC_value = intPC;
 reg intStall;
 assign stall = intStall;
-
-// count clocks just for display purposes
-integer clkCount = 0;
-always @(posedge clk) begin
-    clkCount <= clkCount + 1;
-end
-
-integer transactions;
 
 typedef struct packed {
     pdp_mem_opcode_s memCode;
@@ -71,42 +63,64 @@ end
 
 
 
-
-// respond to new opcode from IFD indefinitely
+////////////////////////////////////////////////////////////
+// respond to opcode from IFD
+// with random PC and stall forever
+// (clkgen module dictates how long simulation is)
 `ifdef CLKGEN
 initial begin
-    transactions = 'd0;
     forever begin
         waitForOpcode();
-        randomizePCStall();
-        transactions = transactions + 'd1;
+        respondToOpcode();
     end
 end
 `else
-// directed tests + random tests + base addr test
+////////////////////////////////////////////////////////////
+// Semi-random testing
+// clk and reset_n generated in this module
+// allows forcing resets randomly
+reg int_clk, int_reset_n;
+assign clk     = int_clk;
+assign reset_n = int_reset_n;
+// generate the clock
 initial begin
-    transactions = 'd0;
+    int_clk = 1'b1;
+    forever #(CLOCK_PERIOD/2) int_clk = ~int_clk;
+end
+// simplify resetting 
+task resetSystem();
+begin
+    int_reset_n = 1'b0;
+    waitNClocks(RESET_DURATION);
+    int_reset_n = 1'b1;
+end
+endtask
+
+initial begin
+    if (DEBUG) $display("exec_bfm: Beginning stimulus - randomized resets");
     repeat (NUM_RESETS) begin
         // reset the DUT
-        reset_system();
+        resetSystem();
         // delay random cycles
         waitNClocks($urandom_range(`MAX_DELAY_CYCLES, `MIN_DELAY_CYCLES));
     end
+    if (DEBUG) $display("exec_bfm: Second stimulus - random program counters and stalls");
     repeat (`MAX_TRANS_BEFORE_DONE) begin
-        if (DEBUG) $display("exec_bfm: next transaction: %d", transactions);
         waitForOpcode();
-        randomizePCStall();
-        transactions = transactions + 'd1;
+        respondToOpcode();
     end
-    // send the IFD the base addr to signal operation is complete
-    if (DEBUG) $display("exec_bfm: waiting for final opcode before sending base addr");
+    // let last random PC complete
     waitForOpcode();
+    waitNClocks(1);
+    // send the IFD the base addr to signal operation is complete
+    if (DEBUG) $display("exec_bfm: Third stimulus - PC=base_addr to force IFD to halt");
+    PCBaseAddr();
     waitNClocks(5);
-    sendBaseAddr();
+    // reset the FSM one last time
+    if (DEBUG) $display("exec_bfm: Resetting system");
+    resetSystem();
     waitNClocks(5);
-    reset_system();
-    waitNClocks(5);
-    $display("sim finishing");
+    if (DEBUG) $display("exec_bfm: Simulation complete");
     $finish;
 end
 `endif
@@ -121,6 +135,10 @@ end
 
 
 
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+// helper functions
 
 // wait for a new opcode to arrive
 // not concerned with validity of opcode
@@ -133,16 +151,16 @@ endtask
 // respond to an opcode with a random PC
 // and drive the 'stall' signal high
 // for a random amount of time
-task randomizePCStall();
+task respondToOpcode();
 begin
-   randomizePC();
-   randomizeStall();
+   PCRandomize();
+   stallRandomize();
 end
 endtask
 
-// generate a random program counter
+// Set PC to random address
 // that isn't the base addr
-task randomizePC();
+task PCRandomize();
 reg [`ADDR_WIDTH-1:0] tempPC;
 begin
     tempPC = $urandom_range({`ADDR_WIDTH{1'b1}});
@@ -153,30 +171,38 @@ begin
 end
 endtask
 
-// stall for a random amount of time
-task randomizeStall();
-reg [5:0] start_clocks, stop_clocks;
-begin
-    intStall = 1'b1;
-    start_clocks = clkCount;
-    waitNClocks($urandom_range(`MAX_DELAY_CYCLES, `MIN_DELAY_CYCLES));
-    stop_clocks = clkCount;
-    intStall = 1'b0;
-    if (DEBUG) $display("exec_bfm: Sending PC %o after %p stalled cycles. CLOCKS:  %d", intPC, stop_clocks-start_clocks, clkCount);
-end
-endtask
-
-// send base addr as PC
+// Set PC to base_addr
 // and toggle stall
-task sendBaseAddr();
+task PCBaseAddr();
 begin
     if (DEBUG) $display("exec_bfm: sending base addr");
     intPC = base_addr;
-    intStall = 1'b1;
-    waitNClocks(1);
-    intStall = 1'b0;
+    stallRandomize();
+    //intStall = 1'b1;
+    //waitNClocks(1);
+    //intStall = 1'b0;
 end
 endtask
+
+// stall for a random amount of time
+task stallRandomize();
+integer delay;
+begin
+    intStall = 1'b1;
+    delay = $urandom_range(`MAX_DELAY_CYCLES, `MIN_DELAY_CYCLES);
+    waitNClocks(delay);
+    intStall = 1'b0;
+    if (DEBUG) $display("exec_bfm: Sending PC %o after %p stalled cycles", intPC, delay);
+end
+endtask
+
+
+
+
+
+/*********************************************************
+ * Tasks for checking if opcodes are available
+ *********************************************************/
 
 // isOp7Type - Returns true if the instruction
 // contains at least one op7 operation active
@@ -237,29 +263,6 @@ endtask
 
 
 
-// generate a clock
-// don't generate reset, will muck with that
-// throughout the test
-`ifndef CLKGEN
-reg int_clk;
-reg int_reset_n;
-
-assign clk     = int_clk;
-assign reset_n = int_reset_n;
-
-initial begin
-    int_clk = 1'b1;
-    forever #(CLOCK_PERIOD/2) int_clk = ~int_clk;
-end
-
-task reset_system();
-begin
-    int_reset_n = 1'b0;
-    waitNClocks(RESET_DURATION);
-    int_reset_n = 1'b1;
-end
-endtask
-`endif
 
 
 endmodule // exec_bfd
