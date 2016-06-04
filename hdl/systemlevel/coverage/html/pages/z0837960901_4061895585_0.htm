@@ -1,0 +1,440 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+    <script type="text/javascript" src="../scripts/jquery.js"></script>
+    <script type="text/javascript" src="../scripts/sort_tables.js"></script>
+    <script type="text/javascript" src="../scripts/showhide.js"></script>
+    <script type="text/javascript" src="../scripts/buildstmtpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildstmtpage_nos.js"></script>
+    <script type="text/javascript" src="../scripts/buildbranchpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildecpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildfsmpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildtogglepage.js"></script>
+    <script type="text/javascript" src="../scripts/buildassertpage.js"></script>
+    <script type="text/javascript" src="../scripts/builddirpage.js"></script>
+  
+</head>
+<body>
+  <h1><span class="strip">Questa</span> Design Coverage</h1>
+  <h3>Scope: /<a href="z3893167831_3771715445_0.htm">pdp_top</a>/<a href="z0837960901_4061895585_0.htm">idecoder</a></h3>
+  <dl>
+  <dt><b>Instance Path:</b></dt><dd>/pdp_top/idecoder</dd>
+  <dt><b>Design Unit Name:</b></dt><dd><a href="z4264588890_1797021025_0.htm">work.instr_decode</a></dd>
+  <dt><b>Language:</b></dt><dd>SystemVerilog</dd>
+  <dt><b>Source File:</b></dt><dd>pdp_top.sv</dd>
+  </dl>
+  
+  <br /><br /><br /><br />
+  <a id="z0837960901_4061895585_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Scope: /<a href="z3893167831_3771715445_0.htm">pdp_top</a>/<a href="z0837960901_4061895585_0.htm">idecoder</a></div>
+  <div><span style="font-size: 250%;">Summary</span></div>
+  </td></tr></table>
+  <br />
+    <hr/><table id="loc_rec_tables" cellspacing="5"><tr><td valign="top"><h3>Local Instance Coverage Details:</h3>
+  <table cellspacing="2" cellpadding="2"><tr><td class="odd" colspan="6">Total Coverage:</td><td class="odd_r">41.66%</td><td class="bgYellow">53.96%</td></tr>
+  <tr><th colspan="2" align="left">Coverage Type</th><th>Bins</th><th>Hits</th><th>Misses</th><th>Weight</th><th>% Hit</th><th>Coverage</th></tr>
+  <tr><td colspan="2" class="odd"><a href="#s0837960901_4061895585_0_a">Statements</a></td><td class="odd_r">62</td><td class="odd_r">34</td><td class="odd_r">28</td><td class="odd_r">1</td><td class="odd_r">54.83%</td><td class="bgYellow">54.83%</td></tr>
+<tr><td colspan="2" class="even"><a href="#b0837960901_4061895585_0_a">Branches</a></td><td class="even_r">51</td><td class="even_r">23</td><td class="even_r">28</td><td class="even_r">1</td><td class="even_r">45.09%</td><td class="bgRed">45.09%</td></tr>
+<tr><td colspan="2" class="odd"><a href="#t0837960901_4061895585_0_a">Toggles</a></td><td class="odd_r">248</td><td class="odd_r">86</td><td class="odd_r">162</td><td class="odd_r">1</td><td class="odd_r">34.67%</td><td class="bgRed">34.67%</td></tr>
+<tr><td colspan="2" class="even"><a href="#f0837960901_4061895585_0_a">FSMs</a></td><td class="even_r">23</td><td class="even_r">17</td><td class="even_r">6</td><td class="even_r">1</td><td class="even_r">73.91%</td><td class="bgYellow">81.25%</td></tr>
+<tr><td class="invisible">&nbsp;</td><td class="odd"><a href="#f0837960901_4061895585_0_a">States</a></td><td class="odd_r">7</td><td class="odd_r">7</td><td class="odd_r">0</td><td class="odd_r">1</td><td class="odd_r">100.00%</td><td class="bgGreen">100.00%</td></tr>
+<tr><td class="invisible">&nbsp;</td><td class="even"><a href="#f0837960901_4061895585_0_a">Transitions</a></td><td class="even_r">16</td><td class="even_r">10</td><td class="even_r">6</td><td class="even_r">1</td><td class="even_r">62.50%</td><td class="bgYellow">62.50%</td></tr>
+</table></td></tr></table>
+  <br /><br /><br /><br />
+  <a id="s0837960901_4061895585_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Scope: /<a href="z3893167831_3771715445_0.htm">pdp_top</a>/<a href="z0837960901_4061895585_0.htm">idecoder</a></div>
+  <div><span style="font-size: 250%;">Statements</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="s0837960901_4061895585_0_srcFileIdx_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<hr/><table>
+<tr/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:64" h="500051" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:65" h="51" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:66" h="500000" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:70" h="61" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:78" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:81" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:82" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:83" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:84" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:85" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:87" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:89" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:99" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:101" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:111" h="22" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:112" h="22" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:113" h="22" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:115" h="22" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:124" h="6" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:125" h="6" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:127" h="6" c="g"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:141" h="0" c="r"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:142" h="4" c="g"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:143" h="0" c="r"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:144" h="2" c="g"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:145" h="0" c="r"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:146" h="2" c="g"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:147" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:151" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:152" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:153" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:154" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:155" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:156" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:157" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:158" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:159" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:160" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:161" h="0" c="r"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:162" h="2" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:163" h="2" c="g"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:164" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:165" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:166" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:167" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:168" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:169" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:170" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:171" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:172" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:173" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:176" h="0" c="r"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:177" h="0" c="r"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:180" h="12" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:196" h="6" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:198" h="6" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:200" h="1" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:202" h="5" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:210" h="3" c="g"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:211" h="3" c="g"/>
+<tr cr="m" z="../pdp_hdl/instr_decode.sv:213" h="0" c="r"/>
+<tr cr="c" z="../pdp_hdl/instr_decode.sv:215" h="3" c="g"/>
+</table>
+  </div>
+<script>buildStmtTableNoSource("s0837960901_4061895585_0_srcFileIdx_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="b0837960901_4061895585_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Scope: /<a href="z3893167831_3771715445_0.htm">pdp_top</a>/<a href="z0837960901_4061895585_0.htm">idecoder</a></div>
+  <div><span style="font-size: 250%;">Branches</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="b0837960901_4061895585_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<div class="covered"><a name="cvg168"></a><hr/><table>
+<tr z="      if (!reset_n) current_state &lt;= IDLE;" f="../pdp_hdl/instr_decode.sv" l="65" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="      if (!reset_n) current_state &lt;= IDLE;" f="../pdp_hdl/instr_decode.sv" l="65" h="51" c="g"/>
+<tr cr="c" t="E" z="      else          current_state &lt;= next_state;" f="../pdp_hdl/instr_decode.sv" l="66" h="500000" c="g"/>
+</table>
+</div><div><a name="cvg169"></a><hr/><table>
+<tr z="      case (current_state)" f="../pdp_hdl/instr_decode.sv" l="71" c="Y" p="87.50"/><tr/>
+<tr cr="c" t="T" z="         IDLE: if (reset_n) begin" f="../pdp_hdl/instr_decode.sv" l="77" h="4" c="g"/>
+<tr cr="c" t="T" z="         READY: begin" f="../pdp_hdl/instr_decode.sv" l="98" h="2" c="g"/>
+<tr cr="c" t="T" z="         SEND_REQ: begin" f="../pdp_hdl/instr_decode.sv" l="110" h="22" c="g"/>
+<tr cr="c" t="T" z="         DATA_RCVD: begin" f="../pdp_hdl/instr_decode.sv" l="123" h="6" c="g"/>
+<tr cr="c" t="T" z="         INST_DEC: begin" f="../pdp_hdl/instr_decode.sv" l="135" h="12" c="g"/>
+<tr cr="c" t="T" z="         STALL: begin" f="../pdp_hdl/instr_decode.sv" l="193" h="12" c="g"/>
+<tr cr="c" t="T" z="         DONE: begin" f="../pdp_hdl/instr_decode.sv" l="209" h="3" c="g"/>
+<tr cr="m" t="A" z="      case (current_state)" f="../pdp_hdl/instr_decode.sv" l="71" h="0" c="r"/>
+</table>
+</div><div class="covered"><a name="cvg170"></a><hr/><table>
+<tr z="         IDLE: if (reset_n) begin" f="../pdp_hdl/instr_decode.sv" l="77" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="         IDLE: if (reset_n) begin" f="../pdp_hdl/instr_decode.sv" l="77" h="2" c="g"/>
+<tr cr="c" t="E" z="               end else begin" f="../pdp_hdl/instr_decode.sv" l="88" h="2" c="g"/>
+</table>
+</div><div><a name="cvg171"></a><hr/><table>
+<tr z="                      if (int_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] &lt; 6) b..." f="../pdp_hdl/instr_decode.sv" l="138" c="Y" p="66.66"/><tr/>
+<tr cr="c" t="I" z="                      if (int_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3] &lt; 6) b..." f="../pdp_hdl/instr_decode.sv" l="138" h="8" c="g"/>
+<tr cr="c" t="T" z="                      end else if (int_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-..." f="../pdp_hdl/instr_decode.sv" l="149" h="4" c="g"/>
+<tr cr="m" t="E" z="                      end else begin" f="../pdp_hdl/instr_decode.sv" l="175" h="0" c="r"/>
+</table>
+</div><div><a name="cvg172"></a><hr/><table>
+<tr z="                         case (int_rd_data[`DATA_WIDTH-1:`DATA_WIDTH-3])" f="../pdp_hdl/instr_decode.sv" l="139" c="R" p="42.85"/><tr/>
+<tr cr="m" t="T" z="                            `AND: int_pdp_mem_opcode    &lt;= '{1,0,0,0,0,0,..." f="../pdp_hdl/instr_decode.sv" l="141" h="0" c="r"/>
+<tr cr="c" t="T" z="                            `TAD: int_pdp_mem_opcode    &lt;= '{0,1,0,0,0,0,..." f="../pdp_hdl/instr_decode.sv" l="142" h="4" c="g"/>
+<tr cr="m" t="T" z="                            `ISZ: int_pdp_mem_opcode    &lt;= '{0,0,1,0,0,0,..." f="../pdp_hdl/instr_decode.sv" l="143" h="0" c="r"/>
+<tr cr="c" t="T" z="                            `DCA: int_pdp_mem_opcode    &lt;= '{0,0,0,1,0,0,..." f="../pdp_hdl/instr_decode.sv" l="144" h="2" c="g"/>
+<tr cr="m" t="T" z="                            `JMS: int_pdp_mem_opcode    &lt;= '{0,0,0,0,1,0,..." f="../pdp_hdl/instr_decode.sv" l="145" h="0" c="r"/>
+<tr cr="c" t="T" z="                            `JMP: int_pdp_mem_opcode    &lt;= '{0,0,0,0,0,1,..." f="../pdp_hdl/instr_decode.sv" l="146" h="2" c="g"/>
+<tr cr="m" t="T" z="                            default: int_pdp_mem_opcode &lt;= '{0,0,0,0,0,0,..." f="../pdp_hdl/instr_decode.sv" l="147" h="0" c="r"/>
+</table>
+</div><div><a name="cvg173"></a><hr/><table>
+<tr z="                         case (int_rd_data)" f="../pdp_hdl/instr_decode.sv" l="150" c="R" p="8.69"/><tr/>
+<tr cr="m" t="T" z="                            `NOP    : int_pdp_op7_opcode &lt;= '{1,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="151" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `IAC    : int_pdp_op7_opcode &lt;= '{0,1,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="152" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `RAL    : int_pdp_op7_opcode &lt;= '{0,0,1,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="153" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `RTL    : int_pdp_op7_opcode &lt;= '{0,0,0,1,0,0..." f="../pdp_hdl/instr_decode.sv" l="154" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `RAR    : int_pdp_op7_opcode &lt;= '{0,0,0,0,1,0..." f="../pdp_hdl/instr_decode.sv" l="155" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `RTR    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,1..." f="../pdp_hdl/instr_decode.sv" l="156" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `CML    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="157" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `CMA    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="158" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `CIA    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="159" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `CLL    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="160" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `CLA1   : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="161" h="0" c="r"/>
+<tr cr="c" t="T" z="                            `CLA_CLL: int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="162" h="2" c="g"/>
+<tr cr="c" t="T" z="                            `HLT    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="163" h="2" c="g"/>
+<tr cr="m" t="T" z="                            `OSR    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="164" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `SKP    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="165" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `SNL    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="166" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `SZL    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="167" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `SZA    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="168" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `SNA    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="169" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `SMA    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="170" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `SPA    : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="171" h="0" c="r"/>
+<tr cr="m" t="T" z="                            `CLA2   : int_pdp_op7_opcode &lt;= '{0,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="172" h="0" c="r"/>
+<tr cr="m" t="T" z="                            default : int_pdp_op7_opcode &lt;= '{1,0,0,0,0,0..." f="../pdp_hdl/instr_decode.sv" l="173" h="0" c="r"/>
+</table>
+</div><div class="covered"><a name="cvg174"></a><hr/><table>
+<tr z="                   if (stall) begin" f="../pdp_hdl/instr_decode.sv" l="195" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="                   if (stall) begin" f="../pdp_hdl/instr_decode.sv" l="195" h="6" c="g"/>
+<tr cr="c" t="E" z="                   end else begin" f="../pdp_hdl/instr_decode.sv" l="197" h="6" c="g"/>
+</table>
+</div><div class="covered"><a name="cvg175"></a><hr/><table>
+<tr z="                      if (PC_value == int_base_addr) begin" f="../pdp_hdl/instr_decode.sv" l="199" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="                      if (PC_value == int_base_addr) begin" f="../pdp_hdl/instr_decode.sv" l="199" h="1" c="g"/>
+<tr cr="c" t="E" z="                      end else" f="../pdp_hdl/instr_decode.sv" l="201" h="5" c="g"/>
+</table>
+</div><div><a name="cvg176"></a><hr/><table>
+<tr z="                   if (~reset_n) " f="../pdp_hdl/instr_decode.sv" l="212" c="Y" p="50.00"/><tr/>
+<tr cr="m" t="I" z="                   if (~reset_n) " f="../pdp_hdl/instr_decode.sv" l="212" h="0" c="r"/>
+<tr cr="c" t="E" z="                   else" f="../pdp_hdl/instr_decode.sv" l="214" h="3" c="g"/>
+</table>
+</div>  </div>
+<script>buildBranchTables("b0837960901_4061895585_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="f0837960901_4061895585_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Scope: /<a href="z3893167831_3771715445_0.htm">pdp_top</a>/<a href="z0837960901_4061895585_0.htm">idecoder</a></div>
+  <div><span style="font-size: 250%;">State-machines</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="f0837960901_4061895585_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+
+<script>
+<!--
+  var pa_scope=0;
+-->
+</script>
+<div><a name="cvg177"></a><hr/><table>
+<tr z="current_state" c="Y" p="81.25"/>
+<tr/>
+<tr cr="c" s="1" z="IDLE" h="51" c="g"/>
+<tr cr="c" z="IDLE -> IDLE" h="50" c="g"/>
+<tr cr="c" z="IDLE -> READY" h="1" c="g"/>
+<tr cr="c" s="1" z="READY" h="1" c="g"/>
+<tr cr="c" z="READY -> SEND_REQ" h="1" c="g"/>
+<tr cr="m" z="READY -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="SEND_REQ" h="6" c="g"/>
+<tr cr="c" z="SEND_REQ -> DATA_RCVD" h="6" c="g"/>
+<tr cr="m" z="SEND_REQ -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="DATA_RCVD" h="6" c="g"/>
+<tr cr="c" z="DATA_RCVD -> INST_DEC" h="6" c="g"/>
+<tr cr="m" z="DATA_RCVD -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="INST_DEC" h="6" c="g"/>
+<tr cr="c" z="INST_DEC -> STALL" h="6" c="g"/>
+<tr cr="m" z="INST_DEC -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="STALL" h="23" c="g"/>
+<tr cr="c" z="STALL -> SEND_REQ" h="5" c="g"/>
+<tr cr="c" z="STALL -> DONE" h="1" c="g"/>
+<tr cr="c" z="STALL -> STALL" h="17" c="g"/>
+<tr cr="m" z="STALL -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="DONE" h="499958" c="g"/>
+<tr cr="c" z="DONE -> DONE" h="499957" c="g"/>
+<tr cr="m" z="DONE -> IDLE" h="0" c="r"/>
+</table>
+</div>  </div>
+<script>buildFsmTables("f0837960901_4061895585_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="t0837960901_4061895585_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Scope: /<a href="z3893167831_3771715445_0.htm">pdp_top</a>/<a href="z0837960901_4061895585_0.htm">idecoder</a></div>
+  <div><span style="font-size: 250%;">Toggles</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="t0837960901_4061895585_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<hr/><table>
+<tr/>
+<tr/>
+<tr s="9" z="current_state" c="Y" p="85.71"/>
+<tr cr="m" st="1"  z="IDLE" h1="0" c="r"/>
+<tr cr="c" st="1"  z="READY" h1="1" c="g"/>
+<tr cr="c" st="1"  z="SEND_REQ" h1="6" c="g"/>
+<tr cr="c" st="1"  z="DATA_RCVD" h1="6" c="g"/>
+<tr cr="c" st="1"  z="INST_DEC" h1="6" c="g"/>
+<tr cr="c" st="1"  z="STALL" h1="6" c="g"/>
+<tr cr="c" st="1"  z="DONE" h1="1" c="g"/>
+<tr cr="m" s="2" z="int_base_addr[11-0]" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_mem_opcode.AND" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="int_pdp_mem_opcode.TAD" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="int_pdp_mem_opcode.ISZ" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="int_pdp_mem_opcode.DCA" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="int_pdp_mem_opcode.JMS" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="int_pdp_mem_opcode.JMP" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="int_pdp_mem_opcode.mem_inst_addr[11-9]" h1="0" h2="0" c="R" p="0.00"/>
+<tr s="2" z="int_pdp_mem_opcode.mem_inst_addr[8]" h1="0" h2="1" c="Y" p="50.00"/>
+<tr s="2" z="int_pdp_mem_opcode.mem_inst_addr[7]" h1="1" h2="0" c="Y" p="50.00"/>
+<tr s="2" z="int_pdp_mem_opcode.mem_inst_addr[6]" h1="0" h2="1" c="Y" p="50.00"/>
+<tr cr="c" s="2" z="int_pdp_mem_opcode.mem_inst_addr[5]" h1="1" h2="1" c="G" p="100.00"/>
+<tr s="2" z="int_pdp_mem_opcode.mem_inst_addr[4]" h1="0" h2="1" c="Y" p="50.00"/>
+<tr cr="c" s="2" z="int_pdp_mem_opcode.mem_inst_addr[3]" h1="1" h2="1" c="G" p="100.00"/>
+<tr s="2" z="int_pdp_mem_opcode.mem_inst_addr[2]" h1="0" h2="1" c="Y" p="50.00"/>
+<tr cr="c" s="2" z="int_pdp_mem_opcode.mem_inst_addr[1-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.NOP" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.IAC" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.RAL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.RTL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.RAR" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.RTR" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.CML" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.CMA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.CIA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.CLL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.CLA1" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="int_pdp_op7_opcode.CLA_CLL" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_pdp_op7_opcode.HLT" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.OSR" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.SKP" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.SNL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.SZL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.SZA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.SNA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.SMA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.SPA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_pdp_op7_opcode.CLA2" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="int_rd_addr[11-8]" h1="0" h2="0" c="R" p="0.00"/>
+<tr s="2" z="int_rd_addr[7]" h1="1" h2="0" c="Y" p="50.00"/>
+<tr cr="m" s="2" z="int_rd_addr[6-3]" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="int_rd_addr[2-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_rd_data[11-10]" h1="1" h2="1" c="G" p="100.00"/>
+<tr s="2" z="int_rd_data[9]" h1="1" h2="0" c="Y" p="50.00"/>
+<tr cr="c" s="2" z="int_rd_data[8-5]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="int_rd_data[4]" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="int_rd_data[3]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="int_rd_data[2]" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="int_rd_data[1-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_rd_req" h1="1" h2="1" c="G" p="100.00"/>
+<tr s="9" z="next_state" c="Y" p="85.71"/>
+<tr cr="m" st="1"  z="IDLE" h1="0" c="r"/>
+<tr cr="c" st="1"  z="READY" h1="1" c="g"/>
+<tr cr="c" st="1"  z="SEND_REQ" h1="6" c="g"/>
+<tr cr="c" st="1"  z="DATA_RCVD" h1="6" c="g"/>
+<tr cr="c" st="1"  z="INST_DEC" h1="6" c="g"/>
+<tr cr="c" st="1"  z="STALL" h1="6" c="g"/>
+<tr cr="c" st="1"  z="DONE" h1="1" c="g"/>
+<tr cr="m" s="2" z="pdp_mem_opcode.AND" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.TAD" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="pdp_mem_opcode.ISZ" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.DCA" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="pdp_mem_opcode.JMS" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.JMP" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="pdp_mem_opcode.mem_inst_addr[11-9]" h1="0" h2="0" c="R" p="0.00"/>
+<tr s="2" z="pdp_mem_opcode.mem_inst_addr[8]" h1="0" h2="1" c="Y" p="50.00"/>
+<tr s="2" z="pdp_mem_opcode.mem_inst_addr[7]" h1="1" h2="0" c="Y" p="50.00"/>
+<tr s="2" z="pdp_mem_opcode.mem_inst_addr[6]" h1="0" h2="1" c="Y" p="50.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.mem_inst_addr[5]" h1="1" h2="1" c="G" p="100.00"/>
+<tr s="2" z="pdp_mem_opcode.mem_inst_addr[4]" h1="0" h2="1" c="Y" p="50.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.mem_inst_addr[3]" h1="1" h2="1" c="G" p="100.00"/>
+<tr s="2" z="pdp_mem_opcode.mem_inst_addr[2]" h1="0" h2="1" c="Y" p="50.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.mem_inst_addr[1-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.NOP" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.IAC" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.RAL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.RTL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.RAR" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.RTR" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.CML" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.CMA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.CIA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.CLL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.CLA1" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.CLA_CLL" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.HLT" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.OSR" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.SKP" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.SNL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.SZL" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.SZA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.SNA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.SMA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.SPA" h1="0" h2="0" c="R" p="0.00"/>
+<tr cr="m" s="2" z="pdp_op7_opcode.CLA2" h1="0" h2="0" c="R" p="0.00"/>
+</table>
+  </div>
+<script>buildToggleTable("t0837960901_4061895585_0");</script>
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</body>
+</html>

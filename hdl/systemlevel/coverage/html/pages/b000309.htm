@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _pdp_top_iexecutorContentFrame2.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> Branch Coverage Report</h1>
+  <h3>Scope: /<a href="z000011.htm">pdp_top</a>/<a href="z000309.htm">iexecutor</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  <div class="covered"><a name="cvg310"/><hr/><table>
+  <tr l="122" lnk="__HDL_srcfile_4.htm#122" z="      if (!reset_n) current_state &lt;= IDLE;" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="122" lnk="__HDL_srcfile_4.htm#122" z="      if (!reset_n) current_state &lt;= IDLE;" h="51" c="g"/>
+  <tr cr="c" t="E" l="123" lnk="__HDL_srcfile_4.htm#123" z="      else          current_state &lt;= next_state;" h="500000" c="g"/>
+  </table>
+  </div><div><a name="cvg311"/><hr/><table>
+  <tr l="127" lnk="__HDL_srcfile_4.htm#127" z="      case (current_state)" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="T" l="133" lnk="__HDL_srcfile_4.htm#133" z="         IDLE:" h="2" c="g"/>
+  <tr cr="c" t="T" l="145" lnk="__HDL_srcfile_4.htm#145" z="         STALL:" h="19" c="g"/>
+  <tr cr="c" t="T" l="163" lnk="__HDL_srcfile_4.htm#163" z="         BRANCH:" h="6" c="g"/>
+  <tr cr="c" t="T" l="185" lnk="__HDL_srcfile_4.htm#185" z="         CLA:" h="1" c="g"/>
+  <tr cr="c" t="T" l="194" lnk="__HDL_srcfile_4.htm#194" z="         CLA_CLL:" h="1" c="g"/>
+  <tr cr="c" t="T" l="206" lnk="__HDL_srcfile_4.htm#206" z="         MEM_RD_REQ:" h="4" c="g"/>
+  <tr cr="c" t="T" l="217" lnk="__HDL_srcfile_4.htm#217" z="         DATA_RCVD:" h="2" c="g"/>
+  <tr cr="c" t="T" l="236" lnk="__HDL_srcfile_4.htm#236" z="         ADD_ACC_MEM:" h="2" c="g"/>
+  <tr cr="m" t="T" l="247" lnk="__HDL_srcfile_4.htm#247" z="         AND_ACC_MEM:" h="0" c="r"/>
+  <tr cr="m" t="T" l="259" lnk="__HDL_srcfile_4.htm#259" z="         ISZ_WR_REQ:" h="0" c="r"/>
+  <tr cr="m" t="T" l="271" lnk="__HDL_srcfile_4.htm#271" z="         ISZ_UPDT_PC:" h="0" c="r"/>
+  <tr cr="c" t="T" l="282" lnk="__HDL_srcfile_4.htm#282" z="         DCA:" h="1" c="g"/>
+  <tr cr="m" t="T" l="295" lnk="__HDL_srcfile_4.htm#295" z="         JMS_WR_REQ:" h="0" c="r"/>
+  <tr cr="m" t="T" l="306" lnk="__HDL_srcfile_4.htm#306" z="         JMS_UPDT_PC:" h="0" c="r"/>
+  <tr cr="c" t="T" l="315" lnk="__HDL_srcfile_4.htm#315" z="         JMP:" h="1" c="g"/>
+  <tr cr="c" t="T" l="323" lnk="__HDL_srcfile_4.htm#323" z="         NOP:" h="1" c="g"/>
+  <tr cr="c" t="T" l="333" lnk="__HDL_srcfile_4.htm#333" z="         UNSTALL:" h="6" c="g"/>
+  <tr cr="m" t="A" l="127" lnk="__HDL_srcfile_4.htm#127" z="      case (current_state)" h="0" c="r"/>
+  </table>
+  </div><div class="covered"><a name="cvg312"/><hr/><table>
+  <tr l="146" lnk="__HDL_srcfile_4.htm#146" z="               if (new_mem_opcode || new_op7_opcode) begin" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="146" lnk="__HDL_srcfile_4.htm#146" z="               if (new_mem_opcode || new_op7_opcode) begin" h="12" c="g"/>
+  <tr cr="c" t="E" l="151" lnk="__HDL_srcfile_4.htm#151" z="               end else begin" h="7" c="g"/>
+  </table>
+  </div><div><a name="cvg313"/><hr/><table>
+  <tr l="168" lnk="__HDL_srcfile_4.htm#168" z="               if (pdp_op7_opcode.CLA_CLL)" c="Y" p="83.33"/><tr/>
+  <tr cr="c" t="I" l="168" lnk="__HDL_srcfile_4.htm#168" z="               if (pdp_op7_opcode.CLA_CLL)" h="1" c="g"/>
+  <tr cr="c" t="T" l="170" lnk="__HDL_srcfile_4.htm#170" z="               else if (pdp_mem_opcode.TAD || pdp_mem_opcode.AN..." h="2" c="g"/>
+  <tr cr="c" t="T" l="172" lnk="__HDL_srcfile_4.htm#172" z="               else if (pdp_mem_opcode.DCA)" h="1" c="g"/>
+  <tr cr="m" t="T" l="174" lnk="__HDL_srcfile_4.htm#174" z="               else if (pdp_mem_opcode.JMS)" h="0" c="r"/>
+  <tr cr="c" t="T" l="176" lnk="__HDL_srcfile_4.htm#176" z="               else if (pdp_mem_opcode.JMP)" h="1" c="g"/>
+  <tr cr="c" t="E" l="178" lnk="__HDL_srcfile_4.htm#178" z="               else" h="1" c="g"/>
+  </table>
+  </div><div><a name="cvg314"/><hr/><table>
+  <tr l="224" lnk="__HDL_srcfile_4.htm#224" z="               if (pdp_mem_opcode.TAD)" c="R" p="25.00"/><tr/>
+  <tr cr="c" t="I" l="224" lnk="__HDL_srcfile_4.htm#224" z="               if (pdp_mem_opcode.TAD)" h="2" c="g"/>
+  <tr cr="m" t="T" l="226" lnk="__HDL_srcfile_4.htm#226" z="               else if (pdp_mem_opcode.AND)" h="0" c="r"/>
+  <tr cr="m" t="T" l="228" lnk="__HDL_srcfile_4.htm#228" z="               else if (pdp_mem_opcode.ISZ)" h="0" c="r"/>
+  <tr cr="m" t="A" l="224" lnk="__HDL_srcfile_4.htm#224" z="               if (pdp_mem_opcode.TAD)" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg315"/><hr/><table>
+  <tr l="239" lnk="__HDL_srcfile_4.htm#239" z="               if (intAcc[`DATA_WIDTH]) intLink &lt;= ~tempLink;" c="Y" p="50.00"/><tr/>
+  <tr cr="m" t="I" l="239" lnk="__HDL_srcfile_4.htm#239" z="               if (intAcc[`DATA_WIDTH]) intLink &lt;= ~tempLink;" h="0" c="r"/>
+  <tr cr="c" t="A" l="239" lnk="__HDL_srcfile_4.htm#239" z="               if (intAcc[`DATA_WIDTH]) intLink &lt;= ~tempLink;" h="2" c="g"/>
+  </table>
+  </div><div class="missing"><a name="cvg316"/><hr/><table>
+  <tr l="273" lnk="__HDL_srcfile_4.htm#273" z="               if (int_exec_rd_data == 0) intPC &lt;= tempPC + 1;" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="273" lnk="__HDL_srcfile_4.htm#273" z="               if (int_exec_rd_data == 0) intPC &lt;= tempPC + 1;" h="0" c="r"/>
+  <tr cr="m" t="A" l="273" lnk="__HDL_srcfile_4.htm#273" z="               if (int_exec_rd_data == 0) intPC &lt;= tempPC + 1;" h="0" c="r"/>
+  </table>
+  </div><script type="text/javascript" src="../scripts/buildbranchpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>

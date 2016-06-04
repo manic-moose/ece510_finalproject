@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _pdp_top_iexecutorContentFrame5.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> State-machine Coverage Report</h1>
+  <h3>Scope: /<a href="z000011.htm">pdp_top</a>/<a href="z000309.htm">iexecutor</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  
+<script>
+<!--
+  var pa_scope=0;
+-->
+</script>
+<div><a name="cvg321"/><hr/><table>
+  <tr lnk="__HDL_srcfile_4.htm#133" z="current_state" c="Y" p="56.72"/>
+  <tr/>
+  <tr cr="c" s="1" z="IDLE" h="51" c="g"/>
+  <tr cr="c" z="IDLE -> STALL" h="1" c="g"/>
+  <tr cr="c" z="IDLE -> IDLE" h="50" c="g"/>
+  <tr cr="c" s="1" z="STALL" h="499977" c="g"/>
+  <tr cr="c" z="STALL -> STALL" h="499970" c="g"/>
+  <tr cr="c" z="STALL -> BRANCH" h="6" c="g"/>
+  <tr cr="m" z="STALL -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="BRANCH" h="6" c="g"/>
+  <tr cr="c" z="BRANCH -> NOP" h="1" c="g"/>
+  <tr cr="c" z="BRANCH -> JMP" h="1" c="g"/>
+  <tr cr="m" z="BRANCH -> JMS_WR_REQ" h="0" c="r"/>
+  <tr cr="c" z="BRANCH -> DCA" h="1" c="g"/>
+  <tr cr="c" z="BRANCH -> MEM_RD_REQ" h="2" c="g"/>
+  <tr cr="c" z="BRANCH -> CLA_CLL" h="1" c="g"/>
+  <tr cr="m" z="BRANCH -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="NOP" h="1" c="g"/>
+  <tr cr="c" z="NOP -> UNSTALL" h="1" c="g"/>
+  <tr cr="m" z="NOP -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="JMP" h="1" c="g"/>
+  <tr cr="c" z="JMP -> UNSTALL" h="1" c="g"/>
+  <tr cr="m" z="JMP -> IDLE" h="0" c="r"/>
+  <tr cr="m" s="1" z="JMS_WR_REQ" h="0" c="r"/>
+  <tr cr="m" z="JMS_WR_REQ -> JMS_UPDT_PC" h="0" c="r"/>
+  <tr cr="m" z="JMS_WR_REQ -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="DCA" h="1" c="g"/>
+  <tr cr="c" z="DCA -> CLA" h="1" c="g"/>
+  <tr cr="m" z="DCA -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="MEM_RD_REQ" h="2" c="g"/>
+  <tr cr="c" z="MEM_RD_REQ -> DATA_RCVD" h="2" c="g"/>
+  <tr cr="m" z="MEM_RD_REQ -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="CLA_CLL" h="1" c="g"/>
+  <tr cr="c" z="CLA_CLL -> UNSTALL" h="1" c="g"/>
+  <tr cr="m" z="CLA_CLL -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="CLA" h="1" c="g"/>
+  <tr cr="c" z="CLA -> UNSTALL" h="1" c="g"/>
+  <tr cr="m" z="CLA -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="UNSTALL" h="6" c="g"/>
+  <tr cr="c" z="UNSTALL -> STALL" h="6" c="g"/>
+  <tr cr="m" z="UNSTALL -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="DATA_RCVD" h="2" c="g"/>
+  <tr cr="m" z="DATA_RCVD -> ISZ_WR_REQ" h="0" c="r"/>
+  <tr cr="m" z="DATA_RCVD -> AND_ACC_MEM" h="0" c="r"/>
+  <tr cr="c" z="DATA_RCVD -> ADD_ACC_MEM" h="2" c="g"/>
+  <tr cr="m" z="DATA_RCVD -> IDLE" h="0" c="r"/>
+  <tr cr="m" s="1" z="ISZ_WR_REQ" h="0" c="r"/>
+  <tr cr="m" z="ISZ_WR_REQ -> ISZ_UPDT_PC" h="0" c="r"/>
+  <tr cr="m" z="ISZ_WR_REQ -> IDLE" h="0" c="r"/>
+  <tr cr="m" s="1" z="AND_ACC_MEM" h="0" c="r"/>
+  <tr cr="m" z="AND_ACC_MEM -> UNSTALL" h="0" c="r"/>
+  <tr cr="m" z="AND_ACC_MEM -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="ADD_ACC_MEM" h="2" c="g"/>
+  <tr cr="c" z="ADD_ACC_MEM -> UNSTALL" h="2" c="g"/>
+  <tr cr="m" z="ADD_ACC_MEM -> IDLE" h="0" c="r"/>
+  <tr cr="m" s="1" z="ISZ_UPDT_PC" h="0" c="r"/>
+  <tr cr="m" z="ISZ_UPDT_PC -> UNSTALL" h="0" c="r"/>
+  <tr cr="m" z="ISZ_UPDT_PC -> IDLE" h="0" c="r"/>
+  <tr cr="m" s="1" z="JMS_UPDT_PC" h="0" c="r"/>
+  <tr cr="m" z="JMS_UPDT_PC -> UNSTALL" h="0" c="r"/>
+  <tr cr="m" z="JMS_UPDT_PC -> IDLE" h="0" c="r"/>
+  </table>
+  </div><script type="text/javascript" src="../scripts/buildfsmpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>

@@ -1,0 +1,685 @@
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <link rel="StyleSheet" media="screen" href="../css/hdl2html.css"/>
+</head>
+<body id="hdl2html">
+  <tt><a name="1"/><span style="color:red">%s%%s%%s%%s%%s%1%s%%s%</span><span class="comment">/*%s%exec_unit_chkr</span><br/>
+<a name="2"/><span style="color:red">%s%%s%%s%%s%%s%2%s%%s%</span><span class="comment">%s%*%s%Serves%s%as%s%a%s%passive%s%checker/scoreboard%s%for%s%monitoring</span><br/>
+<a name="3"/><span style="color:red">%s%%s%%s%%s%%s%3%s%%s%</span><span class="comment">%s%*%s%the%s%execution%s%unit's%s%communication%s%with%s%surrounding</span><br/>
+<a name="4"/><span style="color:red">%s%%s%%s%%s%%s%4%s%%s%</span><span class="comment">%s%*%s%hierachies%s%to%s%ensure%s%all%s%required%s%transactions%s%are</span><br/>
+<a name="5"/><span style="color:red">%s%%s%%s%%s%%s%5%s%%s%</span><span class="comment">%s%*%s%taking%s%place%s%and%s%correct.</span><br/>
+<a name="6"/><span style="color:red">%s%%s%%s%%s%%s%6%s%%s%</span><span class="comment">%s%*</span><br/>
+<a name="7"/><span style="color:red">%s%%s%%s%%s%%s%7%s%%s%</span><span class="comment">%s%*%s%Author:%s%Brandon%s%Mousseau%s%bam7@pdx.edu</span><br/>
+<a name="8"/><span style="color:red">%s%%s%%s%%s%%s%8%s%%s%</span><span class="comment">%s%*/</span><br/>
+<a name="9"/><span style="color:red">%s%%s%%s%%s%%s%9%s%%s%</span><br/>
+<a name="10"/><span style="color:red">%s%%s%%s%%s%10%s%%s%</span>`<span class="keyattr">define</span>%s%EXE_RULE_FILE%s%%s%%s%%s%%s%%s%%s%%s%%s%<span class="literal">"exec_unit_rules.txt"</span><br/>
+<a name="11"/><span style="color:red">%s%%s%%s%%s%11%s%%s%</span>`<span class="keyattr">define</span>%s%EXE_RULE_DISABLE_FILE%s%<span class="literal">"exec_rule.disable"</span><br/>
+<a name="12"/><span style="color:red">%s%%s%%s%%s%12%s%%s%</span><br/>
+<a name="13"/><span style="color:red">%s%%s%%s%%s%13%s%%s%</span><span class="keyword">module</span>%s%exec_unit_chkr%s%(<br/>
+<a name="14"/><span style="color:red">%s%%s%%s%%s%14%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%From%s%clkgen_driver%s%module</span><br/>
+<a name="15"/><span style="color:red">%s%%s%%s%%s%15%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%clk,%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%<span class="comment">//%s%Free%s%running%s%clock</span><br/>
+<a name="16"/><span style="color:red">%s%%s%%s%%s%16%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%reset_n,%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%<span class="comment">//%s%Active%s%low%s%reset%s%signal</span><br/>
+<a name="17"/><span style="color:red">%s%%s%%s%%s%17%s%%s%</span><br/>
+<a name="18"/><span style="color:red">%s%%s%%s%%s%18%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%From%s%instr_decode%s%module</span><br/>
+<a name="19"/><span style="color:red">%s%%s%%s%%s%19%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%[`ADDR_WIDTH-1:0]%s%base_addr,%s%%s%%s%%s%%s%%s%<span class="comment">//%s%Address%s%for%s%first%s%instruction</span><br/>
+<a name="20"/><span style="color:red">%s%%s%%s%%s%20%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%pdp_mem_opcode_s%s%pdp_mem_opcode,%s%%s%<span class="comment">//%s%Decoded%s%signals%s%for%s%memory%s%instructions</span><br/>
+<a name="21"/><span style="color:red">%s%%s%%s%%s%21%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%pdp_op7_opcode_s%s%pdp_op7_opcode,%s%%s%<span class="comment">//%s%Decoded%s%signals%s%for%s%op7%s%instructions</span><br/>
+<a name="22"/><span style="color:red">%s%%s%%s%%s%22%s%%s%</span><br/>
+<a name="23"/><span style="color:red">%s%%s%%s%%s%23%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%To%s%instr_decode%s%module</span><br/>
+<a name="24"/><span style="color:red">%s%%s%%s%%s%24%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%stall,%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%<span class="comment">//%s%Signal%s%to%s%stall%s%instruction%s%decoder</span><br/>
+<a name="25"/><span style="color:red">%s%%s%%s%%s%25%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%[`ADDR_WIDTH-1:0]%s%PC_value,%s%%s%%s%%s%%s%%s%%s%<span class="comment">//%s%Current%s%value%s%of%s%Program%s%Counter</span><br/>
+<a name="26"/><span style="color:red">%s%%s%%s%%s%26%s%%s%</span><br/>
+<a name="27"/><span style="color:red">%s%%s%%s%%s%27%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%To%s%memory_pdp%s%module</span><br/>
+<a name="28"/><span style="color:red">%s%%s%%s%%s%28%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%exec_wr_req,%s%%s%%s%<span class="comment">//%s%Write%s%request%s%to%s%memory</span><br/>
+<a name="29"/><span style="color:red">%s%%s%%s%%s%29%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%%s%[`ADDR_WIDTH-1:0]%s%exec_wr_addr,%s%%s%<span class="comment">//%s%Write%s%address%s%</span><br/>
+<a name="30"/><span style="color:red">%s%%s%%s%%s%30%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%%s%[`DATA_WIDTH-1:0]%s%exec_wr_data,%s%%s%<span class="comment">//%s%Write%s%data%s%to%s%memory</span><br/>
+<a name="31"/><span style="color:red">%s%%s%%s%%s%31%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%exec_rd_req,%s%%s%%s%<span class="comment">//%s%Read%s%request%s%to%s%memory</span><br/>
+<a name="32"/><span style="color:red">%s%%s%%s%%s%32%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%%s%[`ADDR_WIDTH-1:0]%s%exec_rd_addr,%s%%s%<span class="comment">//%s%Read%s%address</span><br/>
+<a name="33"/><span style="color:red">%s%%s%%s%%s%33%s%%s%</span><br/>
+<a name="34"/><span style="color:red">%s%%s%%s%%s%34%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%From%s%memory_pdp%s%module</span><br/>
+<a name="35"/><span style="color:red">%s%%s%%s%%s%35%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%%s%%s%[`DATA_WIDTH-1:0]%s%exec_rd_data,%s%<span class="comment">//%s%Read%s%data%s%returned%s%by%s%memory</span><br/>
+<a name="36"/><span style="color:red">%s%%s%%s%%s%36%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="37"/><span style="color:red">%s%%s%%s%%s%37%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%WHITEBOX%s%SIGNALS.%s%Must%s%pass%s%in%s%hierarchical%s%path%s%to%s%the</span><br/>
+<a name="38"/><span style="color:red">%s%%s%%s%%s%38%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%these%s%signals%s%wherever%s%this%s%checker%s%in%s%instantiated</span><br/>
+<a name="39"/><span style="color:red">%s%%s%%s%%s%39%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%[`DATA_WIDTH:0]%s%wb_intAcc,<br/>
+<a name="40"/><span style="color:red">%s%%s%%s%%s%40%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%wb_intLink<br/>
+<a name="41"/><span style="color:red">%s%%s%%s%%s%41%s%%s%</span><br/>
+<a name="42"/><span style="color:red">%s%%s%%s%%s%42%s%%s%</span>);<br/>
+<a name="43"/><span style="color:red">%s%%s%%s%%s%43%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="44"/><span style="color:red">%s%%s%%s%%s%44%s%%s%</span><span class="keyword">localparam</span>%s%VERBOSE%s%=%s%0;<br/>
+<a name="45"/><span style="color:red">%s%%s%%s%%s%45%s%%s%</span><br/>
+<a name="46"/><span style="color:red">%s%%s%%s%%s%46%s%%s%</span>CheckerClass%s%chkr;<br/>
+<a name="47"/><span style="color:red">%s%%s%%s%%s%47%s%%s%</span>CovTracker%s%tracker;<br/>
+<a name="48"/><span style="color:red">%s%%s%%s%%s%48%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="49"/><span style="color:red">%s%%s%%s%%s%49%s%%s%</span><span class="keyword">bit</span>%s%dummy;<br/>
+<a name="50"/><span style="color:red">%s%%s%%s%%s%50%s%%s%</span><span class="keyword">bit</span>%s%ruleBit;<br/>
+<a name="51"/><span style="color:red">%s%%s%%s%%s%51%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="52"/><span style="color:red">%s%%s%%s%%s%52%s%%s%</span><span class="keyword">typedef</span>%s%<span class="keyword">struct</span>%s%<span class="keyword">packed</span>%s%{<br/>
+<a name="53"/><span style="color:red">%s%%s%%s%%s%53%s%%s%</span>%s%%s%%s%%s%pdp_mem_opcode_s%s%memCode;<br/>
+<a name="54"/><span style="color:red">%s%%s%%s%%s%54%s%%s%</span>%s%%s%%s%%s%pdp_op7_opcode_s%s%op7Code;<br/>
+<a name="55"/><span style="color:red">%s%%s%%s%%s%55%s%%s%</span>}%s%instruction_pack;<br/>
+<a name="56"/><span style="color:red">%s%%s%%s%%s%56%s%%s%</span><br/>
+<a name="57"/><span style="color:red">%s%%s%%s%%s%57%s%%s%</span><span class="comment">//%s%Always%s%pack%s%this%s%for%s%convenience</span><br/>
+<a name="58"/><span style="color:red">%s%%s%%s%%s%58%s%%s%</span>instruction_pack%s%current_instr;<br/>
+<a name="59"/><span style="color:red">%s%%s%%s%%s%59%s%%s%</span><span class="keyword">always</span>%s%@(*)%s%<span class="keyword">begin</span><br/>
+<a name="60"/><span style="color:red">%s%%s%%s%%s%60%s%%s%</span>%s%%s%%s%%s%current_instr.memCode%s%&lt;=%s%pdp_mem_opcode;<br/>
+<a name="61"/><span style="color:red">%s%%s%%s%%s%61%s%%s%</span>%s%%s%%s%%s%current_instr.op7Code%s%&lt;=%s%pdp_op7_opcode;<br/>
+<a name="62"/><span style="color:red">%s%%s%%s%%s%62%s%%s%</span><span class="keyword">end</span><br/>
+<a name="63"/><span style="color:red">%s%%s%%s%%s%63%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="64"/><span style="color:red">%s%%s%%s%%s%64%s%%s%</span><span class="keyword">string</span>%s%ruleHash%s%[<span class="keyword">integer</span>];<br/>
+<a name="65"/><span style="color:red">%s%%s%%s%%s%65%s%%s%</span><span class="keyword">bit</span>%s%ruleDisableHash[<span class="keyword">integer</span>];<br/>
+<a name="66"/><span style="color:red">%s%%s%%s%%s%66%s%%s%</span><br/>
+<a name="67"/><span style="color:red">%s%%s%%s%%s%67%s%%s%</span><span class="comment">//%s%Keep%s%track%s%of%s%how%s%many%s%rules%s%run/pass/fail</span><br/>
+<a name="68"/><span style="color:red">%s%%s%%s%%s%68%s%%s%</span><span class="keyword">integer</span>%s%<span class="keyword">unsigned</span>%s%ruleRunCount%s%%s%[<span class="keyword">integer</span>];<br/>
+<a name="69"/><span style="color:red">%s%%s%%s%%s%69%s%%s%</span><span class="keyword">integer</span>%s%<span class="keyword">unsigned</span>%s%rulePassCount%s%[<span class="keyword">integer</span>];<br/>
+<a name="70"/><span style="color:red">%s%%s%%s%%s%70%s%%s%</span><span class="keyword">integer</span>%s%<span class="keyword">unsigned</span>%s%ruleFailCount%s%[<span class="keyword">integer</span>];<br/>
+<a name="71"/><span style="color:red">%s%%s%%s%%s%71%s%%s%</span><br/>
+<a name="72"/><span style="color:red">%s%%s%%s%%s%72%s%%s%</span><span class="keyword">initial</span>%s%<span class="keyword">begin</span><br/>
+<a name="73"/><span style="color:red">%s%%s%%s%%s%73%s%%s%</span>%s%%s%%s%%s%tracker%s%=%s%<span class="keyword">new</span>();<br/>
+<a name="74"/><span style="color:red">%s%%s%%s%%s%74%s%%s%</span>%s%%s%%s%%s%defineCovLabels(tracker);<br/>
+<a name="75"/><span style="color:red">%s%%s%%s%%s%75%s%%s%</span>%s%%s%%s%%s%chkr%s%=%s%<span class="keyword">new</span>(`EXE_RULE_FILE,%s%`EXE_RULE_DISABLE_FILE);<br/>
+<a name="76"/><span style="color:red">%s%%s%%s%%s%76%s%%s%</span>%s%%s%%s%%s%chkr.setVerbose(VERBOSE);<br/>
+<a name="77"/><span style="color:red">%s%%s%%s%%s%77%s%%s%</span><span class="keyword">end</span><br/>
+<a name="78"/><span style="color:red">%s%%s%%s%%s%78%s%%s%</span><br/>
+<a name="79"/><span style="color:red">%s%%s%%s%%s%79%s%%s%</span><span class="comment">//%s%Defines%s%the%s%functional%s%coverage%s%conditions%s%desired</span><br/>
+<a name="80"/><span style="color:red">%s%%s%%s%%s%80%s%%s%</span><span class="comment">//%s%to%s%be%s%tracked</span><br/>
+<a name="81"/><span style="color:red">%s%%s%%s%%s%81%s%%s%</span><span class="keyword">task</span>%s%defineCovLabels%s%(<span class="keyword">input</span>%s%CovTracker%s%t);<br/>
+<a name="82"/><span style="color:red">%s%%s%%s%%s%82%s%%s%</span>%s%%s%%s%%s%<span class="keyword">begin</span><br/>
+<a name="83"/><span style="color:red">%s%%s%%s%%s%83%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"CLA2"</span>);<br/>
+<a name="84"/><span style="color:red">%s%%s%%s%%s%84%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"SPA"</span>);<br/>
+<a name="85"/><span style="color:red">%s%%s%%s%%s%85%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"SMA"</span>);<br/>
+<a name="86"/><span style="color:red">%s%%s%%s%%s%86%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"SNA"</span>);<br/>
+<a name="87"/><span style="color:red">%s%%s%%s%%s%87%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"SZA"</span>);<br/>
+<a name="88"/><span style="color:red">%s%%s%%s%%s%88%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"SZL"</span>);<br/>
+<a name="89"/><span style="color:red">%s%%s%%s%%s%89%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"SNL"</span>);<br/>
+<a name="90"/><span style="color:red">%s%%s%%s%%s%90%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"SKP"</span>);<br/>
+<a name="91"/><span style="color:red">%s%%s%%s%%s%91%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"OSR"</span>);<br/>
+<a name="92"/><span style="color:red">%s%%s%%s%%s%92%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"HLT"</span>);<br/>
+<a name="93"/><span style="color:red">%s%%s%%s%%s%93%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"CLA_CLL"</span>);<br/>
+<a name="94"/><span style="color:red">%s%%s%%s%%s%94%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"CLA1"</span>);<br/>
+<a name="95"/><span style="color:red">%s%%s%%s%%s%95%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"CLL"</span>);<br/>
+<a name="96"/><span style="color:red">%s%%s%%s%%s%96%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"CIA"</span>);<br/>
+<a name="97"/><span style="color:red">%s%%s%%s%%s%97%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"CMA"</span>);<br/>
+<a name="98"/><span style="color:red">%s%%s%%s%%s%98%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"CML"</span>);<br/>
+<a name="99"/><span style="color:red">%s%%s%%s%%s%99%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"RTR"</span>);<br/>
+<a name="100"/><span style="color:red">%s%%s%%s%100%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"RAR"</span>);<br/>
+<a name="101"/><span style="color:red">%s%%s%%s%101%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"RTL"</span>);<br/>
+<a name="102"/><span style="color:red">%s%%s%%s%102%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"RAL"</span>);<br/>
+<a name="103"/><span style="color:red">%s%%s%%s%103%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"IAC"</span>);<br/>
+<a name="104"/><span style="color:red">%s%%s%%s%104%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"NOP"</span>);<br/>
+<a name="105"/><span style="color:red">%s%%s%%s%105%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"JMP"</span>);<br/>
+<a name="106"/><span style="color:red">%s%%s%%s%106%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"JMS"</span>);<br/>
+<a name="107"/><span style="color:red">%s%%s%%s%107%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"DCA"</span>);<br/>
+<a name="108"/><span style="color:red">%s%%s%%s%108%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"ISZ"</span>);<br/>
+<a name="109"/><span style="color:red">%s%%s%%s%109%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"TAD"</span>);<br/>
+<a name="110"/><span style="color:red">%s%%s%%s%110%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%t.defineNewCov(<span class="literal">"AND"</span>);<br/>
+<a name="111"/><span style="color:red">%s%%s%%s%111%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="112"/><span style="color:red">%s%%s%%s%112%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="113"/><span style="color:red">%s%%s%%s%113%s%%s%</span><br/>
+<a name="114"/><span style="color:red">%s%%s%%s%114%s%%s%</span><span class="keyword">final</span>%s%<span class="keyword">begin</span><br/>
+<a name="115"/><span style="color:red">%s%%s%%s%115%s%%s%</span>%s%%s%%s%%s%dummy%s%=%s%chkr.printLogSummary();<br/>
+<a name="116"/><span style="color:red">%s%%s%%s%116%s%%s%</span>%s%%s%%s%%s%dummy%s%=%s%tracker.printCoverageReport();<br/>
+<a name="117"/><span style="color:red">%s%%s%%s%117%s%%s%</span><span class="keyword">end</span><br/>
+<a name="118"/><span style="color:red">%s%%s%%s%118%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="119"/><span style="color:red">%s%%s%%s%119%s%%s%</span><span class="keyword">logic</span>%s%prevStall;<br/>
+<a name="120"/><span style="color:red">%s%%s%%s%120%s%%s%</span><span class="keyword">logic</span>%s%justStalled;<br/>
+<a name="121"/><span style="color:red">%s%%s%%s%121%s%%s%</span><span class="keyword">assign</span>%s%justStalled%s%=%s%(~prevStall%s%&amp;%s%stall);<br/>
+<a name="122"/><span style="color:red">%s%%s%%s%122%s%%s%</span><span class="keyword">bit</span>%s%firstInstruction;<br/>
+<a name="123"/><span style="color:red">%s%%s%%s%123%s%%s%</span><br/>
+<a name="124"/><span style="color:red">%s%%s%%s%124%s%%s%</span><span class="comment">//%s%Clock%s%driven%s%logic.</span><br/>
+<a name="125"/><span style="color:red">%s%%s%%s%125%s%%s%</span><span class="comment">//%s%When%s%not%s%reset,%s%monitors%s%the%s%instruction</span><br/>
+<a name="126"/><span style="color:red">%s%%s%%s%126%s%%s%</span><span class="comment">//%s%busses%s%for%s%new%s%instructions%s%and%s%follows</span><br/>
+<a name="127"/><span style="color:red">%s%%s%%s%127%s%%s%</span><span class="comment">//%s%the%s%execution%s%path%s%for%s%each%s%one,%s%running</span><br/>
+<a name="128"/><span style="color:red">%s%%s%%s%128%s%%s%</span><span class="comment">//%s%all%s%defined%s%rules%s%in%s%the%s%process.</span><br/>
+<a name="129"/><span style="color:red">%s%%s%%s%129%s%%s%</span><span class="keyword">always</span>%s%@(<span class="keyattr">posedge</span>%s%clk)%s%<span class="keyword">begin</span><br/>
+<a name="130"/><span style="color:red">%s%%s%%s%130%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(~reset_n)%s%<span class="keyword">begin</span><br/>
+<a name="131"/><span style="color:red">%s%%s%%s%131%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%prevStall%s%&lt;=%s%1'b0;<br/>
+<a name="132"/><span style="color:red">%s%%s%%s%132%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%firstInstruction%s%=%s%1'b1;<br/>
+<a name="133"/><span style="color:red">%s%%s%%s%133%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span>%s%<span class="keyword">else</span>%s%<span class="keyword">begin</span><br/>
+<a name="134"/><span style="color:red">%s%%s%%s%134%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%prevStall%s%&lt;=%s%stall;<br/>
+<a name="135"/><span style="color:red">%s%%s%%s%135%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">if</span>%s%(hasNewInstruction(current_instr)%s%&amp;%s%justStalled)%s%<span class="keyword">begin</span><br/>
+<a name="136"/><span style="color:red">%s%%s%%s%136%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">if</span>%s%(firstInstruction)%s%<span class="keyword">begin</span><br/>
+<a name="137"/><span style="color:red">%s%%s%%s%137%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%dummy%s%=%s%chkr.runRule(25,%s%base_addr%s%===%s%`START_ADDRESS);<br/>
+<a name="138"/><span style="color:red">%s%%s%%s%138%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%dummy%s%=%s%chkr.runRule(26,%s%PC_value%s%===%s%base_addr);<br/>
+<a name="139"/><span style="color:red">%s%%s%%s%139%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%firstInstruction%s%=%s%1'b0;<br/>
+<a name="140"/><span style="color:red">%s%%s%%s%140%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="141"/><span style="color:red">%s%%s%%s%141%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%dummy%s%=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="142"/><span style="color:red">%s%%s%%s%142%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">if</span>%s%(chkr.runRule(12,instrIsLegal(current_instr)))%s%<span class="keyword">begin</span><br/>
+<a name="143"/><span style="color:red">%s%%s%%s%143%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%handleInstruction(current_instr);<br/>
+<a name="144"/><span style="color:red">%s%%s%%s%144%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">end</span>%s%<span class="keyword">else</span>%s%<span class="keyword">begin</span><br/>
+<a name="145"/><span style="color:red">%s%%s%%s%145%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Illegal%s%Instruction%s%Detected:%s%%p"</span>,%s%current_instr);<br/>
+<a name="146"/><span style="color:red">%s%%s%%s%146%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="147"/><span style="color:red">%s%%s%%s%147%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="148"/><span style="color:red">%s%%s%%s%148%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="149"/><span style="color:red">%s%%s%%s%149%s%%s%</span><span class="keyword">end</span><br/>
+<a name="150"/><span style="color:red">%s%%s%%s%150%s%%s%</span><br/>
+<a name="151"/><span style="color:red">%s%%s%%s%151%s%%s%</span><span class="comment">//%s%Helper%s%Tasks//Functions</span><br/>
+<a name="152"/><span style="color:red">%s%%s%%s%152%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="153"/><span style="color:red">%s%%s%%s%153%s%%s%</span><span class="comment">//%s%handleInstruction%s%-%s%Encapsulates%s%code%s%necessary</span><br/>
+<a name="154"/><span style="color:red">%s%%s%%s%154%s%%s%</span><span class="comment">//%s%to%s%follow%s%an%s%injected%s%instruction%s%and%s%run</span><br/>
+<a name="155"/><span style="color:red">%s%%s%%s%155%s%%s%</span><span class="comment">//%s%necessary%s%checks%s%on%s%it</span><br/>
+<a name="156"/><span style="color:red">%s%%s%%s%156%s%%s%</span><span class="keyword">task</span>%s%handleInstruction%s%(<span class="keyword">input</span>%s%instruction_pack%s%instr);<br/>
+<a name="157"/><span style="color:red">%s%%s%%s%157%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="158"/><span style="color:red">%s%%s%%s%158%s%%s%</span>%s%%s%%s%%s%ruleBit%s%=%s%1;<br/>
+<a name="159"/><span style="color:red">%s%%s%%s%159%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(isMemType(instr))%s%<span class="keyword">begin</span><br/>
+<a name="160"/><span style="color:red">%s%%s%%s%160%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%handleMemoryInstr(instr.memCode);<br/>
+<a name="161"/><span style="color:red">%s%%s%%s%161%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span>%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(isOp7Type(instr))%s%<span class="keyword">begin</span><br/>
+<a name="162"/><span style="color:red">%s%%s%%s%162%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%handleOp7Instr(instr.op7Code);<br/>
+<a name="163"/><span style="color:red">%s%%s%%s%163%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="164"/><span style="color:red">%s%%s%%s%164%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(ruleBit)%s%<span class="keyword">begin</span><br/>
+<a name="165"/><span style="color:red">%s%%s%%s%165%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="comment">//%s%Rule%s%bit%s%will%s%only%s%be%s%true%s%if%s%all%s%the</span><br/>
+<a name="166"/><span style="color:red">%s%%s%%s%166%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="comment">//%s%rules%s%for%s%a%s%given%s%instrucion%s%are%s%passed.</span><br/>
+<a name="167"/><span style="color:red">%s%%s%%s%167%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="comment">//%s%We%s%only%s%want%s%to%s%observe%s%the%s%instruction</span><br/>
+<a name="168"/><span style="color:red">%s%%s%%s%168%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="comment">//%s%for%s%coverage%s%purposes%s%if%s%it%s%passed%s%all%s%rules.</span><br/>
+<a name="169"/><span style="color:red">%s%%s%%s%169%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%observeInstruction(tracker,%s%instr);<br/>
+<a name="170"/><span style="color:red">%s%%s%%s%170%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="171"/><span style="color:red">%s%%s%%s%171%s%%s%</span><span class="keyword">end</span><br/>
+<a name="172"/><span style="color:red">%s%%s%%s%172%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="173"/><span style="color:red">%s%%s%%s%173%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="174"/><span style="color:red">%s%%s%%s%174%s%%s%</span><span class="comment">//%s%This%s%will%s%call%s%observe%s%for%s%the%s%instruction</span><br/>
+<a name="175"/><span style="color:red">%s%%s%%s%175%s%%s%</span><span class="comment">//%s%contained%s%in%s%"instr"</span><br/>
+<a name="176"/><span style="color:red">%s%%s%%s%176%s%%s%</span><span class="keyword">task</span>%s%observeInstruction%s%(<br/>
+<a name="177"/><span style="color:red">%s%%s%%s%177%s%%s%</span><span class="keyword">input</span>%s%CovTracker%s%t,<br/>
+<a name="178"/><span style="color:red">%s%%s%%s%178%s%%s%</span><span class="keyword">input</span>%s%instruction_pack%s%instr<br/>
+<a name="179"/><span style="color:red">%s%%s%%s%179%s%%s%</span>);<br/>
+<a name="180"/><span style="color:red">%s%%s%%s%180%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="181"/><span style="color:red">%s%%s%%s%181%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(instr.op7Code.NOP)%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%t.observe(<span class="literal">"NOP"</span>);<br/>
+<a name="182"/><span style="color:red">%s%%s%%s%182%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.IAC)%s%%s%%s%%s%%s%t.observe(<span class="literal">"IAC"</span>);<br/>
+<a name="183"/><span style="color:red">%s%%s%%s%183%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.RAL)%s%%s%%s%%s%%s%t.observe(<span class="literal">"RAL"</span>);<br/>
+<a name="184"/><span style="color:red">%s%%s%%s%184%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.RTL)%s%%s%%s%%s%%s%t.observe(<span class="literal">"RTL"</span>);<br/>
+<a name="185"/><span style="color:red">%s%%s%%s%185%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.RAR)%s%%s%%s%%s%%s%t.observe(<span class="literal">"RAR"</span>);<br/>
+<a name="186"/><span style="color:red">%s%%s%%s%186%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.RTR)%s%%s%%s%%s%%s%t.observe(<span class="literal">"RTR"</span>);<br/>
+<a name="187"/><span style="color:red">%s%%s%%s%187%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.CML)%s%%s%%s%%s%%s%t.observe(<span class="literal">"CML"</span>);<br/>
+<a name="188"/><span style="color:red">%s%%s%%s%188%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.CMA)%s%%s%%s%%s%%s%t.observe(<span class="literal">"CMA"</span>);<br/>
+<a name="189"/><span style="color:red">%s%%s%%s%189%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.CIA)%s%%s%%s%%s%%s%t.observe(<span class="literal">"CIA"</span>);<br/>
+<a name="190"/><span style="color:red">%s%%s%%s%190%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.CLL)%s%%s%%s%%s%%s%t.observe(<span class="literal">"CLL"</span>);<br/>
+<a name="191"/><span style="color:red">%s%%s%%s%191%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.CLA1)%s%%s%%s%%s%t.observe(<span class="literal">"CLA1"</span>);<br/>
+<a name="192"/><span style="color:red">%s%%s%%s%192%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.CLA_CLL)%s%t.observe(<span class="literal">"CLA_CLL"</span>);<br/>
+<a name="193"/><span style="color:red">%s%%s%%s%193%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.HLT)%s%%s%%s%%s%%s%t.observe(<span class="literal">"HLT"</span>);<br/>
+<a name="194"/><span style="color:red">%s%%s%%s%194%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.OSR)%s%%s%%s%%s%%s%t.observe(<span class="literal">"OSR"</span>);<br/>
+<a name="195"/><span style="color:red">%s%%s%%s%195%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.SKP)%s%%s%%s%%s%%s%t.observe(<span class="literal">"SKP"</span>);<br/>
+<a name="196"/><span style="color:red">%s%%s%%s%196%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.SNL)%s%%s%%s%%s%%s%t.observe(<span class="literal">"SNL"</span>);<br/>
+<a name="197"/><span style="color:red">%s%%s%%s%197%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.SZL)%s%%s%%s%%s%%s%t.observe(<span class="literal">"SZL"</span>);<br/>
+<a name="198"/><span style="color:red">%s%%s%%s%198%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.SZA)%s%%s%%s%%s%%s%t.observe(<span class="literal">"SZA"</span>);<br/>
+<a name="199"/><span style="color:red">%s%%s%%s%199%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.SNA)%s%%s%%s%%s%%s%t.observe(<span class="literal">"SNA"</span>);<br/>
+<a name="200"/><span style="color:red">%s%%s%%s%200%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.SMA)%s%%s%%s%%s%%s%t.observe(<span class="literal">"SMA"</span>);<br/>
+<a name="201"/><span style="color:red">%s%%s%%s%201%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.SPA)%s%%s%%s%%s%%s%t.observe(<span class="literal">"SPA"</span>);<br/>
+<a name="202"/><span style="color:red">%s%%s%%s%202%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.op7Code.CLA2)%s%%s%%s%%s%t.observe(<span class="literal">"CLA2"</span>);<br/>
+<a name="203"/><span style="color:red">%s%%s%%s%203%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.memCode.AND)%s%%s%%s%%s%%s%t.observe(<span class="literal">"AND"</span>);<br/>
+<a name="204"/><span style="color:red">%s%%s%%s%204%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.memCode.TAD)%s%%s%%s%%s%%s%t.observe(<span class="literal">"TAD"</span>);<br/>
+<a name="205"/><span style="color:red">%s%%s%%s%205%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.memCode.ISZ)%s%%s%%s%%s%%s%t.observe(<span class="literal">"ISZ"</span>);<br/>
+<a name="206"/><span style="color:red">%s%%s%%s%206%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.memCode.DCA)%s%%s%%s%%s%%s%t.observe(<span class="literal">"DCA"</span>);<br/>
+<a name="207"/><span style="color:red">%s%%s%%s%207%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.memCode.JMS)%s%%s%%s%%s%%s%t.observe(<span class="literal">"JMS"</span>);<br/>
+<a name="208"/><span style="color:red">%s%%s%%s%208%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(instr.memCode.JMP)%s%%s%%s%%s%%s%t.observe(<span class="literal">"JMP"</span>);<br/>
+<a name="209"/><span style="color:red">%s%%s%%s%209%s%%s%</span><span class="keyword">end</span><br/>
+<a name="210"/><span style="color:red">%s%%s%%s%210%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="211"/><span style="color:red">%s%%s%%s%211%s%%s%</span><br/>
+<a name="212"/><span style="color:red">%s%%s%%s%212%s%%s%</span><span class="comment">//%s%Returns%s%true%s%if%s%there%s%is%s%a%s%new%s%memory%s%or%s%op7</span><br/>
+<a name="213"/><span style="color:red">%s%%s%%s%213%s%%s%</span><span class="comment">//%s%opcode%s%contained%s%in%s%the%s%passed%s%instruction</span><br/>
+<a name="214"/><span style="color:red">%s%%s%%s%214%s%%s%</span><span class="keyword">function</span>%s%hasNewInstruction%s%(<br/>
+<a name="215"/><span style="color:red">%s%%s%%s%215%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%instruction_pack%s%instr<br/>
+<a name="216"/><span style="color:red">%s%%s%%s%216%s%%s%</span>);<br/>
+<a name="217"/><span style="color:red">%s%%s%%s%217%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="218"/><span style="color:red">%s%%s%%s%218%s%%s%</span>%s%%s%%s%%s%<span class="keyword">return</span>%s%(isMemType(instr)%s%||%s%isOp7Type(instr));<br/>
+<a name="219"/><span style="color:red">%s%%s%%s%219%s%%s%</span><span class="keyword">end</span><br/>
+<a name="220"/><span style="color:red">%s%%s%%s%220%s%%s%</span><span class="keyword">endfunction</span><br/>
+<a name="221"/><span style="color:red">%s%%s%%s%221%s%%s%</span><br/>
+<a name="222"/><span style="color:red">%s%%s%%s%222%s%%s%</span><span class="comment">//%s%instrIsLegal%s%-%s%Ensure%s%only%s%one%s%instruction%s%is</span><br/>
+<a name="223"/><span style="color:red">%s%%s%%s%223%s%%s%</span><span class="comment">//%s%being%s%inserted%s%into%s%the%s%execution%s%unit%s%at%s%a%s%time.</span><br/>
+<a name="224"/><span style="color:red">%s%%s%%s%224%s%%s%</span><span class="comment">//%s%Returns%s%true%s%if%s%0%s%or%s%1%s%instructions%s%are%s%active,</span><br/>
+<a name="225"/><span style="color:red">%s%%s%%s%225%s%%s%</span><span class="comment">//%s%and%s%returns%s%false%s%if%s%more%s%than%s%1%s%is%s%active.</span><br/>
+<a name="226"/><span style="color:red">%s%%s%%s%226%s%%s%</span><span class="keyword">function</span>%s%instrIsLegal%s%(<br/>
+<a name="227"/><span style="color:red">%s%%s%%s%227%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%instruction_pack%s%instr<br/>
+<a name="228"/><span style="color:red">%s%%s%%s%228%s%%s%</span>);<br/>
+<a name="229"/><span style="color:red">%s%%s%%s%229%s%%s%</span>%s%%s%%s%%s%<span class="keyword">bit</span>%s%isLegal;<br/>
+<a name="230"/><span style="color:red">%s%%s%%s%230%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="231"/><span style="color:red">%s%%s%%s%231%s%%s%</span>%s%%s%%s%%s%isLegal%s%=%s%1;<br/>
+<a name="232"/><span style="color:red">%s%%s%%s%232%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!isOp7Type(instr)%s%&amp;%s%!isMemType(instr))%s%<span class="keyword">begin</span><br/>
+<a name="233"/><span style="color:red">%s%%s%%s%233%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">return</span>%s%1;<br/>
+<a name="234"/><span style="color:red">%s%%s%%s%234%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span>%s%<span class="keyword">else</span>%s%<span class="keyword">begin</span><br/>
+<a name="235"/><span style="color:red">%s%%s%%s%235%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">return</span>%s%(instr.op7Code.NOP%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="236"/><span style="color:red">%s%%s%%s%236%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.IAC%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="237"/><span style="color:red">%s%%s%%s%237%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.RAL%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="238"/><span style="color:red">%s%%s%%s%238%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.RTL%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="239"/><span style="color:red">%s%%s%%s%239%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.RAR%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="240"/><span style="color:red">%s%%s%%s%240%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.RTR%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="241"/><span style="color:red">%s%%s%%s%241%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CML%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="242"/><span style="color:red">%s%%s%%s%242%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CMA%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="243"/><span style="color:red">%s%%s%%s%243%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CIA%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="244"/><span style="color:red">%s%%s%%s%244%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CLL%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="245"/><span style="color:red">%s%%s%%s%245%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CLA1%s%%s%%s%%s%%s%%s%^<br/>
+<a name="246"/><span style="color:red">%s%%s%%s%246%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CLA_CLL%s%%s%%s%^<br/>
+<a name="247"/><span style="color:red">%s%%s%%s%247%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.HLT%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="248"/><span style="color:red">%s%%s%%s%248%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.OSR%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="249"/><span style="color:red">%s%%s%%s%249%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SKP%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="250"/><span style="color:red">%s%%s%%s%250%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SNL%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="251"/><span style="color:red">%s%%s%%s%251%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SZL%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="252"/><span style="color:red">%s%%s%%s%252%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SZA%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="253"/><span style="color:red">%s%%s%%s%253%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SNA%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="254"/><span style="color:red">%s%%s%%s%254%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SMA%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="255"/><span style="color:red">%s%%s%%s%255%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SPA%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="256"/><span style="color:red">%s%%s%%s%256%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CLA2%s%%s%%s%%s%%s%%s%^<br/>
+<a name="257"/><span style="color:red">%s%%s%%s%257%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.AND%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="258"/><span style="color:red">%s%%s%%s%258%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.TAD%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="259"/><span style="color:red">%s%%s%%s%259%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.ISZ%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="260"/><span style="color:red">%s%%s%%s%260%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.DCA%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="261"/><span style="color:red">%s%%s%%s%261%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.JMS%s%%s%%s%%s%%s%%s%%s%^<br/>
+<a name="262"/><span style="color:red">%s%%s%%s%262%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.JMP);<br/>
+<a name="263"/><span style="color:red">%s%%s%%s%263%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="264"/><span style="color:red">%s%%s%%s%264%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="265"/><span style="color:red">%s%%s%%s%265%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%<span class="keyword">return</span>%s%isLegal;<br/>
+<a name="266"/><span style="color:red">%s%%s%%s%266%s%%s%</span><span class="keyword">end</span><br/>
+<a name="267"/><span style="color:red">%s%%s%%s%267%s%%s%</span><span class="keyword">endfunction</span><br/>
+<a name="268"/><span style="color:red">%s%%s%%s%268%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="269"/><span style="color:red">%s%%s%%s%269%s%%s%</span><span class="comment">/*****************%s%OP7%s%Instruction%s%Tasks%s%********************</span><br/>
+<a name="270"/><span style="color:red">%s%%s%%s%270%s%%s%</span><span class="comment">%s%Tasks%s%related%s%to%s%handling%s%the%s%rule%s%checking%s%of%s%OP7%s%opcode</span><br/>
+<a name="271"/><span style="color:red">%s%%s%%s%271%s%%s%</span><span class="comment">%s%instructions%s%being%s%passed%s%into%s%the%s%execution%s%unit.</span><br/>
+<a name="272"/><span style="color:red">%s%%s%%s%272%s%%s%</span><span class="comment">%s%*</span><br/>
+<a name="273"/><span style="color:red">%s%%s%%s%273%s%%s%</span><span class="comment">%s%***********************************************************/</span><br/>
+<a name="274"/><span style="color:red">%s%%s%%s%274%s%%s%</span>%s%%s%<br/>
+<a name="275"/><span style="color:red">%s%%s%%s%275%s%%s%</span><span class="comment">//%s%isOp7Type%s%-%s%Returns%s%true%s%if%s%the%s%instruction</span><br/>
+<a name="276"/><span style="color:red">%s%%s%%s%276%s%%s%</span><span class="comment">//%s%contains%s%at%s%least%s%one%s%op7%s%operation%s%active</span><br/>
+<a name="277"/><span style="color:red">%s%%s%%s%277%s%%s%</span><span class="keyword">function</span>%s%isOp7Type%s%(<br/>
+<a name="278"/><span style="color:red">%s%%s%%s%278%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%instruction_pack%s%instr<br/>
+<a name="279"/><span style="color:red">%s%%s%%s%279%s%%s%</span>);<br/>
+<a name="280"/><span style="color:red">%s%%s%%s%280%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="281"/><span style="color:red">%s%%s%%s%281%s%%s%</span>%s%%s%%s%%s%<span class="keyword">return</span>%s%(instr.op7Code.NOP%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="282"/><span style="color:red">%s%%s%%s%282%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.IAC%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="283"/><span style="color:red">%s%%s%%s%283%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.RAL%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="284"/><span style="color:red">%s%%s%%s%284%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.RTL%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="285"/><span style="color:red">%s%%s%%s%285%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.RAR%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="286"/><span style="color:red">%s%%s%%s%286%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.RTR%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="287"/><span style="color:red">%s%%s%%s%287%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CML%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="288"/><span style="color:red">%s%%s%%s%288%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CMA%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="289"/><span style="color:red">%s%%s%%s%289%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CIA%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="290"/><span style="color:red">%s%%s%%s%290%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CLL%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="291"/><span style="color:red">%s%%s%%s%291%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CLA1%s%%s%%s%%s%%s%%s%||<br/>
+<a name="292"/><span style="color:red">%s%%s%%s%292%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CLA_CLL%s%%s%%s%||<br/>
+<a name="293"/><span style="color:red">%s%%s%%s%293%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.HLT%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="294"/><span style="color:red">%s%%s%%s%294%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.OSR%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="295"/><span style="color:red">%s%%s%%s%295%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SKP%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="296"/><span style="color:red">%s%%s%%s%296%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SNL%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="297"/><span style="color:red">%s%%s%%s%297%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SZL%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="298"/><span style="color:red">%s%%s%%s%298%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SZA%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="299"/><span style="color:red">%s%%s%%s%299%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SNA%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="300"/><span style="color:red">%s%%s%%s%300%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SMA%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="301"/><span style="color:red">%s%%s%%s%301%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.SPA%s%%s%%s%%s%%s%%s%%s%||<br/>
+<a name="302"/><span style="color:red">%s%%s%%s%302%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.op7Code.CLA2);<br/>
+<a name="303"/><span style="color:red">%s%%s%%s%303%s%%s%</span><span class="keyword">end</span><br/>
+<a name="304"/><span style="color:red">%s%%s%%s%304%s%%s%</span><span class="keyword">endfunction</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%<br/>
+<a name="305"/><span style="color:red">%s%%s%%s%305%s%%s%</span><br/>
+<a name="306"/><span style="color:red">%s%%s%%s%306%s%%s%</span><span class="comment">//%s%handleOp7Instr%s%Encapsulates%s%code%s%necessary</span><br/>
+<a name="307"/><span style="color:red">%s%%s%%s%307%s%%s%</span><span class="comment">//%s%to%s%track%s%and%s%run%s%checkers%s%for%s%op7%s%opcodes</span><br/>
+<a name="308"/><span style="color:red">%s%%s%%s%308%s%%s%</span><span class="keyword">task</span>%s%handleOp7Instr%s%(<br/>
+<a name="309"/><span style="color:red">%s%%s%%s%309%s%%s%</span>%s%%s%%s%%s%pdp_op7_opcode_s%s%opCode<br/>
+<a name="310"/><span style="color:red">%s%%s%%s%310%s%%s%</span>);<br/>
+<a name="311"/><span style="color:red">%s%%s%%s%311%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="312"/><span style="color:red">%s%%s%%s%312%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%%s%%s%%s%%s%%s%(opCode.NOP)%s%%s%%s%%s%%s%handleNOP(opCode);<br/>
+<a name="313"/><span style="color:red">%s%%s%%s%313%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(opCode.CLA_CLL)%s%handleCLA_CLL(opCode);<br/>
+<a name="314"/><span style="color:red">%s%%s%%s%314%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%handleNOP(opCode);<br/>
+<a name="315"/><span style="color:red">%s%%s%%s%315%s%%s%</span><span class="keyword">end</span><br/>
+<a name="316"/><span style="color:red">%s%%s%%s%316%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="317"/><span style="color:red">%s%%s%%s%317%s%%s%</span><br/>
+<a name="318"/><span style="color:red">%s%%s%%s%318%s%%s%</span><span class="keyword">task</span>%s%handleNOP%s%(<br/>
+<a name="319"/><span style="color:red">%s%%s%%s%319%s%%s%</span>%s%%s%%s%%s%pdp_op7_opcode_s%s%opCode<br/>
+<a name="320"/><span style="color:red">%s%%s%%s%320%s%%s%</span>);<br/>
+<a name="321"/><span style="color:red">%s%%s%%s%321%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%local_PC_value%s%=%s%PC_value;<br/>
+<a name="322"/><span style="color:red">%s%%s%%s%322%s%%s%</span><span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%expected_PC;<br/>
+<a name="323"/><span style="color:red">%s%%s%%s%323%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="324"/><span style="color:red">%s%%s%%s%324%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall,%s%<span class="literal">"Rule%s%3%s%NOP%s%Failure"</span>);<br/>
+<a name="325"/><span style="color:red">%s%%s%%s%325%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="326"/><span style="color:red">%s%%s%%s%326%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall,%s%<span class="literal">"Rule%s%3%s%NOP%s%Failure"</span>);<br/>
+<a name="327"/><span style="color:red">%s%%s%%s%327%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="328"/><span style="color:red">%s%%s%%s%328%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall,%s%<span class="literal">"Rule%s%3%s%NOP%s%Failure"</span>);<br/>
+<a name="329"/><span style="color:red">%s%%s%%s%329%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="330"/><span style="color:red">%s%%s%%s%330%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(4,~stall,%s%<span class="literal">"Rule%s%4%s%NOP%s%Failure"</span>);<br/>
+<a name="331"/><span style="color:red">%s%%s%%s%331%s%%s%</span>%s%%s%%s%%s%expected_PC%s%=%s%local_PC_value%s%+%s%1;<br/>
+<a name="332"/><span style="color:red">%s%%s%%s%332%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(7,%s%PC_value%s%===%s%expected_PC))%s%<span class="keyword">begin</span><br/>
+<a name="333"/><span style="color:red">%s%%s%%s%333%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="334"/><span style="color:red">%s%%s%%s%334%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"PC_value%s%not%s%properly%s%updated%s%during%s%NOP.%s%Expected:%s%%p%s%Actual:%s%%p"</span>,%s%expected_PC,PC_value);<br/>
+<a name="335"/><span style="color:red">%s%%s%%s%335%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="336"/><span style="color:red">%s%%s%%s%336%s%%s%</span><span class="keyword">end</span><br/>
+<a name="337"/><span style="color:red">%s%%s%%s%337%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="338"/><span style="color:red">%s%%s%%s%338%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="339"/><span style="color:red">%s%%s%%s%339%s%%s%</span><span class="keyword">task</span>%s%handleCLA_CLL%s%(<br/>
+<a name="340"/><span style="color:red">%s%%s%%s%340%s%%s%</span>%s%%s%%s%%s%pdp_op7_opcode_s%s%opCode<br/>
+<a name="341"/><span style="color:red">%s%%s%%s%341%s%%s%</span>);<br/>
+<a name="342"/><span style="color:red">%s%%s%%s%342%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%local_PC_value%s%=%s%PC_value;<br/>
+<a name="343"/><span style="color:red">%s%%s%%s%343%s%%s%</span><span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%expected_PC;<br/>
+<a name="344"/><span style="color:red">%s%%s%%s%344%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="345"/><span style="color:red">%s%%s%%s%345%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall,%s%<span class="literal">"Rule%s%3%s%CLA_CLL%s%Failure"</span>);<br/>
+<a name="346"/><span style="color:red">%s%%s%%s%346%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="347"/><span style="color:red">%s%%s%%s%347%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall,%s%<span class="literal">"Rule%s%3%s%CLA_CLL%s%Failure"</span>);<br/>
+<a name="348"/><span style="color:red">%s%%s%%s%348%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="349"/><span style="color:red">%s%%s%%s%349%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall,%s%<span class="literal">"Rule%s%3%s%CLA_CLL%s%Failure"</span>);<br/>
+<a name="350"/><span style="color:red">%s%%s%%s%350%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(23,%s%wb_intAcc%s%===%s%0);<br/>
+<a name="351"/><span style="color:red">%s%%s%%s%351%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(24,%s%~wb_intLink);<br/>
+<a name="352"/><span style="color:red">%s%%s%%s%352%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="353"/><span style="color:red">%s%%s%%s%353%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(4,~stall,%s%<span class="literal">"Rule%s%4%s%CLA_CLL%s%Failure"</span>);<br/>
+<a name="354"/><span style="color:red">%s%%s%%s%354%s%%s%</span>%s%%s%%s%%s%expected_PC%s%=%s%local_PC_value%s%+%s%1;<br/>
+<a name="355"/><span style="color:red">%s%%s%%s%355%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(7,%s%PC_value%s%===%s%expected_PC))%s%<span class="keyword">begin</span><br/>
+<a name="356"/><span style="color:red">%s%%s%%s%356%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="357"/><span style="color:red">%s%%s%%s%357%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"PC_value%s%not%s%properly%s%updated%s%during%s%CLA_CLL.%s%Expected:%s%%p%s%Actual:%s%%p"</span>,%s%expected_PC,PC_value);<br/>
+<a name="358"/><span style="color:red">%s%%s%%s%358%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="359"/><span style="color:red">%s%%s%%s%359%s%%s%</span><span class="keyword">end</span><br/>
+<a name="360"/><span style="color:red">%s%%s%%s%360%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="361"/><span style="color:red">%s%%s%%s%361%s%%s%</span><br/>
+<a name="362"/><span style="color:red">%s%%s%%s%362%s%%s%</span><span class="comment">/*****************%s%Memory%s%Instruction%s%Tasks%s%********************</span><br/>
+<a name="363"/><span style="color:red">%s%%s%%s%363%s%%s%</span><span class="comment">%s%Tasks%s%related%s%to%s%handling%s%the%s%rule%s%checking%s%of%s%memory%s%opcode</span><br/>
+<a name="364"/><span style="color:red">%s%%s%%s%364%s%%s%</span><span class="comment">%s%instructions%s%being%s%passed%s%into%s%the%s%execution%s%unit.</span><br/>
+<a name="365"/><span style="color:red">%s%%s%%s%365%s%%s%</span><span class="comment">%s%*</span><br/>
+<a name="366"/><span style="color:red">%s%%s%%s%366%s%%s%</span><span class="comment">%s%**************************************************************/</span><br/>
+<a name="367"/><span style="color:red">%s%%s%%s%367%s%%s%</span><br/>
+<a name="368"/><span style="color:red">%s%%s%%s%368%s%%s%</span><span class="comment">//%s%isMemType%s%-%s%Returns%s%true%s%if%s%at%s%least</span><br/>
+<a name="369"/><span style="color:red">%s%%s%%s%369%s%%s%</span><span class="comment">//%s%one%s%memory%s%opcode%s%is%s%active</span><br/>
+<a name="370"/><span style="color:red">%s%%s%%s%370%s%%s%</span><span class="keyword">function</span>%s%isMemType%s%(<br/>
+<a name="371"/><span style="color:red">%s%%s%%s%371%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%instruction_pack%s%instr<br/>
+<a name="372"/><span style="color:red">%s%%s%%s%372%s%%s%</span>);<br/>
+<a name="373"/><span style="color:red">%s%%s%%s%373%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="374"/><span style="color:red">%s%%s%%s%374%s%%s%</span>%s%%s%%s%%s%<span class="keyword">return</span>%s%(instr.memCode.AND%s%||<br/>
+<a name="375"/><span style="color:red">%s%%s%%s%375%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.TAD%s%||<br/>
+<a name="376"/><span style="color:red">%s%%s%%s%376%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.ISZ%s%||<br/>
+<a name="377"/><span style="color:red">%s%%s%%s%377%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.DCA%s%||<br/>
+<a name="378"/><span style="color:red">%s%%s%%s%378%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.JMS%s%||<br/>
+<a name="379"/><span style="color:red">%s%%s%%s%379%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%instr.memCode.JMP);<br/>
+<a name="380"/><span style="color:red">%s%%s%%s%380%s%%s%</span><span class="keyword">end</span><br/>
+<a name="381"/><span style="color:red">%s%%s%%s%381%s%%s%</span><span class="keyword">endfunction</span><br/>
+<a name="382"/><span style="color:red">%s%%s%%s%382%s%%s%</span><br/>
+<a name="383"/><span style="color:red">%s%%s%%s%383%s%%s%</span><span class="comment">//%s%handleMemoryInstr%s%-%s%Encapsulates%s%code%s%necessary</span><br/>
+<a name="384"/><span style="color:red">%s%%s%%s%384%s%%s%</span><span class="comment">//%s%to%s%track%s%and%s%run%s%checkers%s%for%s%memory%s%instructions</span><br/>
+<a name="385"/><span style="color:red">%s%%s%%s%385%s%%s%</span><span class="keyword">task</span>%s%handleMemoryInstr%s%(<br/>
+<a name="386"/><span style="color:red">%s%%s%%s%386%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%pdp_mem_opcode_s%s%mCode<br/>
+<a name="387"/><span style="color:red">%s%%s%%s%387%s%%s%</span>);<br/>
+<a name="388"/><span style="color:red">%s%%s%%s%388%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="389"/><span style="color:red">%s%%s%%s%389%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%%s%%s%%s%%s%%s%(mCode.AND)%s%memANDInstr(mCode);<br/>
+<a name="390"/><span style="color:red">%s%%s%%s%390%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(mCode.ISZ)%s%memISZInstr(mCode);<br/>
+<a name="391"/><span style="color:red">%s%%s%%s%391%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(mCode.TAD)%s%memTADInstr(mCode);<br/>
+<a name="392"/><span style="color:red">%s%%s%%s%392%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(mCode.DCA)%s%memDCAInstr(mCode);<br/>
+<a name="393"/><span style="color:red">%s%%s%%s%393%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(mCode.JMS)%s%memJMSInstr(mCode);<br/>
+<a name="394"/><span style="color:red">%s%%s%%s%394%s%%s%</span>%s%%s%%s%%s%<span class="keyword">else</span>%s%<span class="keyword">if</span>%s%(mCode.JMP)%s%memJMPInstr(mCode);<br/>
+<a name="395"/><span style="color:red">%s%%s%%s%395%s%%s%</span><span class="keyword">end</span><br/>
+<a name="396"/><span style="color:red">%s%%s%%s%396%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="397"/><span style="color:red">%s%%s%%s%397%s%%s%</span><br/>
+<a name="398"/><span style="color:red">%s%%s%%s%398%s%%s%</span><br/>
+<a name="399"/><span style="color:red">%s%%s%%s%399%s%%s%</span><span class="keyword">task</span>%s%memANDInstr%s%(<br/>
+<a name="400"/><span style="color:red">%s%%s%%s%400%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%pdp_mem_opcode_s%s%instr<br/>
+<a name="401"/><span style="color:red">%s%%s%%s%401%s%%s%</span>);<br/>
+<a name="402"/><span style="color:red">%s%%s%%s%402%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`DATA_WIDTH:0]%s%temp_intAcc%s%=%s%wb_intAcc;<br/>
+<a name="403"/><span style="color:red">%s%%s%%s%403%s%%s%</span><span class="keyword">logic</span>%s%[`DATA_WIDTH-1:0]%s%temp_rdData;<br/>
+<a name="404"/><span style="color:red">%s%%s%%s%404%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">integer</span>%s%clkCount%s%=%s%0;<br/>
+<a name="405"/><span style="color:red">%s%%s%%s%405%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%local_PC_value%s%=%s%PC_value;<br/>
+<a name="406"/><span style="color:red">%s%%s%%s%406%s%%s%</span><span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%expected_PC;<br/>
+<a name="407"/><span style="color:red">%s%%s%%s%407%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="408"/><span style="color:red">%s%%s%%s%408%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="409"/><span style="color:red">%s%%s%%s%409%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%Wait%s%for%s%the%s%read%s%request%s%to%s%come%s%through</span><br/>
+<a name="410"/><span style="color:red">%s%%s%%s%410%s%%s%</span>%s%%s%%s%%s%<span class="keyword">wait</span>(exec_rd_req)%s%<span class="keyword">begin</span><br/>
+<a name="411"/><span style="color:red">%s%%s%%s%411%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="412"/><span style="color:red">%s%%s%%s%412%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="413"/><span style="color:red">%s%%s%%s%413%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="414"/><span style="color:red">%s%%s%%s%414%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="415"/><span style="color:red">%s%%s%%s%415%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(1,%s%exec_rd_addr%s%===%s%instr.mem_inst_addr))%s%<span class="keyword">begin</span><br/>
+<a name="416"/><span style="color:red">%s%%s%%s%416%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="417"/><span style="color:red">%s%%s%%s%417%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display%s%(<span class="literal">"Expected%s%Read%s%Address:%s%%d%s%%s%%s%%s%Actual%s%Read%s%Address:%s%%d"</span>,%s%instr.mem_inst_addr,%s%exec_rd_addr);<br/>
+<a name="418"/><span style="color:red">%s%%s%%s%418%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="419"/><span style="color:red">%s%%s%%s%419%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="420"/><span style="color:red">%s%%s%%s%420%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="421"/><span style="color:red">%s%%s%%s%421%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="422"/><span style="color:red">%s%%s%%s%422%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="423"/><span style="color:red">%s%%s%%s%423%s%%s%</span>%s%%s%%s%%s%temp_rdData%s%=%s%exec_rd_data;<br/>
+<a name="424"/><span style="color:red">%s%%s%%s%424%s%%s%</span>%s%%s%%s%%s%temp_intAcc%s%=%s%temp_intAcc%s%&amp;%s%temp_rdData;<br/>
+<a name="425"/><span style="color:red">%s%%s%%s%425%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="426"/><span style="color:red">%s%%s%%s%426%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="427"/><span style="color:red">%s%%s%%s%427%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="428"/><span style="color:red">%s%%s%%s%428%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(2,%s%temp_intAcc%s%===%s%wb_intAcc);<br/>
+<a name="429"/><span style="color:red">%s%%s%%s%429%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="430"/><span style="color:red">%s%%s%%s%430%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="431"/><span style="color:red">%s%%s%%s%431%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(5,%s%clkCount%s%===%s%4))%s%<span class="keyword">begin</span><br/>
+<a name="432"/><span style="color:red">%s%%s%%s%432%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="433"/><span style="color:red">%s%%s%%s%433%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Expected%s%4%s%clock%s%cycles%s%from%s%branch%s%to%s%stall%s%de-asserting%s%for%s%AND"</span>);<br/>
+<a name="434"/><span style="color:red">%s%%s%%s%434%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="435"/><span style="color:red">%s%%s%%s%435%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(4,%s%~stall))%s%<span class="keyword">begin</span><br/>
+<a name="436"/><span style="color:red">%s%%s%%s%436%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="437"/><span style="color:red">%s%%s%%s%437%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Stall%s%not%s%de-asserted%s%after%s%4%s%clock%s%cycles%s%for%s%AND"</span>);<br/>
+<a name="438"/><span style="color:red">%s%%s%%s%438%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="439"/><span style="color:red">%s%%s%%s%439%s%%s%</span>%s%%s%%s%%s%expected_PC%s%=%s%local_PC_value%s%+%s%1;<br/>
+<a name="440"/><span style="color:red">%s%%s%%s%440%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(7,%s%PC_value%s%===%s%expected_PC))%s%<span class="keyword">begin</span><br/>
+<a name="441"/><span style="color:red">%s%%s%%s%441%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="442"/><span style="color:red">%s%%s%%s%442%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"PC_value%s%not%s%properly%s%updated%s%during%s%AND.%s%Expected:%s%%p%s%Actual:%s%%p"</span>,%s%expected_PC,PC_value);<br/>
+<a name="443"/><span style="color:red">%s%%s%%s%443%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="444"/><span style="color:red">%s%%s%%s%444%s%%s%</span><span class="keyword">end</span><br/>
+<a name="445"/><span style="color:red">%s%%s%%s%445%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="446"/><span style="color:red">%s%%s%%s%446%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="447"/><span style="color:red">%s%%s%%s%447%s%%s%</span><span class="keyword">task</span>%s%memISZInstr%s%(<br/>
+<a name="448"/><span style="color:red">%s%%s%%s%448%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%pdp_mem_opcode_s%s%instr<br/>
+<a name="449"/><span style="color:red">%s%%s%%s%449%s%%s%</span>);<br/>
+<a name="450"/><span style="color:red">%s%%s%%s%450%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`DATA_WIDTH:0]%s%temp_intAcc%s%=%s%wb_intAcc;<br/>
+<a name="451"/><span style="color:red">%s%%s%%s%451%s%%s%</span><span class="keyword">logic</span>%s%[`DATA_WIDTH-1:0]%s%temp_rdData;<br/>
+<a name="452"/><span style="color:red">%s%%s%%s%452%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">integer</span>%s%clkCount%s%=%s%0;<br/>
+<a name="453"/><span style="color:red">%s%%s%%s%453%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%local_PC_value%s%=%s%PC_value;<br/>
+<a name="454"/><span style="color:red">%s%%s%%s%454%s%%s%</span><span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%expected_PC;<br/>
+<a name="455"/><span style="color:red">%s%%s%%s%455%s%%s%</span><span class="keyword">logic</span>%s%[`DATA_WIDTH-1:0]%s%wrData_expected;<br/>
+<a name="456"/><span style="color:red">%s%%s%%s%456%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="457"/><span style="color:red">%s%%s%%s%457%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="458"/><span style="color:red">%s%%s%%s%458%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%Wait%s%for%s%the%s%read%s%request%s%to%s%come%s%through</span><br/>
+<a name="459"/><span style="color:red">%s%%s%%s%459%s%%s%</span>%s%%s%%s%%s%<span class="keyword">wait</span>(exec_rd_req)%s%<span class="keyword">begin</span><br/>
+<a name="460"/><span style="color:red">%s%%s%%s%460%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="461"/><span style="color:red">%s%%s%%s%461%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="462"/><span style="color:red">%s%%s%%s%462%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="463"/><span style="color:red">%s%%s%%s%463%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="464"/><span style="color:red">%s%%s%%s%464%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(20,%s%exec_rd_addr%s%===%s%instr.mem_inst_addr))%s%<span class="keyword">begin</span><br/>
+<a name="465"/><span style="color:red">%s%%s%%s%465%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="466"/><span style="color:red">%s%%s%%s%466%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display%s%(<span class="literal">"Expected%s%Read%s%Address:%s%%d%s%%s%%s%%s%Actual%s%Read%s%Address:%s%%d"</span>,%s%instr.mem_inst_addr,%s%exec_rd_addr);<br/>
+<a name="467"/><span style="color:red">%s%%s%%s%467%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="468"/><span style="color:red">%s%%s%%s%468%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="469"/><span style="color:red">%s%%s%%s%469%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="470"/><span style="color:red">%s%%s%%s%470%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="471"/><span style="color:red">%s%%s%%s%471%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="472"/><span style="color:red">%s%%s%%s%472%s%%s%</span>%s%%s%%s%%s%temp_rdData%s%=%s%exec_rd_data;<br/>
+<a name="473"/><span style="color:red">%s%%s%%s%473%s%%s%</span>%s%%s%%s%%s%<span class="keyword">wait</span>(exec_wr_req)%s%<span class="keyword">begin</span><br/>
+<a name="474"/><span style="color:red">%s%%s%%s%474%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="475"/><span style="color:red">%s%%s%%s%475%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="476"/><span style="color:red">%s%%s%%s%476%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="477"/><span style="color:red">%s%%s%%s%477%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="478"/><span style="color:red">%s%%s%%s%478%s%%s%</span>%s%%s%%s%%s%wrData_expected%s%=%s%temp_rdData%s%+%s%1;<br/>
+<a name="479"/><span style="color:red">%s%%s%%s%479%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(21,%s%exec_wr_data%s%===%s%wrData_expected))%s%<span class="keyword">begin</span><br/>
+<a name="480"/><span style="color:red">%s%%s%%s%480%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="481"/><span style="color:red">%s%%s%%s%481%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"ISZ%s%Command%s%did%s%not%s%provide%s%correct%s%write%s%data.%s%Expected:%s%%p%s%%s%Actual:%s%%p"</span>,%s%wrData_expected,exec_wr_data);<br/>
+<a name="482"/><span style="color:red">%s%%s%%s%482%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="483"/><span style="color:red">%s%%s%%s%483%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="484"/><span style="color:red">%s%%s%%s%484%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="485"/><span style="color:red">%s%%s%%s%485%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="486"/><span style="color:red">%s%%s%%s%486%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="487"/><span style="color:red">%s%%s%%s%487%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="488"/><span style="color:red">%s%%s%%s%488%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(temp_rdData%s%===%s%0)%s%<span class="keyword">begin</span><br/>
+<a name="489"/><span style="color:red">%s%%s%%s%489%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%expected_PC%s%=%s%local_PC_value%s%+%s%2;<br/>
+<a name="490"/><span style="color:red">%s%%s%%s%490%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span>%s%<span class="keyword">else</span>%s%<span class="keyword">begin</span><br/>
+<a name="491"/><span style="color:red">%s%%s%%s%491%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%expected_PC%s%=%s%local_PC_value%s%+%s%1;<br/>
+<a name="492"/><span style="color:red">%s%%s%%s%492%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="493"/><span style="color:red">%s%%s%%s%493%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(7,%s%PC_value%s%===%s%expected_PC))%s%<span class="keyword">begin</span><br/>
+<a name="494"/><span style="color:red">%s%%s%%s%494%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="495"/><span style="color:red">%s%%s%%s%495%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"ISZ%s%PC_value%s%error.%s%Expected:%s%%p%s%%s%Actual:%s%%p"</span>,%s%expected_PC,PC_value);<br/>
+<a name="496"/><span style="color:red">%s%%s%%s%496%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="497"/><span style="color:red">%s%%s%%s%497%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(4,%s%~stall))%s%<span class="keyword">begin</span><br/>
+<a name="498"/><span style="color:red">%s%%s%%s%498%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="499"/><span style="color:red">%s%%s%%s%499%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Stall%s%not%s%de-asserted%s%after%s%4%s%clock%s%cycles%s%for%s%AND"</span>);<br/>
+<a name="500"/><span style="color:red">%s%%s%%s%500%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="501"/><span style="color:red">%s%%s%%s%501%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(22,%s%clkCount%s%===%s%5))%s%<span class="keyword">begin</span><br/>
+<a name="502"/><span style="color:red">%s%%s%%s%502%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="503"/><span style="color:red">%s%%s%%s%503%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"ISZ%s%Clock%s%Count%s%Expected:%s%%p%s%%s%Actual:%s%%p"</span>,%s%5,%s%clkCount);<br/>
+<a name="504"/><span style="color:red">%s%%s%%s%504%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="505"/><span style="color:red">%s%%s%%s%505%s%%s%</span><span class="keyword">end</span><br/>
+<a name="506"/><span style="color:red">%s%%s%%s%506%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="507"/><span style="color:red">%s%%s%%s%507%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="508"/><span style="color:red">%s%%s%%s%508%s%%s%</span><span class="keyword">task</span>%s%memTADInstr%s%(<br/>
+<a name="509"/><span style="color:red">%s%%s%%s%509%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%pdp_mem_opcode_s%s%instr<br/>
+<a name="510"/><span style="color:red">%s%%s%%s%510%s%%s%</span>);<br/>
+<a name="511"/><span style="color:red">%s%%s%%s%511%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`DATA_WIDTH:0]%s%temp_intAcc%s%=%s%wb_intAcc;<br/>
+<a name="512"/><span style="color:red">%s%%s%%s%512%s%%s%</span><span class="keyword">logic</span>%s%[`DATA_WIDTH-1:0]%s%temp_rdData;<br/>
+<a name="513"/><span style="color:red">%s%%s%%s%513%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">integer</span>%s%clkCount%s%=%s%0;<br/>
+<a name="514"/><span style="color:red">%s%%s%%s%514%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%local_PC_value%s%=%s%PC_value;<br/>
+<a name="515"/><span style="color:red">%s%%s%%s%515%s%%s%</span><span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%expected_PC;<br/>
+<a name="516"/><span style="color:red">%s%%s%%s%516%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="517"/><span style="color:red">%s%%s%%s%517%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="518"/><span style="color:red">%s%%s%%s%518%s%%s%</span>%s%%s%%s%%s%<span class="comment">//%s%Wait%s%for%s%the%s%read%s%request%s%to%s%come%s%through</span><br/>
+<a name="519"/><span style="color:red">%s%%s%%s%519%s%%s%</span>%s%%s%%s%%s%<span class="keyword">wait</span>(exec_rd_req)%s%<span class="keyword">begin</span><br/>
+<a name="520"/><span style="color:red">%s%%s%%s%520%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="521"/><span style="color:red">%s%%s%%s%521%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="522"/><span style="color:red">%s%%s%%s%522%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="523"/><span style="color:red">%s%%s%%s%523%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="524"/><span style="color:red">%s%%s%%s%524%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(13,%s%exec_rd_addr%s%===%s%instr.mem_inst_addr))%s%<span class="keyword">begin</span><br/>
+<a name="525"/><span style="color:red">%s%%s%%s%525%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="526"/><span style="color:red">%s%%s%%s%526%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display%s%(<span class="literal">"Expected%s%Read%s%Address:%s%%d%s%%s%%s%%s%Actual%s%Read%s%Address:%s%%d"</span>,%s%instr.mem_inst_addr,%s%exec_rd_addr);<br/>
+<a name="527"/><span style="color:red">%s%%s%%s%527%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="528"/><span style="color:red">%s%%s%%s%528%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="529"/><span style="color:red">%s%%s%%s%529%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="530"/><span style="color:red">%s%%s%%s%530%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="531"/><span style="color:red">%s%%s%%s%531%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="532"/><span style="color:red">%s%%s%%s%532%s%%s%</span>%s%%s%%s%%s%temp_rdData%s%=%s%exec_rd_data;<br/>
+<a name="533"/><span style="color:red">%s%%s%%s%533%s%%s%</span>%s%%s%%s%%s%temp_intAcc%s%=%s%temp_intAcc%s%+%s%temp_rdData;<br/>
+<a name="534"/><span style="color:red">%s%%s%%s%534%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="535"/><span style="color:red">%s%%s%%s%535%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="536"/><span style="color:red">%s%%s%%s%536%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="537"/><span style="color:red">%s%%s%%s%537%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(14,%s%temp_intAcc%s%===%s%wb_intAcc);<br/>
+<a name="538"/><span style="color:red">%s%%s%%s%538%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="539"/><span style="color:red">%s%%s%%s%539%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="540"/><span style="color:red">%s%%s%%s%540%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(15,%s%clkCount%s%===%s%4))%s%<span class="keyword">begin</span><br/>
+<a name="541"/><span style="color:red">%s%%s%%s%541%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="542"/><span style="color:red">%s%%s%%s%542%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Expected%s%4%s%clock%s%cycles%s%from%s%branch%s%to%s%stall%s%de-asserting%s%for%s%ADD"</span>);<br/>
+<a name="543"/><span style="color:red">%s%%s%%s%543%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="544"/><span style="color:red">%s%%s%%s%544%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(4,%s%~stall))%s%<span class="keyword">begin</span><br/>
+<a name="545"/><span style="color:red">%s%%s%%s%545%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="546"/><span style="color:red">%s%%s%%s%546%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Stall%s%not%s%de-asserted%s%after%s%4%s%clock%s%cycles%s%for%s%ADD"</span>);<br/>
+<a name="547"/><span style="color:red">%s%%s%%s%547%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="548"/><span style="color:red">%s%%s%%s%548%s%%s%</span>%s%%s%%s%%s%expected_PC%s%=%s%local_PC_value%s%+%s%1;<br/>
+<a name="549"/><span style="color:red">%s%%s%%s%549%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(7,%s%PC_value%s%===%s%expected_PC))%s%<span class="keyword">begin</span><br/>
+<a name="550"/><span style="color:red">%s%%s%%s%550%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="551"/><span style="color:red">%s%%s%%s%551%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"PC_value%s%not%s%properly%s%updated%s%during%s%ADD.%s%Expected:%s%%p%s%Actual:%s%%p"</span>,%s%expected_PC,PC_value);<br/>
+<a name="552"/><span style="color:red">%s%%s%%s%552%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="553"/><span style="color:red">%s%%s%%s%553%s%%s%</span><span class="keyword">end</span><br/>
+<a name="554"/><span style="color:red">%s%%s%%s%554%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="555"/><span style="color:red">%s%%s%%s%555%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="556"/><span style="color:red">%s%%s%%s%556%s%%s%</span><span class="keyword">task</span>%s%memDCAInstr%s%(<br/>
+<a name="557"/><span style="color:red">%s%%s%%s%557%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%pdp_mem_opcode_s%s%instr<br/>
+<a name="558"/><span style="color:red">%s%%s%%s%558%s%%s%</span>);<br/>
+<a name="559"/><span style="color:red">%s%%s%%s%559%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`DATA_WIDTH:0]%s%temp_intAcc%s%=%s%wb_intAcc;<br/>
+<a name="560"/><span style="color:red">%s%%s%%s%560%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">integer</span>%s%clkCount%s%=%s%0;<br/>
+<a name="561"/><span style="color:red">%s%%s%%s%561%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%local_PC_value%s%=%s%PC_value;<br/>
+<a name="562"/><span style="color:red">%s%%s%%s%562%s%%s%</span><span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%expected_PC;<br/>
+<a name="563"/><span style="color:red">%s%%s%%s%563%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="564"/><span style="color:red">%s%%s%%s%564%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="565"/><span style="color:red">%s%%s%%s%565%s%%s%</span>%s%%s%%s%%s%<span class="keyword">wait</span>(exec_wr_req)%s%<span class="keyword">begin</span><br/>
+<a name="566"/><span style="color:red">%s%%s%%s%566%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="567"/><span style="color:red">%s%%s%%s%567%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="568"/><span style="color:red">%s%%s%%s%568%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="569"/><span style="color:red">%s%%s%%s%569%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="570"/><span style="color:red">%s%%s%%s%570%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(16,%s%exec_wr_addr%s%===%s%instr.mem_inst_addr))%s%<span class="keyword">begin</span><br/>
+<a name="571"/><span style="color:red">%s%%s%%s%571%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="572"/><span style="color:red">%s%%s%%s%572%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Incorrect%s%DCA%s%address.%s%Expected:%s%%p%s%%s%Actual:%s%%p"</span>,%s%instr.mem_inst_addr,%s%exec_wr_addr);<br/>
+<a name="573"/><span style="color:red">%s%%s%%s%573%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="574"/><span style="color:red">%s%%s%%s%574%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(17,%s%exec_wr_data%s%===%s%temp_intAcc[`DATA_WIDTH-1:0]))%s%<span class="keyword">begin</span><br/>
+<a name="575"/><span style="color:red">%s%%s%%s%575%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="576"/><span style="color:red">%s%%s%%s%576%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Incorrect%s%DCA%s%data.%s%Expected:%s%%p%s%%s%Actual:%s%%p"</span>,%s%temp_intAcc[`DATA_WIDTH-1:0],exec_wr_data);<br/>
+<a name="577"/><span style="color:red">%s%%s%%s%577%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="578"/><span style="color:red">%s%%s%%s%578%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="579"/><span style="color:red">%s%%s%%s%579%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="580"/><span style="color:red">%s%%s%%s%580%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="581"/><span style="color:red">%s%%s%%s%581%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(18,%s%wb_intAcc%s%===%s%0));<br/>
+<a name="582"/><span style="color:red">%s%%s%%s%582%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="583"/><span style="color:red">%s%%s%%s%583%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="584"/><span style="color:red">%s%%s%%s%584%s%%s%</span>%s%%s%%s%%s%expected_PC%s%=%s%local_PC_value%s%+%s%1;<br/>
+<a name="585"/><span style="color:red">%s%%s%%s%585%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(11,%s%PC_value%s%===%s%expected_PC))%s%<span class="keyword">begin</span><br/>
+<a name="586"/><span style="color:red">%s%%s%%s%586%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="587"/><span style="color:red">%s%%s%%s%587%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"PC_value%s%not%s%properly%s%updated%s%during%s%DCA.%s%Expected:%s%%p%s%Actual:%s%%p"</span>,%s%expected_PC,PC_value);<br/>
+<a name="588"/><span style="color:red">%s%%s%%s%588%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="589"/><span style="color:red">%s%%s%%s%589%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(4,%s%~stall))%s%<span class="keyword">begin</span><br/>
+<a name="590"/><span style="color:red">%s%%s%%s%590%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="591"/><span style="color:red">%s%%s%%s%591%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Stall%s%not%s%de-asserted%s%when%s%expected%s%for%s%DCA%s%command"</span>);<br/>
+<a name="592"/><span style="color:red">%s%%s%%s%592%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="593"/><span style="color:red">%s%%s%%s%593%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(19,%s%clkCount%s%===%s%3))%s%<span class="keyword">begin</span><br/>
+<a name="594"/><span style="color:red">%s%%s%%s%594%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="595"/><span style="color:red">%s%%s%%s%595%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"DCA%s%command%s%number%s%of%s%clocks%s%incorrect%s%%s%Expected:%s%%p%s%%s%Actual:%s%%p"</span>,%s%3,%s%clkCount);<br/>
+<a name="596"/><span style="color:red">%s%%s%%s%596%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="597"/><span style="color:red">%s%%s%%s%597%s%%s%</span><span class="keyword">end</span><br/>
+<a name="598"/><span style="color:red">%s%%s%%s%598%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="599"/><span style="color:red">%s%%s%%s%599%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="600"/><span style="color:red">%s%%s%%s%600%s%%s%</span><span class="keyword">task</span>%s%memJMSInstr%s%(<br/>
+<a name="601"/><span style="color:red">%s%%s%%s%601%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%pdp_mem_opcode_s%s%instr<br/>
+<a name="602"/><span style="color:red">%s%%s%%s%602%s%%s%</span>);<br/>
+<a name="603"/><span style="color:red">%s%%s%%s%603%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">integer</span>%s%clkCount%s%=%s%0;<br/>
+<a name="604"/><span style="color:red">%s%%s%%s%604%s%%s%</span><span class="keyword">automatic</span>%s%<span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%local_PC_value%s%=%s%PC_value;<br/>
+<a name="605"/><span style="color:red">%s%%s%%s%605%s%%s%</span><span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%expected_PC;<br/>
+<a name="606"/><span style="color:red">%s%%s%%s%606%s%%s%</span><span class="keyword">logic</span>%s%[`ADDR_WIDTH-1:0]%s%wrData_expected;<br/>
+<a name="607"/><span style="color:red">%s%%s%%s%607%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="608"/><span style="color:red">%s%%s%%s%608%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="609"/><span style="color:red">%s%%s%%s%609%s%%s%</span>%s%%s%%s%%s%<span class="keyword">wait</span>(exec_wr_req)%s%<span class="keyword">begin</span><br/>
+<a name="610"/><span style="color:red">%s%%s%%s%610%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="611"/><span style="color:red">%s%%s%%s%611%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="612"/><span style="color:red">%s%%s%%s%612%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="613"/><span style="color:red">%s%%s%%s%613%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="614"/><span style="color:red">%s%%s%%s%614%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(8,%s%exec_wr_addr%s%===%s%instr.mem_inst_addr))%s%<span class="keyword">begin</span><br/>
+<a name="615"/><span style="color:red">%s%%s%%s%615%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="616"/><span style="color:red">%s%%s%%s%616%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Incorrect%s%JMS%s%address.%s%Expected:%s%%p%s%%s%Actual:%s%%p"</span>,%s%instr.mem_inst_addr,%s%exec_wr_addr);<br/>
+<a name="617"/><span style="color:red">%s%%s%%s%617%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="618"/><span style="color:red">%s%%s%%s%618%s%%s%</span>%s%%s%%s%%s%wrData_expected%s%=%s%local_PC_value%s%+%s%1;<br/>
+<a name="619"/><span style="color:red">%s%%s%%s%619%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(9,%s%exec_wr_data%s%===%s%wrData_expected))%s%<span class="keyword">begin</span><br/>
+<a name="620"/><span style="color:red">%s%%s%%s%620%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="621"/><span style="color:red">%s%%s%%s%621%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Incorrect%s%JMS%s%data.%s%Expected:%s%%p%s%%s%Actual:%s%%p"</span>,%s%wrData_expected,exec_wr_data);<br/>
+<a name="622"/><span style="color:red">%s%%s%%s%622%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="623"/><span style="color:red">%s%%s%%s%623%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="624"/><span style="color:red">%s%%s%%s%624%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="625"/><span style="color:red">%s%%s%%s%625%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="626"/><span style="color:red">%s%%s%%s%626%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="627"/><span style="color:red">%s%%s%%s%627%s%%s%</span>%s%%s%%s%%s%expected_PC%s%=%s%instr.mem_inst_addr%s%+%s%1;<br/>
+<a name="628"/><span style="color:red">%s%%s%%s%628%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(11,%s%PC_value%s%===%s%expected_PC))%s%<span class="keyword">begin</span><br/>
+<a name="629"/><span style="color:red">%s%%s%%s%629%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="630"/><span style="color:red">%s%%s%%s%630%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"PC_value%s%not%s%properly%s%updated%s%during%s%JMS.%s%Expected:%s%%p%s%Actual:%s%%p"</span>,%s%expected_PC,PC_value);<br/>
+<a name="631"/><span style="color:red">%s%%s%%s%631%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="632"/><span style="color:red">%s%%s%%s%632%s%%s%</span>%s%%s%%s%%s%clkCount%s%=%s%clkCount%s%+%s%1;<br/>
+<a name="633"/><span style="color:red">%s%%s%%s%633%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(10,%s%clkCount%s%===%s%3))%s%<span class="keyword">begin</span><br/>
+<a name="634"/><span style="color:red">%s%%s%%s%634%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="635"/><span style="color:red">%s%%s%%s%635%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"JMS%s%Instruction%s%did%s%not%s%take%s%expected%s%(3)%s%number%s%of%s%clock%s%cycles.%s%Actual:%s%%p"</span>,%s%clkCount);<br/>
+<a name="636"/><span style="color:red">%s%%s%%s%636%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="637"/><span style="color:red">%s%%s%%s%637%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>(!chkr.runRule(4,%s%~stall))%s%<span class="keyword">begin</span><br/>
+<a name="638"/><span style="color:red">%s%%s%%s%638%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="639"/><span style="color:red">%s%%s%%s%639%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"JMS%s%Instruction%s%did%s%not%s%de-assert%s%stall%s%when%s%expected"</span>);<br/>
+<a name="640"/><span style="color:red">%s%%s%%s%640%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="641"/><span style="color:red">%s%%s%%s%641%s%%s%</span><span class="keyword">end</span>%s%%s%%s%%s%<br/>
+<a name="642"/><span style="color:red">%s%%s%%s%642%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="643"/><span style="color:red">%s%%s%%s%643%s%%s%</span>%s%%s%%s%%s%<br/>
+<a name="644"/><span style="color:red">%s%%s%%s%644%s%%s%</span><span class="keyword">task</span>%s%memJMPInstr%s%(<br/>
+<a name="645"/><span style="color:red">%s%%s%%s%645%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%pdp_mem_opcode_s%s%instr<br/>
+<a name="646"/><span style="color:red">%s%%s%%s%646%s%%s%</span>);<br/>
+<a name="647"/><span style="color:red">%s%%s%%s%647%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="648"/><span style="color:red">%s%%s%%s%648%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="649"/><span style="color:red">%s%%s%%s%649%s%%s%</span>%s%%s%%s%%s%waitNClocks(2);<br/>
+<a name="650"/><span style="color:red">%s%%s%%s%650%s%%s%</span>%s%%s%%s%%s%ruleBit%s%&amp;=%s%chkr.runRule(3,%s%stall);<br/>
+<a name="651"/><span style="color:red">%s%%s%%s%651%s%%s%</span>%s%%s%%s%%s%waitNClocks(1);<br/>
+<a name="652"/><span style="color:red">%s%%s%%s%652%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(6,%s%PC_value%s%===%s%instr.mem_inst_addr))%s%<span class="keyword">begin</span><br/>
+<a name="653"/><span style="color:red">%s%%s%%s%653%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="654"/><span style="color:red">%s%%s%%s%654%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"PC%s%Value%s%Expected:%s%%d%s%%s%Actual:%s%%d"</span>,%s%instr.mem_inst_addr,%s%PC_value);<br/>
+<a name="655"/><span style="color:red">%s%%s%%s%655%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="656"/><span style="color:red">%s%%s%%s%656%s%%s%</span>%s%%s%%s%%s%<span class="keyword">if</span>%s%(!chkr.runRule(4,%s%~stall))%s%<span class="keyword">begin</span><br/>
+<a name="657"/><span style="color:red">%s%%s%%s%657%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%ruleBit%s%=%s%0;<br/>
+<a name="658"/><span style="color:red">%s%%s%%s%658%s%%s%</span>%s%%s%%s%%s%%s%%s%%s%%s%$display(<span class="literal">"Stall%s%not%s%de-asserted%s%after%s%2%s%clock%s%cycles%s%for%s%JMP"</span>);<br/>
+<a name="659"/><span style="color:red">%s%%s%%s%659%s%%s%</span>%s%%s%%s%%s%<span class="keyword">end</span><br/>
+<a name="660"/><span style="color:red">%s%%s%%s%660%s%%s%</span><span class="keyword">end</span><br/>
+<a name="661"/><span style="color:red">%s%%s%%s%661%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="662"/><span style="color:red">%s%%s%%s%662%s%%s%</span><br/>
+<a name="663"/><span style="color:red">%s%%s%%s%663%s%%s%</span><span class="comment">//%s%Blocks%s%until%s%n%s%clocks%s%are%s%observed</span><br/>
+<a name="664"/><span style="color:red">%s%%s%%s%664%s%%s%</span><span class="keyword">task</span>%s%waitNClocks%s%(<br/>
+<a name="665"/><span style="color:red">%s%%s%%s%665%s%%s%</span>%s%%s%%s%%s%<span class="keyword">input</span>%s%<span class="keyword">integer</span>%s%n<br/>
+<a name="666"/><span style="color:red">%s%%s%%s%666%s%%s%</span>);<br/>
+<a name="667"/><span style="color:red">%s%%s%%s%667%s%%s%</span><span class="keyword">begin</span><br/>
+<a name="668"/><span style="color:red">%s%%s%%s%668%s%%s%</span>%s%%s%%s%%s%<span class="keyword">repeat</span>%s%(n)%s%@(<span class="keyattr">posedge</span>%s%clk);<br/>
+<a name="669"/><span style="color:red">%s%%s%%s%669%s%%s%</span><span class="keyword">end</span><br/>
+<a name="670"/><span style="color:red">%s%%s%%s%670%s%%s%</span><span class="keyword">endtask</span><br/>
+<a name="671"/><span style="color:red">%s%%s%%s%671%s%%s%</span><br/>
+<a name="672"/><span style="color:red">%s%%s%%s%672%s%%s%</span><span class="keyword">endmodule</span><br/>
+</tt>
+<script type="text/javascript" src="../scripts/buildsrcpage.js"></script>
+  
+</body>
+</html>
