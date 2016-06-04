@@ -6,4 +6,5 @@
 ../shared/CovTracker.sv
 ../shared/CheckerClass.sv
 ../execution_unit/exec_unit_chkr.sv
+../ifd/ifd_checker.sv
 pdp_top.sv

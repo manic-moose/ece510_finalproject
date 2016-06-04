@@ -1,8 +1,0 @@
-../execution_unit/exec_unit_chkr.sv
-../pdp_hdl/clkgen_driver.sv
-../pdp_hdl/instr_decode.sv
-../pdp_hdl/instr_exec.sv
-../pdp_hdl/memory_pdp.sv
-../shared/CheckerClass.sv
-../shared/CovTracker.sv
-pdp_top.sv

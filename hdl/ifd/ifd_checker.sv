@@ -38,23 +38,23 @@ localparam DEBUG = 0;
 ////////////////////////////////////////////////////////////
 // Coverage and Checker classes
 
-CheckerClass chkr;
-CovTracker tracker;
+CheckerClass chkr_ifd;
+CovTracker tracker_ifd;
 // dummy bit for use with checker calls
 bit dummy;
 
 // initial setup of checker/tracker classes
 initial begin
-    tracker = new();
-    defineCovLabels(tracker);
-    chkr = new(`IFD_RULE_FILE, `IFD_RULE_DISABLE_FILE);
-    chkr.setVerbose(VERBOSE);
+    tracker_ifd = new();
+    defineCovLabels(tracker_ifd);
+    chkr_ifd = new(`IFD_RULE_FILE, `IFD_RULE_DISABLE_FILE);
+    chkr_ifd.setVerbose(VERBOSE);
 end
 
 // dump summaries to log at the end
 final begin
-    dummy = chkr.printLogSummary();
-    dummy = tracker.printCoverageReport();
+    dummy = chkr_ifd.printLogSummary();
+    dummy = tracker_ifd.printCoverageReport();
 end
 
 
@@ -98,19 +98,19 @@ always @(posedge clk) begin
     end else begin
         // check opcode was cleared properly
         if (newRdReq) begin
-            dummy <= chkr.runRule(3, opcodesZeroed(current_instr));
+            dummy <= chkr_ifd.runRule(3, opcodesZeroed(current_instr));
         end
         
         // check current instruction output
         if (newInstruction) begin
             if (firstInstruction) begin
-                dummy <= chkr.runRule(25, base_addr === `START_ADDRESS);
+                dummy <= chkr_ifd.runRule(25, base_addr === `START_ADDRESS);
                 firstInstruction <= 1'b0;
             end
-            if (chkr.runRule(1, instrIsLegal(current_instr))) begin
+            if (chkr_ifd.runRule(1, instrIsLegal(current_instr))) begin
                 // check if instruction was decoded properly
-                if (chkr.runRule(2, instrIsCorrect(current_instr))) begin
-                    observeInstruction(tracker, current_instr);
+                if (chkr_ifd.runRule(2, instrIsCorrect(current_instr))) begin
+                    observeInstruction(tracker_ifd, current_instr);
                 end else begin
                     $display("Incorrect conversion from memory %p to instruction %p", ifu_rd_data, current_instr);
                 end
