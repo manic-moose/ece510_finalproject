@@ -10,8 +10,10 @@
 class CovTracker;
     
     local int CovDefs[string];
+    local string unitName;
     
-    function new ();
+    function new (string unitName = "");
+        this.unitName = unitName;
     endfunction
     
     task defineNewCov (string name);
@@ -30,9 +32,10 @@ class CovTracker;
     
     function printCoverageReport ();
         begin
-            $display("EVENT\t\t\t\tOBSERVATIONS");
+            $display("Functional Coverage Summary: %s", this.unitName);
+            $display("EVENT               OBSERVATIONS");
             foreach (this.CovDefs[i]) begin
-                $display("%p\t\t\t\t%p",i,this.CovDefs[i]);
+                $display("%-20s%p",i,this.CovDefs[i]);
             end
             return 0;
         end

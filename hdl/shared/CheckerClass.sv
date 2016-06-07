@@ -20,13 +20,17 @@ class CheckerClass;
     
     local bit VERBOSE;
     local bit dummy;
+
+    local string checkerName;
     
     function new (
         string ruleFile,
-        string ruleFileDisable = ""
+        string ruleFileDisable = "",
+        string checkerName = ""
     );
         begin
             dummy = readRuleFile(ruleFile,ruleFileDisable);
+            this.checkerName = checkerName;
         end
     endfunction
     
@@ -160,9 +164,10 @@ class CheckerClass;
     // Prints a summary of the rules that have been run and if they passed or failed
     function printLogSummary ();
     begin
-        $display("RULE            TOTAL            PASS            FAIL            DESCRIPTION");
+        $display("Rule Checker Summary: %s", this.checkerName);
+        $display("RULE      TOTAL          PASS           FAIL           DESCRIPTION");
         foreach (ruleHash[i]) begin
-            $display("%p            %p            %p            %p            %p",
+            $display("%-10d%-15d%-15d%-15d%-80s",
                      i, this.ruleRunCount[i], this.rulePassCount[i], this.ruleFailCount[i], this.ruleHash[i]);
         end
         return 0;
