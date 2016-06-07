@@ -45,10 +45,11 @@ def main():
         oup.write('*%04d\n' % (startAddress))
 
 # 1 - generate a sequence of events using every opcode once
-        usedCodes = []
+        # reserve HALT command for last, 
+        usedCodes = ['hlt']
         i = 0
         print "generating random opcode sequence"
-        while i < len(opcodes):
+        while i < len(opcodes)-1:
             i += 1
             command = ''
             # get a random opcode
@@ -67,7 +68,7 @@ def main():
 
             # write command to file with a newline
             oup.write(command+"\n")
-        oup.write('\n')
+        oup.write('hlt\n')
 
 # 2 - generate some variables and also pre-load the rest of the memory with junk
         print "generating some memory"

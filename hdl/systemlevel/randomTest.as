@@ -1,41 +1,40 @@
 *0200
-cma
-mql
-swp
-jmp c
-cll
-ral
-skp
-rtl
-nop
-sna
-dca c
-sma
-rar
-mqa
-szl
-and d
-osr
-sza
-cla cll
-snl
-hlt
-cam
-jms b
-cia
 cml
-spa
-iac
 cla
+rar
+cia
+skp
+mql
+isz b
+iac
+osr
+jmp d
+ral
+dca e
+nop
+jms e
+and d
+cam
 rtr
-isz d
+cma
+sna
+szl
+sza
+snl
+rtl
+sma
+mqa
 tad d
-
+spa
+swp
+cll
+cla cll
+hlt
 *0232
-a, 0325
-b, 0364
-c, 0345
-d, 0347
-e, 0350
+a, 0373
+b, 0340
+c, 0322
+d, 0334
+e, 0332
 
 $200
