@@ -41,7 +41,7 @@ instr_decode dut (clk, reset_n,
 
 // Checker for IFD->Execution Unit interface
 ifd_checker ifd_chkr (clk, reset_n,
-                ifu_rd_req, ifu_rd_addr, ifu_rd_data,
+                ifu_rd_req, ifu_rd_data,
                 base_addr, pdp_mem_opcode, pdp_op7_opcode,
                 stall, PC_value);
 

@@ -103,7 +103,6 @@ ifd_checker ifd_chkr (
     .clk,
     .reset_n,
     .ifu_rd_req,
-    .ifu_rd_addr,
     .ifu_rd_data,
     .base_addr,
     .pdp_mem_opcode,
