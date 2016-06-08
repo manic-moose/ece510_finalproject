@@ -31,12 +31,21 @@ class CovTracker;
     endtask
     
     function printCoverageReport ();
+        automatic real covPointCount = this.CovDefs.num();
+        automatic real ObsCount      = 0.0;
+        automatic real percent       = 0.0;
         begin
-            $display("Functional Coverage Summary: %s", this.unitName);
+            foreach (this.CovDefs[i]) begin
+                if (this.CovDefs[i] > 0)
+                    ObsCount = ObsCount + 1.0;
+            end
+            percent = ObsCount/covPointCount * 100;
+            $display("\nFunctional Coverage Summary: %s    Total Coverage: %f%%", this.unitName, percent);
             $display("EVENT               OBSERVATIONS");
             foreach (this.CovDefs[i]) begin
                 $display("%-20s%p",i,this.CovDefs[i]);
             end
+            $display("\n");
             return 0;
         end
     endfunction

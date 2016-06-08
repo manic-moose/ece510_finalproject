@@ -164,12 +164,13 @@ class CheckerClass;
     // Prints a summary of the rules that have been run and if they passed or failed
     function printLogSummary ();
     begin
-        $display("Rule Checker Summary: %s", this.checkerName);
+        $display("\nRule Checker Summary: %s", this.checkerName);
         $display("RULE      TOTAL          PASS           FAIL           DESCRIPTION");
         foreach (ruleHash[i]) begin
             $display("%-10d%-15d%-15d%-15d%-80s",
                      i, this.ruleRunCount[i], this.rulePassCount[i], this.ruleFailCount[i], this.ruleHash[i]);
         end
+        $display("\n");
         return 0;
     end
     endfunction
