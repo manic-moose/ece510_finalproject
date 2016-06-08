@@ -5,6 +5,8 @@
 ../pdp_hdl/memory_pdp.sv
 ../shared/CovTracker.sv
 ../shared/CheckerClass.sv
+../shared/CovSequencer.sv
 ../execution_unit/exec_unit_chkr.sv
 ../ifd/ifd_checker.sv
+SequenceMonitor.sv
 pdp_top.sv

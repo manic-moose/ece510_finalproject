@@ -24,6 +24,12 @@ wire exec_wr_req;
 wire [`ADDR_WIDTH-1:0] exec_wr_addr;
 wire [`DATA_WIDTH-1:0] exec_wr_data;
 
+SequenceMonitor seq_mon(
+    .clk(clk),
+    .execTracker(exec_chkr.tracker),
+    .ifdTracker(ifd_chkr.tracker_ifd)
+);
+
 clkgen_driver iclocker (
     .clk,
     .reset_n

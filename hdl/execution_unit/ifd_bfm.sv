@@ -79,6 +79,7 @@ assign base_addr      = int_base_addr;
 initial begin
     initialize();
     runDirectedVectors(); 
+    runBonusSequence();
     runRandomVectors();
     waitNClocks(100);
     $stop;
@@ -114,6 +115,17 @@ begin
     sendMemoryCmd(JMP, 12);
     sendOp7Cmd(NOP);
     sendOp7Cmd(CLA_CLL);
+end
+endtask
+
+task runBonusSequence();
+begin
+    sendOp7Cmd(CLA_CLL);
+    sendMemoryCmd(TAD, getRandomAdx());
+    sendMemoryCmd(TAD, getRandomAdx());
+    sendMemoryCmd(DCA, getRandomAdx());
+    sendOp7Cmd(HLT);
+    sendMemoryCmd(JMP, getRandomAdx());
 end
 endtask
 

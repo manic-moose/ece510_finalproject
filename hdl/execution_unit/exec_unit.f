@@ -1,9 +1,11 @@
 ../pdp_hdl/pdp8_pkg.sv
 ../shared/CheckerClass.sv
 ../shared/CovTracker.sv
+../shared/CovSequencer.sv
 ../pdp_hdl/clkgen_driver.sv
 exec_unit_chkr.sv
 ../pdp_hdl/instr_exec.sv
 memory_rndgen.sv
 ifd_bfm.sv
+../systemlevel/SequenceMonitor.sv
 exec_tb.sv

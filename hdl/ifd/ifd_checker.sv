@@ -45,7 +45,7 @@ bit dummy;
 
 // initial setup of checker/tracker classes
 initial begin
-    tracker_ifd = new("IFD Unit");
+    tracker_ifd = new("IFD Unit",6);
     defineCovLabels(tracker_ifd);
     chkr_ifd = new(`IFD_RULE_FILE, `IFD_RULE_DISABLE_FILE, "IFD Unit");
     chkr_ifd.setVerbose(VERBOSE);
@@ -333,7 +333,6 @@ task defineCovLabels (input CovTracker t);
         t.defineNewCov("ISZ");
         t.defineNewCov("TAD");
         t.defineNewCov("AND");
-        t.defineNewCov("NOP");
     end
 endtask
 
