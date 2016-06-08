@@ -24,6 +24,14 @@ wire pdp_op7_opcode_s   pdp_op7_opcode;
 clkgen_driver iclocker (clk, reset_n);
 `endif
 
+SequenceMonitor #(
+    .MODE(2)
+) seq_mon(
+    .clk(clk),
+    .execTracker(ifd_chkr.tracker_ifd),
+    .ifdTracker(null)
+);
+    
 // Stimulus Generator
 exec_bfm stimulator (clk, reset_n,
                 stall, PC_value,

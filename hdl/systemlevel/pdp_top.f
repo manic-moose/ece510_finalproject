@@ -6,7 +6,7 @@
 ../shared/CovTracker.sv
 ../shared/CheckerClass.sv
 ../shared/CovSequencer.sv
+../shared/SequenceMonitor.sv
 ../execution_unit/exec_unit_chkr.sv
 ../ifd/ifd_checker.sv
-SequenceMonitor.sv
 pdp_top.sv
