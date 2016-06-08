@@ -11,6 +11,8 @@ class CovTracker;
     
     local int CovDefs[string];
     local string unitName;
+
+    bit observationFlag;
     
     string sequence_queue[$];
     local integer maxSequenceCount;
@@ -18,6 +20,7 @@ class CovTracker;
     function new (string unitName = "",
                  integer maxSequenceCount = 0
                  );
+        this.observationFlag = 0;
         this.unitName = unitName;
         this.maxSequenceCount = maxSequenceCount;
     endfunction
@@ -40,6 +43,19 @@ class CovTracker;
                 sequence_queue.pop_front();
             end
         end
+        setObsFlag();
+    endtask
+
+    task clearObsFlag ();
+    begin
+        this.observationFlag = 0;
+    end
+    endtask
+
+    task setObsFlag();
+    begin
+        this.observationFlag = 1;
+    end
     endtask
     
     function printCoverageReport ();
