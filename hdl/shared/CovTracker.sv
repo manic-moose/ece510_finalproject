@@ -10,8 +10,10 @@
 class CovTracker;
     
     local int CovDefs[string];
+    local string unitName;
     
-    function new ();
+    function new (string unitName = "");
+        this.unitName = unitName;
     endfunction
     
     task defineNewCov (string name);
@@ -29,11 +31,21 @@ class CovTracker;
     endtask
     
     function printCoverageReport ();
+        automatic real covPointCount = this.CovDefs.num();
+        automatic real ObsCount      = 0.0;
+        automatic real percent       = 0.0;
         begin
-            $display("EVENT\t\t\t\tOBSERVATIONS");
             foreach (this.CovDefs[i]) begin
-                $display("%p\t\t\t\t%p",i,this.CovDefs[i]);
+                if (this.CovDefs[i] > 0)
+                    ObsCount = ObsCount + 1.0;
             end
+            percent = ObsCount/covPointCount * 100;
+            $display("\nFunctional Coverage Summary: %s    Total Coverage: %f%%", this.unitName, percent);
+            $display("EVENT               OBSERVATIONS");
+            foreach (this.CovDefs[i]) begin
+                $display("%-20s%p",i,this.CovDefs[i]);
+            end
+            $display("\n");
             return 0;
         end
     endfunction

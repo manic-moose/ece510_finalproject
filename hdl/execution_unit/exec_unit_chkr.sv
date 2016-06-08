@@ -70,9 +70,9 @@ integer unsigned rulePassCount [integer];
 integer unsigned ruleFailCount [integer];
 
 initial begin
-    tracker = new();
+    tracker = new("Execution Unit");
     defineCovLabels(tracker);
-    chkr = new(`EXE_RULE_FILE, `EXE_RULE_DISABLE_FILE);
+    chkr = new(`EXE_RULE_FILE, `EXE_RULE_DISABLE_FILE, "Execution Unit");
     chkr.setVerbose(VERBOSE);
 end
 
