@@ -18,7 +18,6 @@ module ifd_checker(
     // memory interface
     // from instr_decode module
     input                   ifu_rd_req,
-    input [`ADDR_WIDTH-1:0] ifu_rd_addr,
     // to instr_decode module
     input [`DATA_WIDTH-1:0] ifu_rd_data,
     
@@ -98,7 +97,7 @@ always @(posedge clk) begin
     end else begin
         // check opcode was cleared properly
         if (newRdReq) begin
-            dummy <= chkr_ifd.runRule(3, opcodesZeroed(current_instr));
+            dummy <= chkr_ifd.runRule(3, opcodesCleared(current_instr));
         end
         
         // check current instruction output
@@ -277,7 +276,7 @@ endfunction
 
 // Check if opcodes are zeroed out
 // ignores address bits for memory opcodes
-function opcodesZeroed(
+function opcodesCleared(
     input instruction_pack instr
 );
 logic op7Zeroed, memZeroed, memAddrZeroed, memOpZeroed;
