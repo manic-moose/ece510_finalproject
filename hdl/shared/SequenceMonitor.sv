@@ -18,6 +18,7 @@ module SequenceMonitor(
         #1;
         if (MODE == 0) begin
             if (execTracker != null) obsFlag = execTracker.observationFlag;
+            if (ifdTracker  != null) obsFlag = obsFlag & ifdTracker.observationFlag;
         end else if (MODE == 1) begin
             if (ifdTracker != null)  obsFlag = ifdTracker.observationFlag;
         end else if (MODE == 2) begin
