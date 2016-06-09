@@ -1,0 +1,12 @@
+pdp8_pkg.sv
+clkgen_driver.sv
+instr_decode.sv
+instr_exec.sv
+memory_pdp.sv
+CovTracker.sv
+CheckerClass.sv
+CovSequencer.sv
+SequenceMonitor.sv
+exec_unit_chkr.sv
+ifd_checker.sv
+top.sv

@@ -1,0 +1,488 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+    <script type="text/javascript" src="../scripts/jquery.js"></script>
+    <script type="text/javascript" src="../scripts/sort_tables.js"></script>
+    <script type="text/javascript" src="../scripts/showhide.js"></script>
+    <script type="text/javascript" src="../scripts/buildstmtpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildstmtpage_nos.js"></script>
+    <script type="text/javascript" src="../scripts/buildbranchpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildecpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildfsmpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildtogglepage.js"></script>
+    <script type="text/javascript" src="../scripts/buildassertpage.js"></script>
+    <script type="text/javascript" src="../scripts/builddirpage.js"></script>
+  
+</head>
+<body>
+  <h1><span class="strip">Questa</span> Design Unit Coverage</h1>
+  <h3>Design Unit: work.instr_exec</h3>
+  <dl>
+  <dt><b>Design Unit Name:</b></dt><dd>work.instr_exec</dd>
+  <dt><b>Language:</b></dt><dd>SystemVerilog</dd>
+  <dt><b>Source File:</b></dt><dd>instr_exec.sv</dd>
+  </dl>
+  
+  <br /><br /><br /><br />
+  <a id="z0737445833_0428492752_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z0737445833_0428492752_0.htm">work.instr_exec</a></div>
+  <div><span style="font-size: 250%;">Summary</span></div>
+  </td></tr></table>
+  <br />
+    <hr/><table id="loc_rec_tables" cellspacing="5"><tr><td valign="top"><h3>Design Unit Coverage Details:</h3>
+  <table cellspacing="2" cellpadding="2"><tr><td class="odd" colspan="6">Total Coverage:</td><td class="odd_r">95.91%</td><td class="bgGreen">94.95%</td></tr>
+  <tr><th colspan="2" align="left">Coverage Type</th><th>Bins</th><th>Hits</th><th>Misses</th><th>Weight</th><th>% Hit</th><th>Coverage</th></tr>
+  <tr><td colspan="2" class="odd"><a href="#s0737445833_0428492752_0_a">Statements</a></td><td class="odd_r">66</td><td class="odd_r">66</td><td class="odd_r">0</td><td class="odd_r">1</td><td class="odd_r">100.00%</td><td class="bgGreen">100.00%</td></tr>
+<tr><td colspan="2" class="even"><a href="#b0737445833_0428492752_0_a">Branches</a></td><td class="even_r">36</td><td class="even_r">34</td><td class="even_r">2</td><td class="even_r">1</td><td class="even_r">94.44%</td><td class="bgGreen">94.44%</td></tr>
+<tr><td colspan="2" class="odd"><a href="#c0737445833_0428492752_0_a">FEC Conditions</a></td><td class="odd_r">5</td><td class="odd_r">5</td><td class="odd_r">0</td><td class="odd_r">1</td><td class="odd_r">100.00%</td><td class="bgGreen">100.00%</td></tr>
+<tr><td colspan="2" class="even"><a href="#t0737445833_0428492752_0_a">Toggles</a></td><td class="even_r">324</td><td class="even_r">322</td><td class="even_r">2</td><td class="even_r">1</td><td class="even_r">99.38%</td><td class="bgGreen">99.38%</td></tr>
+<tr><td colspan="2" class="odd"><a href="#f0737445833_0428492752_0_a">FSMs</a></td><td class="odd_r">59</td><td class="odd_r">43</td><td class="odd_r">16</td><td class="odd_r">1</td><td class="odd_r">72.88%</td><td class="bgYellow">80.95%</td></tr>
+<tr><td class="invisible">&nbsp;</td><td class="even"><a href="#f0737445833_0428492752_0_a">States</a></td><td class="even_r">17</td><td class="even_r">17</td><td class="even_r">0</td><td class="even_r">1</td><td class="even_r">100.00%</td><td class="bgGreen">100.00%</td></tr>
+<tr><td class="invisible">&nbsp;</td><td class="odd"><a href="#f0737445833_0428492752_0_a">Transitions</a></td><td class="odd_r">42</td><td class="odd_r">26</td><td class="odd_r">16</td><td class="odd_r">1</td><td class="odd_r">61.90%</td><td class="bgYellow">61.90%</td></tr>
+</table></td></tr></table>
+  <br /><br /><br /><br />
+  <a id="s0737445833_0428492752_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z0737445833_0428492752_0.htm">work.instr_exec</a></div>
+  <div><span style="font-size: 250%;">Statements</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="s0737445833_0428492752_0_srcFileIdx_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<hr/><table>
+<tr/>
+<tr cr="c" z="instr_exec.sv:93" h="32145" c="g"/>
+<tr cr="c" z="instr_exec.sv:100" h="31402" c="g"/>
+<tr cr="c" z="instr_exec.sv:124" h="500051" c="g"/>
+<tr cr="c" z="instr_exec.sv:125" h="51" c="g"/>
+<tr cr="c" z="instr_exec.sv:126" h="500000" c="g"/>
+<tr cr="c" z="instr_exec.sv:129" h="190826" c="g"/>
+<tr cr="c" z="instr_exec.sv:138" h="3" c="g"/>
+<tr cr="c" z="instr_exec.sv:139" h="3" c="g"/>
+<tr cr="c" z="instr_exec.sv:140" h="3" c="g"/>
+<tr cr="c" z="instr_exec.sv:152" h="31772" c="g"/>
+<tr cr="c" z="instr_exec.sv:153" h="31772" c="g"/>
+<tr cr="c" z="instr_exec.sv:155" h="31772" c="g"/>
+<tr cr="c" z="instr_exec.sv:156" h="31772" c="g"/>
+<tr cr="c" z="instr_exec.sv:157" h="31772" c="g"/>
+<tr cr="c" z="instr_exec.sv:158" h="31772" c="g"/>
+<tr cr="c" z="instr_exec.sv:169" h="31771" c="g"/>
+<tr cr="c" z="instr_exec.sv:172" h="730" c="g"/>
+<tr cr="c" z="instr_exec.sv:174" h="8036" c="g"/>
+<tr cr="c" z="instr_exec.sv:176" h="2683" c="g"/>
+<tr cr="c" z="instr_exec.sv:178" h="2652" c="g"/>
+<tr cr="c" z="instr_exec.sv:180" h="2700" c="g"/>
+<tr cr="c" z="instr_exec.sv:182" h="14970" c="g"/>
+<tr cr="c" z="instr_exec.sv:190" h="2683" c="g"/>
+<tr cr="c" z="instr_exec.sv:191" h="2683" c="g"/>
+<tr cr="c" z="instr_exec.sv:199" h="730" c="g"/>
+<tr cr="c" z="instr_exec.sv:200" h="730" c="g"/>
+<tr cr="c" z="instr_exec.sv:201" h="730" c="g"/>
+<tr cr="c" z="instr_exec.sv:211" h="15935" c="g"/>
+<tr cr="c" z="instr_exec.sv:212" h="15935" c="g"/>
+<tr cr="c" z="instr_exec.sv:213" h="15935" c="g"/>
+<tr cr="c" z="instr_exec.sv:222" h="8036" c="g"/>
+<tr cr="c" z="instr_exec.sv:223" h="8036" c="g"/>
+<tr cr="c" z="instr_exec.sv:224" h="8036" c="g"/>
+<tr cr="c" z="instr_exec.sv:225" h="8036" c="g"/>
+<tr cr="c" z="instr_exec.sv:228" h="2634" c="g"/>
+<tr cr="c" z="instr_exec.sv:230" h="2742" c="g"/>
+<tr cr="c" z="instr_exec.sv:232" h="2660" c="g"/>
+<tr cr="c" z="instr_exec.sv:241" h="2634" c="g"/>
+<tr cr="c" z="instr_exec.sv:242" h="127" c="g"/>
+<tr cr="c" z="instr_exec.sv:243" h="2634" c="g"/>
+<tr cr="c" z="instr_exec.sv:252" h="2742" c="g"/>
+<tr cr="c" z="instr_exec.sv:253" h="2742" c="g"/>
+<tr cr="c" z="instr_exec.sv:264" h="2660" c="g"/>
+<tr cr="c" z="instr_exec.sv:265" h="2660" c="g"/>
+<tr cr="c" z="instr_exec.sv:266" h="2660" c="g"/>
+<tr cr="c" z="instr_exec.sv:267" h="2660" c="g"/>
+<tr cr="c" z="instr_exec.sv:268" h="2660" c="g"/>
+<tr cr="c" z="instr_exec.sv:276" h="307" c="g"/>
+<tr cr="c" z="instr_exec.sv:277" h="2660" c="g"/>
+<tr cr="c" z="instr_exec.sv:287" h="2683" c="g"/>
+<tr cr="c" z="instr_exec.sv:288" h="2683" c="g"/>
+<tr cr="c" z="instr_exec.sv:289" h="2683" c="g"/>
+<tr cr="c" z="instr_exec.sv:290" h="2683" c="g"/>
+<tr cr="c" z="instr_exec.sv:300" h="2652" c="g"/>
+<tr cr="c" z="instr_exec.sv:301" h="2652" c="g"/>
+<tr cr="c" z="instr_exec.sv:302" h="2652" c="g"/>
+<tr cr="c" z="instr_exec.sv:303" h="2652" c="g"/>
+<tr cr="c" z="instr_exec.sv:311" h="2652" c="g"/>
+<tr cr="c" z="instr_exec.sv:312" h="2652" c="g"/>
+<tr cr="c" z="instr_exec.sv:320" h="2700" c="g"/>
+<tr cr="c" z="instr_exec.sv:321" h="2700" c="g"/>
+<tr cr="c" z="instr_exec.sv:328" h="14970" c="g"/>
+<tr cr="c" z="instr_exec.sv:338" h="31771" c="g"/>
+<tr cr="c" z="instr_exec.sv:339" h="31771" c="g"/>
+<tr cr="c" z="instr_exec.sv:340" h="31771" c="g"/>
+<tr cr="c" z="instr_exec.sv:341" h="31771" c="g"/>
+</table>
+  </div>
+<script>buildStmtTableNoSource("s0737445833_0428492752_0_srcFileIdx_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="b0737445833_0428492752_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z0737445833_0428492752_0.htm">work.instr_exec</a></div>
+  <div><span style="font-size: 250%;">Branches</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="b0737445833_0428492752_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<div class="covered"><a name="cvg296"></a><hr/><table>
+<tr z="      if (!reset_n) current_state &lt;= IDLE;" f="instr_exec.sv" l="125" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="      if (!reset_n) current_state &lt;= IDLE;" f="instr_exec.sv" l="125" h="51" c="g"/>
+<tr cr="c" t="E" z="      else          current_state &lt;= next_state;" f="instr_exec.sv" l="126" h="500000" c="g"/>
+</table>
+</div><div><a name="cvg297"></a><hr/><table>
+<tr z="      case (current_state)" f="instr_exec.sv" l="130" c="G" p="94.44"/><tr/>
+<tr cr="c" t="T" z="         IDLE:" f="instr_exec.sv" l="136" h="3" c="g"/>
+<tr cr="c" t="T" z="         STALL:" f="instr_exec.sv" l="148" h="63544" c="g"/>
+<tr cr="c" t="T" z="         BRANCH:" f="instr_exec.sv" l="166" h="31771" c="g"/>
+<tr cr="c" t="T" z="         CLA:" f="instr_exec.sv" l="188" h="2683" c="g"/>
+<tr cr="c" t="T" z="         CLA_CLL:" f="instr_exec.sv" l="197" h="730" c="g"/>
+<tr cr="c" t="T" z="         MEM_RD_REQ:" f="instr_exec.sv" l="209" h="15935" c="g"/>
+<tr cr="c" t="T" z="         DATA_RCVD:" f="instr_exec.sv" l="220" h="8036" c="g"/>
+<tr cr="c" t="T" z="         ADD_ACC_MEM:" f="instr_exec.sv" l="239" h="2634" c="g"/>
+<tr cr="c" t="T" z="         AND_ACC_MEM:" f="instr_exec.sv" l="250" h="2742" c="g"/>
+<tr cr="c" t="T" z="         ISZ_WR_REQ:" f="instr_exec.sv" l="262" h="2660" c="g"/>
+<tr cr="c" t="T" z="         ISZ_UPDT_PC:" f="instr_exec.sv" l="274" h="2660" c="g"/>
+<tr cr="c" t="T" z="         DCA:" f="instr_exec.sv" l="285" h="2683" c="g"/>
+<tr cr="c" t="T" z="         JMS_WR_REQ:" f="instr_exec.sv" l="298" h="2652" c="g"/>
+<tr cr="c" t="T" z="         JMS_UPDT_PC:" f="instr_exec.sv" l="309" h="2652" c="g"/>
+<tr cr="c" t="T" z="         JMP:" f="instr_exec.sv" l="318" h="2700" c="g"/>
+<tr cr="c" t="T" z="         NOP:" f="instr_exec.sv" l="326" h="14970" c="g"/>
+<tr cr="c" t="T" z="         UNSTALL:" f="instr_exec.sv" l="336" h="31771" c="g"/>
+<tr cr="m" t="A" z="      case (current_state)" f="instr_exec.sv" l="130" h="0" c="r"/>
+</table>
+</div><div class="covered"><a name="cvg298"></a><hr/><table>
+<tr z="               if (new_mem_opcode || new_op7_opcode) begin" f="instr_exec.sv" l="149" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="               if (new_mem_opcode || new_op7_opcode) begin" f="instr_exec.sv" l="149" h="31772" c="g"/>
+<tr cr="c" t="E" z="               end else begin" f="instr_exec.sv" l="154" h="31772" c="g"/>
+</table>
+</div><div class="covered"><a name="cvg299"></a><hr/><table>
+<tr z="               if (pdp_op7_opcode.CLA_CLL)" f="instr_exec.sv" l="171" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="               if (pdp_op7_opcode.CLA_CLL)" f="instr_exec.sv" l="171" h="730" c="g"/>
+<tr cr="c" t="T" z="               else if (pdp_mem_opcode.TAD || pdp_mem_opcode.AND || pdp_m..." f="instr_exec.sv" l="173" h="8036" c="g"/>
+<tr cr="c" t="T" z="               else if (pdp_mem_opcode.DCA)" f="instr_exec.sv" l="175" h="2683" c="g"/>
+<tr cr="c" t="T" z="               else if (pdp_mem_opcode.JMS)" f="instr_exec.sv" l="177" h="2652" c="g"/>
+<tr cr="c" t="T" z="               else if (pdp_mem_opcode.JMP)" f="instr_exec.sv" l="179" h="2700" c="g"/>
+<tr cr="c" t="E" z="               else" f="instr_exec.sv" l="181" h="14970" c="g"/>
+</table>
+</div><div><a name="cvg300"></a><hr/><table>
+<tr z="               if (pdp_mem_opcode.TAD)" f="instr_exec.sv" l="227" c="Y" p="75.00"/><tr/>
+<tr cr="c" t="I" z="               if (pdp_mem_opcode.TAD)" f="instr_exec.sv" l="227" h="2634" c="g"/>
+<tr cr="c" t="T" z="               else if (pdp_mem_opcode.AND)" f="instr_exec.sv" l="229" h="2742" c="g"/>
+<tr cr="c" t="T" z="               else if (pdp_mem_opcode.ISZ)" f="instr_exec.sv" l="231" h="2660" c="g"/>
+<tr cr="m" t="A" z="               if (pdp_mem_opcode.TAD)" f="instr_exec.sv" l="227" h="0" c="r"/>
+</table>
+</div><div class="covered"><a name="cvg301"></a><hr/><table>
+<tr z="               if (intAcc[`DATA_WIDTH]) intLink &lt;= ~tempLink;" f="instr_exec.sv" l="242" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="               if (intAcc[`DATA_WIDTH]) intLink &lt;= ~tempLink;" f="instr_exec.sv" l="242" h="127" c="g"/>
+<tr cr="c" t="A" z="               if (intAcc[`DATA_WIDTH]) intLink &lt;= ~tempLink;" f="instr_exec.sv" l="242" h="2507" c="g"/>
+</table>
+</div><div class="covered"><a name="cvg302"></a><hr/><table>
+<tr z="               if (int_exec_rd_data == 0) intPC &lt;= tempPC + 1;" f="instr_exec.sv" l="276" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="               if (int_exec_rd_data == 0) intPC &lt;= tempPC + 1;" f="instr_exec.sv" l="276" h="307" c="g"/>
+<tr cr="c" t="A" z="               if (int_exec_rd_data == 0) intPC &lt;= tempPC + 1;" f="instr_exec.sv" l="276" h="2353" c="g"/>
+</table>
+</div>  </div>
+<script>buildBranchTables("b0737445833_0428492752_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="c0737445833_0428492752_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z0737445833_0428492752_0.htm">work.instr_exec</a></div>
+  <div><span style="font-size: 250%;">Conditions</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="c0737445833_0428492752_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<div class="covered"><a name="cvg304"></a><hr/><table>
+<tr s="3" x="FC" z="(new_mem_opcode || new_op7_opcode)" c="G" p="100.00" d="0" F="1"/>
+<tr/>
+<tr z="new_mem_opcode" c="g" r="" i=""/>
+<tr z="new_op7_opcode" c="g" r="" i=""/>
+<tr/>
+<tr n="1" z="new_mem_opcode_0" h1="1" t="c" c1="~new_op7_opcode"/>
+<tr n="2" z="new_mem_opcode_1" h1="1" t="c" c1="-"/>
+<tr n="3" z="new_op7_opcode_0" h1="1" t="c" c1="~new_mem_opcode"/>
+<tr n="4" z="new_op7_opcode_1" h1="1" t="c" c1="~new_mem_opcode"/>
+</table>
+</div><div class="covered"><a name="cvg306"></a><hr/><table>
+<tr s="3" x="FC" z="((pdp_mem_opcode.TAD || pdp_mem_opcode.AND) || pdp_mem_opcode.ISZ)" c="G" p="100.00" d="0" F="1"/>
+<tr/>
+<tr z="pdp_mem_opcode.TAD" c="g" r="" i=""/>
+<tr z="pdp_mem_opcode.AND" c="g" r="" i=""/>
+<tr z="pdp_mem_opcode.ISZ" c="g" r="" i=""/>
+<tr/>
+<tr n="1" z="pdp_mem_opcode.TAD_0" h1="1" t="c" c1="(~pdp_mem_opcode.ISZ && ~pdp_mem_opcode.AND)"/>
+<tr n="2" z="pdp_mem_opcode.TAD_1" h1="1" t="c" c1="-"/>
+<tr n="3" z="pdp_mem_opcode.AND_0" h1="1" t="c" c1="(~pdp_mem_opcode.ISZ && ~pdp_mem_opcode.TAD)"/>
+<tr n="4" z="pdp_mem_opcode.AND_1" h1="1" t="c" c1="~pdp_mem_opcode.TAD"/>
+<tr n="5" z="pdp_mem_opcode.ISZ_0" h1="1" t="c" c1="~(pdp_mem_opcode.TAD || pdp_mem_opcode.AND)"/>
+<tr n="6" z="pdp_mem_opcode.ISZ_1" h1="1" t="c" c1="~(pdp_mem_opcode.TAD || pdp_mem_opcode.AND)"/>
+</table>
+</div>  </div>
+<script>buildExprCondTables("c0737445833_0428492752_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="f0737445833_0428492752_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z0737445833_0428492752_0.htm">work.instr_exec</a></div>
+  <div><span style="font-size: 250%;">State-machines</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="f0737445833_0428492752_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+
+<script>
+<!--
+  var pa_scope=0;
+-->
+</script>
+<div><a name="cvg307"></a><hr/><table>
+<tr z="current_state" c="Y" p="80.95"/>
+<tr/>
+<tr cr="c" s="1" z="IDLE" h="51" c="g"/>
+<tr cr="c" z="IDLE -> STALL" h="1" c="g"/>
+<tr cr="c" z="IDLE -> IDLE" h="50" c="g"/>
+<tr cr="c" s="1" z="STALL" h="380620" c="g"/>
+<tr cr="c" z="STALL -> STALL" h="348848" c="g"/>
+<tr cr="c" z="STALL -> BRANCH" h="31771" c="g"/>
+<tr cr="m" z="STALL -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="BRANCH" h="31771" c="g"/>
+<tr cr="c" z="BRANCH -> NOP" h="14970" c="g"/>
+<tr cr="c" z="BRANCH -> JMP" h="2700" c="g"/>
+<tr cr="c" z="BRANCH -> JMS_WR_REQ" h="2652" c="g"/>
+<tr cr="c" z="BRANCH -> DCA" h="2683" c="g"/>
+<tr cr="c" z="BRANCH -> MEM_RD_REQ" h="8036" c="g"/>
+<tr cr="c" z="BRANCH -> CLA_CLL" h="730" c="g"/>
+<tr cr="m" z="BRANCH -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="NOP" h="14970" c="g"/>
+<tr cr="c" z="NOP -> UNSTALL" h="14970" c="g"/>
+<tr cr="m" z="NOP -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="JMP" h="2700" c="g"/>
+<tr cr="c" z="JMP -> UNSTALL" h="2700" c="g"/>
+<tr cr="m" z="JMP -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="JMS_WR_REQ" h="2652" c="g"/>
+<tr cr="c" z="JMS_WR_REQ -> JMS_UPDT_PC" h="2652" c="g"/>
+<tr cr="m" z="JMS_WR_REQ -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="DCA" h="2683" c="g"/>
+<tr cr="c" z="DCA -> CLA" h="2683" c="g"/>
+<tr cr="m" z="DCA -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="MEM_RD_REQ" h="8036" c="g"/>
+<tr cr="c" z="MEM_RD_REQ -> DATA_RCVD" h="8036" c="g"/>
+<tr cr="m" z="MEM_RD_REQ -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="CLA_CLL" h="730" c="g"/>
+<tr cr="c" z="CLA_CLL -> UNSTALL" h="730" c="g"/>
+<tr cr="m" z="CLA_CLL -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="CLA" h="2683" c="g"/>
+<tr cr="c" z="CLA -> UNSTALL" h="2683" c="g"/>
+<tr cr="m" z="CLA -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="UNSTALL" h="31771" c="g"/>
+<tr cr="c" z="UNSTALL -> STALL" h="31771" c="g"/>
+<tr cr="m" z="UNSTALL -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="DATA_RCVD" h="8036" c="g"/>
+<tr cr="c" z="DATA_RCVD -> ISZ_WR_REQ" h="2660" c="g"/>
+<tr cr="c" z="DATA_RCVD -> AND_ACC_MEM" h="2742" c="g"/>
+<tr cr="c" z="DATA_RCVD -> ADD_ACC_MEM" h="2634" c="g"/>
+<tr cr="m" z="DATA_RCVD -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="ISZ_WR_REQ" h="2660" c="g"/>
+<tr cr="c" z="ISZ_WR_REQ -> ISZ_UPDT_PC" h="2660" c="g"/>
+<tr cr="m" z="ISZ_WR_REQ -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="AND_ACC_MEM" h="2742" c="g"/>
+<tr cr="c" z="AND_ACC_MEM -> UNSTALL" h="2742" c="g"/>
+<tr cr="m" z="AND_ACC_MEM -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="ADD_ACC_MEM" h="2634" c="g"/>
+<tr cr="c" z="ADD_ACC_MEM -> UNSTALL" h="2634" c="g"/>
+<tr cr="m" z="ADD_ACC_MEM -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="ISZ_UPDT_PC" h="2660" c="g"/>
+<tr cr="c" z="ISZ_UPDT_PC -> UNSTALL" h="2660" c="g"/>
+<tr cr="m" z="ISZ_UPDT_PC -> IDLE" h="0" c="r"/>
+<tr cr="c" s="1" z="JMS_UPDT_PC" h="2652" c="g"/>
+<tr cr="c" z="JMS_UPDT_PC -> UNSTALL" h="2652" c="g"/>
+<tr cr="m" z="JMS_UPDT_PC -> IDLE" h="0" c="r"/>
+</table>
+</div>  </div>
+<script>buildFsmTables("f0737445833_0428492752_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="t0737445833_0428492752_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z0737445833_0428492752_0.htm">work.instr_exec</a></div>
+  <div><span style="font-size: 250%;">Toggles</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="t0737445833_0428492752_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<hr/><table>
+<tr/>
+<tr/>
+<tr s="9" z="current_state" c="G" p="94.11"/>
+<tr cr="m" st="1"  z="IDLE" h1="0" c="r"/>
+<tr cr="c" st="1"  z="STALL" h1="31772" c="g"/>
+<tr cr="c" st="1"  z="BRANCH" h1="31771" c="g"/>
+<tr cr="c" st="1"  z="CLA" h1="2683" c="g"/>
+<tr cr="c" st="1"  z="CLA_CLL" h1="730" c="g"/>
+<tr cr="c" st="1"  z="MEM_RD_REQ" h1="8036" c="g"/>
+<tr cr="c" st="1"  z="DATA_RCVD" h1="8036" c="g"/>
+<tr cr="c" st="1"  z="ADD_ACC_MEM" h1="2634" c="g"/>
+<tr cr="c" st="1"  z="AND_ACC_MEM" h1="2742" c="g"/>
+<tr cr="c" st="1"  z="ISZ_WR_REQ" h1="2660" c="g"/>
+<tr cr="c" st="1"  z="ISZ_UPDT_PC" h1="2660" c="g"/>
+<tr cr="c" st="1"  z="DCA" h1="2683" c="g"/>
+<tr cr="c" st="1"  z="JMS_WR_REQ" h1="2652" c="g"/>
+<tr cr="c" st="1"  z="JMS_UPDT_PC" h1="2652" c="g"/>
+<tr cr="c" st="1"  z="JMP" h1="2700" c="g"/>
+<tr cr="c" st="1"  z="NOP" h1="14970" c="g"/>
+<tr cr="c" st="1"  z="UNSTALL" h1="31771" c="g"/>
+<tr cr="c" s="2" z="intAcc[12-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="intLink" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="intPC[11-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_exec_rd_addr[11-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_exec_rd_data[11-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_exec_rd_req" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_exec_wr_addr[11-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_exec_wr_data[11-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_exec_wr_req" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="int_stall" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="new_mem_opcode" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="new_op7_opcode" h1="1" h2="1" c="G" p="100.00"/>
+<tr s="9" z="next_state" c="G" p="94.11"/>
+<tr cr="m" st="1"  z="IDLE" h1="0" c="r"/>
+<tr cr="c" st="1"  z="STALL" h1="31772" c="g"/>
+<tr cr="c" st="1"  z="BRANCH" h1="31772" c="g"/>
+<tr cr="c" st="1"  z="CLA" h1="2683" c="g"/>
+<tr cr="c" st="1"  z="CLA_CLL" h1="730" c="g"/>
+<tr cr="c" st="1"  z="MEM_RD_REQ" h1="8036" c="g"/>
+<tr cr="c" st="1"  z="DATA_RCVD" h1="8036" c="g"/>
+<tr cr="c" st="1"  z="ADD_ACC_MEM" h1="2634" c="g"/>
+<tr cr="c" st="1"  z="AND_ACC_MEM" h1="2742" c="g"/>
+<tr cr="c" st="1"  z="ISZ_WR_REQ" h1="2660" c="g"/>
+<tr cr="c" st="1"  z="ISZ_UPDT_PC" h1="2660" c="g"/>
+<tr cr="c" st="1"  z="DCA" h1="2683" c="g"/>
+<tr cr="c" st="1"  z="JMS_WR_REQ" h1="2652" c="g"/>
+<tr cr="c" st="1"  z="JMS_UPDT_PC" h1="2652" c="g"/>
+<tr cr="c" st="1"  z="JMP" h1="2700" c="g"/>
+<tr cr="c" st="1"  z="NOP" h1="14970" c="g"/>
+<tr cr="c" st="1"  z="UNSTALL" h1="31771" c="g"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.AND" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.TAD" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.ISZ" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.DCA" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.JMS" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.JMP" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_mem_opcode.mem_inst_addr[11-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.NOP" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.IAC" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.RAL" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.RTL" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.RAR" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.RTR" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.CML" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.CMA" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.CIA" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.CLL" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.CLA1" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.CLA_CLL" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.HLT" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.OSR" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.SKP" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.SNL" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.SZL" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.SZA" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.SNA" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.SMA" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.SPA" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="pdp_op7_opcode.CLA2" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="tempAcc[12-0]" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="tempLink" h1="1" h2="1" c="G" p="100.00"/>
+<tr cr="c" s="2" z="tempPC[11-0]" h1="1" h2="1" c="G" p="100.00"/>
+</table>
+  </div>
+<script>buildToggleTable("t0737445833_0428492752_0");</script>
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</body>
+</html>

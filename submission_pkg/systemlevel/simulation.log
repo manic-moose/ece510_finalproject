@@ -1,0 +1,154 @@
+Reading pref.tcl
+
+# 10.4c
+
+# vsim -c -do "coverage save -onexit /u/bam7/ece510/pre_sil_func_validation/final_project/github/ece510_finalproject/submission_pkg/bin/../systemlevel/coverage/coverage.ucdb; run -all;exit" -coverage -voptargs="+cover=bcfst" top 
+# Start time: 13:40:52 on Jun 09,2016
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim-64
+# //  Version 10.4c linux_x86_64 Jul 19 2015
+# //
+# //  Copyright 1991-2015 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //  THIS DOCUMENT CONTAINS TRADE SECRETS AND COMMERCIAL OR FINANCIAL
+# //  INFORMATION THAT ARE PRIVILEGED, CONFIDENTIAL, AND EXEMPT FROM
+# //  DISCLOSURE UNDER THE FREEDOM OF INFORMATION ACT, 5 U.S.C. SECTION 552.
+# //  FURTHERMORE, THIS INFORMATION IS PROHIBITED FROM DISCLOSURE UNDER
+# //  THE TRADE SECRETS ACT, 18 U.S.C. SECTION 1905.
+# //
+# Loading sv_std.std
+# Loading work.pdp8_pkg(fast)
+# Loading work.CovTracker_pkg(fast)
+# Loading work.ifd_checker_sv_unit(fast)
+# Loading work.exec_unit_chkr_sv_unit(fast)
+# Loading work.memory_pdp_sv_unit(fast)
+# Loading work.instr_exec_sv_unit(fast)
+# Loading work.instr_decode_sv_unit(fast)
+# Loading work.clkgen_driver_sv_unit(fast)
+# Loading work.top_sv_unit(fast)
+# Loading work.top(fast)
+# Loading work.SequenceMonitor_sv_unit(fast)
+# Loading work.SequenceMonitor(fast)
+# coverage save -onexit /u/bam7/ece510/pre_sil_func_validation/final_project/github/ece510_finalproject/submission_pkg/bin/../systemlevel/coverage/coverage.ucdb
+#  run -all
+# ** Note: $finish    : clkgen_driver.sv(57)
+#    Time: 5000500 ns  Iteration: 0  Instance: /top/iclocker
+# Saving coverage database on exit...
+# 
+# Functional Coverage Summary: SequenceMonitor    Total Coverage: 100.000000%
+# EVENT                              OBSERVATIONS
+# CLA_CLL->TAD->TAD->DCA->HLT->JMP   1
+# 
+# 
+# 
+# Rule Checker Summary: Execution Unit
+# RULE      TOTAL          PASS           FAIL           DESCRIPTION
+# 1         441            441            0              AND Command Read Address Correct                                                
+# 2         441            441            0              AND Command properly updates accumulator                                        
+# 3         11616          11616          0              stall is asserted when required                                                 
+# 4         2039           2039           0              stall is de-asserted when required                                              
+# 5         441            441            0              AND Command consumed correct number of clock cycles                             
+# 6         1              1              0              JMP Command updates program counter with supplied adx                           
+# 7         1511           1511           0              Program Counter value updated correctly for all instructions                    
+# 8         1              1              0              JMS Command writes to expected memory address                                   
+# 9         1              1              0              JMS Command writes correct data to memory (next PC value)                       
+# 10        1              1              0              JMS Instruction takes 3 cycles to de-assert stall                               
+# 11        527            527            0              JMS PC_value updated to requested memory address + 1                            
+# 12        2039           2039           0              All opcodes supplied to instruction unit are legal                              
+# 13        523            523            0              ADD Command Read Address Correct                                                
+# 14        523            523            0              ADD Command properly updates accumulator                                        
+# 15        523            523            0              ADD Command consumed correct number of clock cycles                             
+# 16        526            526            0              DCA Command writes to expected memory address                                   
+# 17        526            526            0              DCA Command writes correct data to memory (the accumulator value)               
+# 18        526            526            0              DCA command clears internal accumulator to 0                                    
+# 19        526            526            0              DCA command takes 3 cycles for unstall                                          
+# 20        511            511            0              ISZ command uses correct read address                                           
+# 21        511            511            0              ISZ command writes back correct data to memory (read data + 1)                  
+# 22        511            511            0              ISZ command de-asserts stall after 5 clock cycles                               
+# 23        2              2              0              CLA_CLL Command Clears Internal Accumulator                                     
+# 24        2              2              0              CLA_CLL Command Clears Internal Link Bit                                        
+# 25        1              1              0              Base address is equal to proper value                                           
+# 26        1              1              0              PC_value is equal to base address on first clock cycle                          
+# 
+# 
+# 
+# Functional Coverage Summary: Execution Unit    Total Coverage: 100.000000%
+# EVENT                              OBSERVATIONS
+# AND                                441
+# CIA                                1
+# CLA1                               1
+# CLA2                               1
+# CLA_CLL                            2
+# CLL                                1
+# CMA                                1
+# CML                                1
+# DCA                                526
+# HLT                                2
+# IAC                                9
+# ISZ                                511
+# JMP                                1
+# JMS                                1
+# NOP                                3
+# OSR                                1
+# RAL                                1
+# RAR                                1
+# RTL                                1
+# RTR                                1
+# SKP                                2
+# SMA                                1
+# SNA                                1
+# SNL                                1
+# SPA                                2
+# SZA                                1
+# SZL                                1
+# TAD                                523
+# 
+# 
+# 
+# Rule Checker Summary: IFD Unit
+# RULE      TOTAL          PASS           FAIL           DESCRIPTION
+# 1         2039           2039           0              Opcodes supplied are legal (one at a time, etc.)                                
+# 2         2039           2039           0              Memory correctly converted into instruction                                     
+# 3         2039           2039           0              Opcode outputs are cleared any time an IFD memory read occurs                   
+# 25        1              1              0              Base address is equal to proper value                                           
+# 
+# 
+# 
+# Functional Coverage Summary: IFD Unit    Total Coverage: 100.000000%
+# EVENT                              OBSERVATIONS
+# AND                                441
+# CIA                                1
+# CLA1                               1
+# CLA2                               1
+# CLA_CLL                            2
+# CLL                                1
+# CMA                                1
+# CML                                1
+# DCA                                526
+# HLT                                2
+# IAC                                9
+# ISZ                                511
+# JMP                                1
+# JMS                                1
+# NOP                                3
+# OSR                                1
+# RAL                                1
+# RAR                                1
+# RTL                                1
+# RTR                                1
+# SKP                                2
+# SMA                                1
+# SNA                                1
+# SNL                                1
+# SPA                                2
+# SZA                                1
+# SZL                                1
+# TAD                                523
+# 
+# 
+# End time: 13:40:53 on Jun 09,2016, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0

@@ -1,0 +1,20 @@
+QuestaSim-64 vlog 10.4c Compiler 2015.07 Jul 19 2015
+Start time: 17:49:40 on Jun 08,2016
+vlog -sv -mfcu -f exec_unit.f 
+-- Compiling package pdp8_pkg
+-- Compiling package pdp8_pkg_sv_unit
+-- Importing package pdp8_pkg
+** Warning: ../shared/CovTracker.sv(43): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+-- Compiling module SequenceMonitor
+** Warning: ../shared/SequenceMonitor.sv(57): (vlog-2240) Treating stand-alone use of function 'printCoverageReport' as an implicit VOID cast.
+-- Compiling module clkgen_driver
+-- Compiling module exec_unit_chkr
+-- Compiling module instr_exec
+-- Compiling module memory_rndgen
+-- Compiling module ifd_bfd
+-- Compiling module exec_tb
+
+Top level modules:
+	exec_tb
+End time: 17:49:40 on Jun 08,2016, Elapsed time: 0:00:00
+Errors: 0, Warnings: 2

@@ -1,0 +1,6 @@
+# IFD rules
+1 Opcodes supplied are legal (one at a time, etc.)
+2 Memory correctly converted into instruction
+3 Opcode outputs are cleared any time an IFD memory read occurs
+
+25 Base address is equal to proper value

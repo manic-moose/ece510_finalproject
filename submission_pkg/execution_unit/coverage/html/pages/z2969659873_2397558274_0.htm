@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+    <script type="text/javascript" src="../scripts/jquery.js"></script>
+    <script type="text/javascript" src="../scripts/sort_tables.js"></script>
+    <script type="text/javascript" src="../scripts/showhide.js"></script>
+    <script type="text/javascript" src="../scripts/buildstmtpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildstmtpage_nos.js"></script>
+    <script type="text/javascript" src="../scripts/buildbranchpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildecpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildfsmpage.js"></script>
+    <script type="text/javascript" src="../scripts/buildtogglepage.js"></script>
+    <script type="text/javascript" src="../scripts/buildassertpage.js"></script>
+    <script type="text/javascript" src="../scripts/builddirpage.js"></script>
+  
+</head>
+<body>
+  <h1><span class="strip">Questa</span> Design Unit Coverage</h1>
+  <h3>Design Unit: work.SequenceMonitor</h3>
+  <dl>
+  <dt><b>Design Unit Name:</b></dt><dd>work.SequenceMonitor</dd>
+  <dt><b>Language:</b></dt><dd>SystemVerilog</dd>
+  <dt><b>Source File:</b></dt><dd>SequenceMonitor.sv</dd>
+  </dl>
+  
+  <br /><br /><br /><br />
+  <a id="z2969659873_2397558274_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z2969659873_2397558274_0.htm">work.SequenceMonitor</a></div>
+  <div><span style="font-size: 250%;">Summary</span></div>
+  </td></tr></table>
+  <br />
+    <hr/><h3>Design Unit Hierarchical Summary:</h3>
+  <table cellspacing="2" cellpadding="2">
+  <tr><th colspan="2">Scope</th><th>TOTAL</th><th>Statement</th><th>Branch</th><th>FEC<br/>Condition</th><th>Toggle</th></tr>
+  <tr><td class="odd" colspan="2">work.SequenceMonitor</td><td class="bgYellow">61.15%</td><td class="bgYellow">84.61%</td><td class="bgYellow">60.00%</td><td class="bgRed">0.00%</td><td class="bgGreen">100.00%</td></tr>
+  <tr><td class="invisible">&nbsp;</td><td class="even"><a href="z3750319271_4170132497_0.htm">clearObsFlags</a></td><td class="bgYellow">50.00%</td><td class="bgYellow">50.00%</td><td class="bgYellow">50.00%</td><td class="even" align="center">--</td><td class="even" align="center">--</td></tr>
+  </table>
+  <hr/><table id="loc_rec_tables" cellspacing="5"><tr><td valign="top"><h3>Design Unit Coverage Details:</h3>
+  <table cellspacing="2" cellpadding="2"><tr><td class="odd" colspan="6">Total Coverage:</td><td class="odd_r">70.37%</td><td class="bgYellow">61.15%</td></tr>
+  <tr><th colspan="2" align="left">Coverage Type</th><th>Bins</th><th>Hits</th><th>Misses</th><th>Weight</th><th>% Hit</th><th>Coverage</th></tr>
+  <tr><td colspan="2" class="odd"><a href="#s2969659873_2397558274_0_a">Statements</a></td><td class="odd_r">13</td><td class="odd_r">11</td><td class="odd_r">2</td><td class="odd_r">1</td><td class="odd_r">84.61%</td><td class="bgYellow">84.61%</td></tr>
+<tr><td colspan="2" class="even"><a href="#b2969659873_2397558274_0_a">Branches</a></td><td class="even_r">10</td><td class="even_r">6</td><td class="even_r">4</td><td class="even_r">1</td><td class="even_r">60.00%</td><td class="bgYellow">60.00%</td></tr>
+<tr><td colspan="2" class="odd"><a href="#c2969659873_2397558274_0_a">FEC Conditions</a></td><td class="odd_r">2</td><td class="odd_r">0</td><td class="odd_r">2</td><td class="odd_r">1</td><td class="odd_r">0.00%</td><td class="bgRed">0.00%</td></tr>
+<tr><td colspan="2" class="even"><a href="#t2969659873_2397558274_0_a">Toggles</a></td><td class="even_r">2</td><td class="even_r">2</td><td class="even_r">0</td><td class="even_r">1</td><td class="even_r">100.00%</td><td class="bgGreen">100.00%</td></tr>
+</table></td></tr></table>
+  <br /><br /><br /><br />
+  <a id="s2969659873_2397558274_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z2969659873_2397558274_0.htm">work.SequenceMonitor</a></div>
+  <div><span style="font-size: 250%;">Statements</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="s2969659873_2397558274_0_srcFileIdx_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<hr/><table>
+<tr/>
+<tr cr="c" z="SequenceMonitor.sv:25" h="5000500" c="g"/>
+<tr cr="c" z="SequenceMonitor.sv:32" h="5000499" c="g"/>
+<tr cr="c" z="SequenceMonitor.sv:37" h="1" c="g"/>
+<tr cr="c" z="SequenceMonitor.sv:38" h="1" c="g"/>
+<tr cr="c" z="SequenceMonitor.sv:39" h="1" c="g"/>
+<tr cr="c" z="SequenceMonitor.sv:48" h="1" c="g"/>
+<tr cr="c" z="SequenceMonitor.sv:49" h="1" c="g"/>
+<tr cr="c" z="SequenceMonitor.sv:54" h="31771" c="g"/>
+<tr cr="c" z="SequenceMonitor.sv:57" h="1" c="g"/>
+<tr cr="c" z="SequenceMonitor.sv:59" h="31771" c="g"/>
+<tr cr="m" z="SequenceMonitor.sv:64" h="0" c="r"/>
+</table>
+  </div>
+<script>buildStmtTableNoSource("s2969659873_2397558274_0_srcFileIdx_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="b2969659873_2397558274_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z2969659873_2397558274_0.htm">work.SequenceMonitor</a></div>
+  <div><span style="font-size: 250%;">Branches</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="b2969659873_2397558274_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<div><a name="cvg1121"></a><hr/><table>
+<tr z="            if (execTracker != null) obsFlag = execTracker.observationFla..." f="SequenceMonitor.sv" l="32" c="Y" p="50.00"/><tr/>
+<tr cr="c" t="I" z="            if (execTracker != null) obsFlag = execTracker.observationFla..." f="SequenceMonitor.sv" l="32" h="5000499" c="g"/>
+<tr cr="m" t="A" z="            if (execTracker != null) obsFlag = execTracker.observationFla..." f="SequenceMonitor.sv" l="32" h="0" c="r"/>
+</table>
+</div><div><a name="cvg1122"></a><hr/><table>
+<tr z="        if (!disabler &amp; obsFlag) begin" f="SequenceMonitor.sv" l="55" c="Y" p="50.00"/><tr/>
+<tr cr="c" t="I" z="        if (!disabler &amp; obsFlag) begin" f="SequenceMonitor.sv" l="55" h="31771" c="g"/>
+<tr cr="m" t="A" z="        if (!disabler &amp; obsFlag) begin" f="SequenceMonitor.sv" l="55" h="0" c="r"/>
+</table>
+</div><div class="covered"><a name="cvg1123"></a><hr/><table>
+<tr z="            if(sequencer.compareToSequence(bonus_sequence)) begin" f="SequenceMonitor.sv" l="56" c="G" p="100.00"/><tr/>
+<tr cr="c" t="I" z="            if(sequencer.compareToSequence(bonus_sequence)) begin" f="SequenceMonitor.sv" l="56" h="1" c="g"/>
+<tr cr="c" t="A" z="            if(sequencer.compareToSequence(bonus_sequence)) begin" f="SequenceMonitor.sv" l="56" h="31770" c="g"/>
+</table>
+</div>  </div>
+<script>buildBranchTables("b2969659873_2397558274_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="c2969659873_2397558274_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z2969659873_2397558274_0.htm">work.SequenceMonitor</a></div>
+  <div><span style="font-size: 250%;">Conditions</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="c2969659873_2397558274_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<div class="missing"><a name="cvg1125"></a><hr/><table>
+<tr s="3" x="FC" z="(~disabler & obsFlag)" c="R" p="0.00" d="0" F="1"/>
+<tr/>
+<tr z="disabler" c="r" r="'_1' not hit" i="Hit '_1'"/>
+<tr z="obsFlag" c="r" r="'_0' not hit" i="Hit '_0'"/>
+<tr/>
+<tr n="1" z="disabler_0" h1="1" t="c" c1="obsFlag"/>
+<tr n="2" z="disabler_1" h1="0" t="c" c1="obsFlag"/>
+<tr n="3" z="obsFlag_0" h1="0" t="c" c1="~disabler"/>
+<tr n="4" z="obsFlag_1" h1="1" t="c" c1="~disabler"/>
+</table>
+</div>  </div>
+<script>buildExprCondTables("c2969659873_2397558274_0");</script>
+
+  <br /><br /><br /><br />
+  <a id="t2969659873_2397558274_0_a"></a>
+  <table class="fpw"><tr><td class="styleNone">
+  <div>Design Unit: /<a href="z2969659873_2397558274_0.htm">work.SequenceMonitor</a></div>
+  <div><span style="font-size: 250%;">Toggles</span></div>
+  </td></tr></table>
+  <br />
+  
+  <div id="t2969659873_2397558274_0">
+  
+   <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+<hr/><table>
+<tr/>
+<tr/>
+<tr cr="c" s="2" z="obsFlag" h1="1" h2="1" c="G" p="100.00"/>
+</table>
+  </div>
+<script>buildToggleTable("t2969659873_2397558274_0");</script>
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</body>
+</html>

@@ -1,0 +1,105 @@
+Reading pref.tcl
+
+# 10.4c
+
+# vsim -c -do "coverage save -onexit /u/bam7/ece510/pre_sil_func_validation/final_project/github/ece510_finalproject/hdl/execution_unit/coverage/coverage.ucdb; run -all;exit" -coverage -voptargs="+cover=bcfst" exec_tb 
+# Start time: 17:49:41 on Jun 08,2016
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Note: (vopt-143) Recognized 1 FSM in module "instr_exec(fast)".
+# //  Questa Sim-64
+# //  Version 10.4c linux_x86_64 Jul 19 2015
+# //
+# //  Copyright 1991-2015 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //  THIS DOCUMENT CONTAINS TRADE SECRETS AND COMMERCIAL OR FINANCIAL
+# //  INFORMATION THAT ARE PRIVILEGED, CONFIDENTIAL, AND EXEMPT FROM
+# //  DISCLOSURE UNDER THE FREEDOM OF INFORMATION ACT, 5 U.S.C. SECTION 552.
+# //  FURTHERMORE, THIS INFORMATION IS PROHIBITED FROM DISCLOSURE UNDER
+# //  THE TRADE SECRETS ACT, 18 U.S.C. SECTION 1905.
+# //
+# Loading sv_std.std
+# Loading work.pdp8_pkg(fast)
+# Loading work.pdp8_pkg_sv_unit(fast)
+# Loading work.exec_tb(fast)
+# Loading work.SequenceMonitor(fast)
+# coverage save -onexit /u/bam7/ece510/pre_sil_func_validation/final_project/github/ece510_finalproject/hdl/execution_unit/coverage/coverage.ucdb
+#  run -all
+# ** Note: $finish    : ../pdp_hdl/clkgen_driver.sv(54)
+#    Time: 5000500 ns  Iteration: 0  Instance: /exec_tb/iclocker
+# Saving coverage database on exit...
+# 
+# Functional Coverage Summary: SequenceMonitor    Total Coverage: 100.000000%
+# EVENT                              OBSERVATIONS
+# CLA_CLL->TAD->TAD->DCA->HLT->JMP   1
+# 
+# 
+# 
+# Rule Checker Summary: Execution Unit
+# RULE      TOTAL          PASS           FAIL           DESCRIPTION
+# 1         2742           2742           0              AND Command Read Address Correct                                                
+# 2         2742           2742           0              AND Command properly updates accumulator                                        
+# 3         143116         143116         0              stall is asserted when required                                                 
+# 4         31771          31771          0              stall is de-asserted when required                                              
+# 5         2742           2742           0              AND Command consumed correct number of clock cycles                             
+# 6         2700           2700           0              JMP Command updates program counter with supplied adx                           
+# 7         23736          23736          0              Program Counter value updated correctly for all instructions                    
+# 8         2652           2652           0              JMS Command writes to expected memory address                                   
+# 9         2652           2652           0              JMS Command writes correct data to memory (next PC value)                       
+# 10        2652           2652           0              JMS Instruction takes 3 cycles to de-assert stall                               
+# 11        5335           5335           0              JMS PC_value updated to requested memory address + 1                            
+# 12        31771          31771          0              All opcodes supplied to instruction unit are legal                              
+# 13        2634           2634           0              ADD Command Read Address Correct                                                
+# 14        2634           2634           0              ADD Command properly updates accumulator                                        
+# 15        2634           2634           0              ADD Command consumed correct number of clock cycles                             
+# 16        2683           2683           0              DCA Command writes to expected memory address                                   
+# 17        2683           2683           0              DCA Command writes correct data to memory (the accumulator value)               
+# 18        2683           2683           0              DCA command clears internal accumulator to 0                                    
+# 19        2683           2683           0              DCA command takes 3 cycles for unstall                                          
+# 20        2660           2660           0              ISZ command uses correct read address                                           
+# 21        2660           2660           0              ISZ command writes back correct data to memory (read data + 1)                  
+# 22        2660           2660           0              ISZ command de-asserts stall after 5 clock cycles                               
+# 23        730            730            0              CLA_CLL Command Clears Internal Accumulator                                     
+# 24        730            730            0              CLA_CLL Command Clears Internal Link Bit                                        
+# 25        1              1              0              Base address is equal to proper value                                           
+# 26        1              1              0              PC_value is equal to base address on first clock cycle                          
+# 
+# 
+# 
+# Functional Coverage Summary: Execution Unit    Total Coverage: 100.000000%
+# EVENT                              OBSERVATIONS
+# AND                                2742
+# CIA                                717
+# CLA1                               743
+# CLA2                               706
+# CLA_CLL                            730
+# CLL                                678
+# CMA                                748
+# CML                                712
+# DCA                                2683
+# HLT                                695
+# IAC                                691
+# ISZ                                2660
+# JMP                                2700
+# JMS                                2652
+# NOP                                714
+# OSR                                716
+# RAL                                759
+# RAR                                728
+# RTL                                692
+# RTR                                647
+# SKP                                746
+# SMA                                710
+# SNA                                696
+# SNL                                707
+# SPA                                746
+# SZA                                710
+# SZL                                709
+# TAD                                2634
+# 
+# 
+# End time: 17:49:44 on Jun 08,2016, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 0

@@ -1,0 +1,10 @@
+-html
+-details
+-htmldir
+/u/bam7/ece510/pre_sil_func_validation/final_project/github/ece510_finalproject/submission_pkg/bin/../systemlevel/coverage/html
+-verbose
+-threshL
+50
+-threshH
+90
+/u/bam7/ece510/pre_sil_func_validation/final_project/github/ece510_finalproject/submission_pkg/bin/../systemlevel/coverage/coverage.ucdb

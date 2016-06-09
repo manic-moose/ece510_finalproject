@@ -1,0 +1,64 @@
+QuestaSim-64 vlog 10.4c Compiler 2015.07 Jul 19 2015
+Start time: 13:40:42 on Jun 09,2016
+vlog -f vfiles.f 
+-- Compiling package pdp8_pkg
+-- Compiling package clkgen_driver_sv_unit
+-- Importing package pdp8_pkg
+-- Compiling module clkgen_driver
+** Warning: ** while parsing file included at instr_decode.sv(20)
+** at pdp8_pkg.sv(26): (vlog-2275) 'pdp8_pkg' already exists and will be overwritten.
+-- Compiling package pdp8_pkg
+-- Compiling package instr_decode_sv_unit
+-- Importing package pdp8_pkg
+-- Compiling module instr_decode
+-- Compiling package CovTracker_pkg
+** Warning: CovTracker.sv(46): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+** Warning: ** while parsing file included at CovSequencer.sv(1)
+** at CovTracker.sv(11): (vlog-2275) 'CovTracker_pkg' already exists and will be overwritten.
+-- Compiling package CovTracker_pkg
+** Warning: ** while parsing file included at CovSequencer.sv(1)
+** at CovTracker.sv(46): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+** Warning: ** while parsing file included at SequenceMonitor.sv(5)
+** while parsing file included at CovSequencer.sv(1)
+** at CovTracker.sv(11): (vlog-2275) 'CovTracker_pkg' already exists and will be overwritten.
+-- Compiling package SequenceMonitor_sv_unit
+-- Importing package CovTracker_pkg
+-- Compiling package CovTracker_pkg
+** Warning: CovTracker.sv(46): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+-- Compiling module SequenceMonitor
+** Warning: SequenceMonitor.sv(64): (vlog-2240) Treating stand-alone use of function 'printCoverageReport' as an implicit VOID cast.
+** Warning: ** while parsing file included at memory_rndgen_ifd.sv(11)
+** at pdp8_pkg.sv(26): (vlog-2275) 'pdp8_pkg' already exists and will be overwritten.
+-- Compiling package pdp8_pkg
+-- Compiling package memory_rndgen_ifd_sv_unit
+-- Importing package pdp8_pkg
+-- Compiling module memory_rndgen_ifd
+** Warning: ** while parsing file included at exec_bfm.sv(10)
+** at pdp8_pkg.sv(26): (vlog-2275) 'pdp8_pkg' already exists and will be overwritten.
+-- Compiling package pdp8_pkg
+-- Compiling package exec_bfm_sv_unit
+-- Importing package pdp8_pkg
+-- Compiling module exec_bfm
+** Warning: ** while parsing file included at ifd_checker.sv(11)
+** at pdp8_pkg.sv(26): (vlog-2275) 'pdp8_pkg' already exists and will be overwritten.
+-- Compiling package pdp8_pkg
+** Warning: ** while parsing file included at ifd_checker.sv(13)
+** at CovTracker.sv(11): (vlog-2275) 'CovTracker_pkg' already exists and will be overwritten.
+-- Compiling package ifd_checker_sv_unit
+-- Importing package CovTracker_pkg
+-- Importing package pdp8_pkg
+-- Compiling package CovTracker_pkg
+** Warning: CovTracker.sv(46): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+-- Compiling module ifd_checker
+** Warning: ** while parsing file included at top.sv(4)
+** at pdp8_pkg.sv(26): (vlog-2275) 'pdp8_pkg' already exists and will be overwritten.
+-- Compiling package pdp8_pkg
+-- Compiling package top_sv_unit
+-- Importing package pdp8_pkg
+-- Compiling module top
+
+Top level modules:
+	clkgen_driver
+	top
+End time: 13:40:43 on Jun 09,2016, Elapsed time: 0:00:01
+Errors: 0, Warnings: 13
