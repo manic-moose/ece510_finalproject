@@ -1,5 +1,4 @@
 module SequenceMonitor(
-    input clk,
     input CovTracker ifdTracker,
     input CovTracker execTracker
 );
@@ -12,6 +11,20 @@ module SequenceMonitor(
     string bonus_sequence[$] = {"CLA_CLL","TAD","TAD","DCA","HLT","JMP"};
     
     CovTracker crossFuncTracker;
+
+    bit obsFlag;
+    
+    always begin
+        #1;
+        if (MODE == 0) begin
+            if (execTracker != null) obsFlag = execTracker.observationFlag;
+            if (ifdTracker  != null) obsFlag = obsFlag & ifdTracker.observationFlag;
+        end else if (MODE == 1) begin
+            if (ifdTracker != null)  obsFlag = ifdTracker.observationFlag;
+        end else if (MODE == 2) begin
+            if (execTracker != null) obsFlag = execTracker.observationFlag;
+        end
+    end
     
     initial begin
         crossFuncTracker = new("SequenceMonitor");
@@ -31,18 +44,24 @@ module SequenceMonitor(
             disabler = 1;
     end
     
-    always @(posedge clk) begin
-        if (!disabler) begin
+    always @(obsFlag) begin
+        if (!disabler & obsFlag) begin
             if(sequencer.compareToSequence(bonus_sequence)) begin
                 crossFuncTracker.observe(SEQ_LABEL);
-                if (ifdTracker != null)  ifdTracker.clearSequence();
-                if (execTracker != null) execTracker.clearSequence();
             end
+            clearObsFlags();
         end
     end
     
     final begin
         crossFuncTracker.printCoverageReport();
     end
+
+    task clearObsFlags ();
+    begin
+        if (ifdTracker != null)  ifdTracker.clearObsFlag();
+        if (execTracker != null) execTracker.clearObsFlag();
+    end
+    endtask
     
 endmodule

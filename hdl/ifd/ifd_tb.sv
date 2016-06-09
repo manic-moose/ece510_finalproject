@@ -27,7 +27,6 @@ clkgen_driver iclocker (clk, reset_n);
 SequenceMonitor #(
     .MODE(2)
 ) seq_mon(
-    .clk(clk),
     .execTracker(ifd_chkr.tracker_ifd),
     .ifdTracker(null)
 );

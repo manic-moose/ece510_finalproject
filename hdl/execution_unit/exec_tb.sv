@@ -24,7 +24,6 @@ wire [`DATA_WIDTH-1:0] exec_wr_data;
 SequenceMonitor #(
     .MODE(2)
 ) seq_mon(
-    .clk(clk),
     .execTracker(exec_chkr.tracker),
     .ifdTracker(null)
 );
