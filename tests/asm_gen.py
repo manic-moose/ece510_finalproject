@@ -47,10 +47,16 @@ def main():
         usedCodes = ['hlt']
         i = 0
         print "generating random opcode sequence"
+        # insert a cla_cll at the beginning to ensure
+        # link and accumulator are zeroed out
+        i+=1
+        opcode = 'cla cll'
+        usedCodes.append(opcode)
+        oup.write(opcode+"\n")
         while i < len(opcodes)-1:
             i += 1
             command = ''
-            # get a random opcode
+            # get a random opcode that hasn't been used yet
             opcode = opcodes[randint(0, len(opcodes)-1)]
             while opcode in usedCodes:
                 opcode = opcodes[randint(0, len(opcodes)-1)]

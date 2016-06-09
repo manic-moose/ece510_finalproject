@@ -1,0 +1,99 @@
+   1            / Program : Add01.pal
+   2            / Date : March 3, 2002
+   3            /
+   4            / Desc : This program computes c = a + b
+   5            /
+   6            /-------------------------------------------
+   7            /
+   8            / Code Section
+   9            /
+  10            *0200			/ start at address 0200
+  11 00200 7300 Main, 	cla cll 	/ clear AC and Link
+  12 00201 1306 	tad A 		/ add A to Accumulator
+  13 00202 1307 	tad B 		/ add B
+  14 00203 3310 	dca C 		/ store sum at C
+  15 00204 7000  nop     / do nothing
+  16 00205 7001  iac     / increment accumulator
+  17 00206 7010  rar     / rotate accumulator and link right
+  18 00207 7040  cma     / complement accumulator
+  19 00210 7440  sza     / skip on zero acc
+  20 00211 7041  cia     / ???
+  21 00212 2311  isz D   / increment and skip on 0
+  22 00213 7410  skp     / skip
+  23 00214 7410  skp     / skip
+  24 00215 7100  cll     / clear link
+  25 00216 7104  7104    / clear link (gets the opcode that matches pdp8_pkg.sv)
+  26 00217 7200  cla     / clear accumulator
+  27 00220 7001  iac     / increment accumulator
+  28 00221 7012  rtr     / rotate accumulator and link twice
+  29 00222 7004  ral     / rotate accumulator and link
+  30 00223 1306  tad A   / add a to accumulator
+  31 00224 0307  and B   / and B with accumulator
+  32 00225 3311  dca D   / store acc at D
+  33 00226 7001  iac     / increment acc
+  34 00227 3312  dca E   / store acc at E
+  35 00230 7100  cll cll / clear link/acc
+  36 00231 7001  iac     / increment acc
+  37 00232 7420  snl     / skip on nonzero link
+  38 00233 1306  tad A   / add a to accumulator
+  39 00234 0307  and B   / and B with accumulator
+  40 00235 3311  dca D   / store acc at D
+  41 00236 7001  iac     / increment acc
+  42 00237 3312  dca E   / store acc at E
+  43 00240 7450  sna     / skip on nonzero acc
+  44 00241 1306  tad A   / add a to accumulator
+  45 00242 0307  and B   / and B with accumulator
+  46 00243 3311  dca D   / store acc at D
+  47 00244 7001  iac     / increment acc
+  48 00245 3312  dca E   / store acc at E
+  49 00246 7410  skp     / skip
+  50 00247 1306  tad A   / add a to accumulator
+  51 00250 0307  and B   / and B with accumulator
+  52 00251 3311  dca D   / store acc at D
+  53 00252 7001  iac     / increment acc
+  54 00253 3312  dca E   / store acc at E
+  55 00254 7510  spa     / skip on positive acc
+  56 00255 1306  tad A   / add a to acc
+  57 00256 7020  cml     / complement link
+  58 00257 7404  osr     / or switch reg with acc
+  59 00260 7430  szl     / skip on zero link
+  60 00261 1306  tad A   / add a to accumulator
+  61 00262 0307  and B   / and B with accumulator
+  62 00263 3311  dca D   / store acc at D
+  63 00264 7001  iac     / increment acc
+  64 00265 3312  dca E   / store acc at E
+  65 00266 7500  sma     / skip on minus acc
+  66 00267 1306  tad A   / add a to accumulator
+  67 00270 0307  and B   / and B with accumulator
+  68 00271 3311  dca D   / store acc at D
+  69 00272 7001  iac     / increment acc
+  70 00273 3312  dca E   / store acc at E
+  71             //sma
+  72 00274 7006  rtl
+  73 00275 7510  7510
+  74 00276 7600  7600
+  75             //jms Main 
+  76 00277 7300  cla cll
+  77 00300 1306  tad A
+  78 00301 1307  tad B
+  79 00302 3310  dca C
+  80 00303 7402 	hlt 		/ Halt program
+  81 00304 5313 	jmp End / end program
+  82 00305 4313  jms End
+  83             
+  84            *0313
+  85 00313 7402 End, hlt
+  86            
+  87            /
+  88            
+  89            / Data Section
+  90            /
+  91            *0306 			/ place data at address 0350
+  92 00306 0002 A, 	2 		/ A equals 2
+  93 00307 0003 B, 	3 		/ B equals 3
+  94 00310 0000 C, 	0
+  95 00311 0000 D,  0
+  96 00312 0000 E,  0
+  97            
+  98            
+  99            $Main 			/ End of Program; Main is entry point
